@@ -31,24 +31,6 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 
 ---
 
-## 🗂 Database Design (MariaDB)
-
-### `categories`
-| category_id | name          |
-|-------------|---------------|
-| 1           | Computer Sci  |
-| 2           | Mathematics   |
-
-### `notes`
-| note_id | category_id | title        | content               | created_at          |
-|---------|-------------|--------------|-----------------------|---------------------|
-| 1       | 1           | Lecture 1    | Intro to Algorithms   | 2025-08-20 10:30:00 |
-
-### `annotations`
-| annotation_id | note_id | type   | data                         |
-|---------------|---------|--------|------------------------------|
-| 1             | 1       |        |
-| 2             | 1       | text   | Highlighted: "Big-O notation"|
 
 ---
 
