@@ -43,6 +43,11 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 
 ---
 
+## Technology Stack and Reasoning  
+We chose Java because it is the main language we are studying right now, which helps us stay consistent with our coursework and avoid confusion by sticking to one language. JavaFX was chosen for the user interface because it is a Java-based technology that we have already used before, making it easier to work with while also providing good tools for building interactive applications. For the database, MariaDB was selected because the teacher requires the use of an SQL database, and since our group has already worked with MariaDB in the past, it was the natural choice for us. This combination keeps the project simple, familiar, and aligned with both the course requirements and our previous experience.
+
+---
+
 ## 📸 UI Preview
 *(Add screenshots of your JavaFX interface here once built!)*
 
