@@ -1,9 +1,14 @@
 # 📝 Digital Note-taking.
 
-A **JavaFX desktop application** that enables students to take lecture notes, organize them by categories, and annotate with images, diagrams, and highlights.  
+A **JavaFX desktop application** that enables students to take lecture notes, organize them by categories, and highlights.  
 The system uses **MariaDB** for persistent storage of notes and categories, ensuring data is secure and easily retrievable.
 
 ---
+## Team members
+- Entor Krasniqi 
+- Doni Kojovic
+- Omar Al-Dulaimi
+- Sarujan Mathyruban
 
 ## 🚀 Features
 - **Note Management**
