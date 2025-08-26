@@ -16,6 +16,9 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
   - Categorize notes into subjects or custom categories.
   - Rich text editing (bold, italic, highlight).
   - **Font customization** – switch between 4 available fonts.
+ 
+##  Target audience and vision
+- The target audience for this system is students who want an easy way to organize their daily schedules and reflect on what they’ve learned. The application allows students to add notes about their day, with a focus on writing them after the class session rather than during it. Research and practice show that reviewing and writing notes after a lesson strengthens memory, encourages active recall, and helps students think critically about what they have been taught.
 
 - **Annotations**
   - Highlight important text or concepts.
@@ -112,13 +115,6 @@ SEP01_Group6/
 3. Make your changes
 4. Submit a pull request
 
----
 
-## 📄 License
-This project is licensed under the MIT License.
 
----
 
-## 📧 Contact
-**Group 6 - Software Engineering Project 1**  
-- Repository: [SEP01_Group6](https://github.com/Entorkrasniqi/SEP01_Group6)
