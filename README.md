@@ -49,7 +49,8 @@ We chose Java because it is the main language we are studying right now, which h
 ---
 
 ## 📸 UI Preview
-*(Add screenshots of your JavaFX interface here once built!)*
+<img width="927" height="655" alt="Screenshot 2025-08-26 at 16 18 36" src="https://github.com/user-attachments/assets/daed67fa-0e09-41de-bb9a-a6c3ae5229cf" />
+
 
 ---
 
