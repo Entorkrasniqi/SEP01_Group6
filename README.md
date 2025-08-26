@@ -1,4 +1,4 @@
-# 📝 Digital Note-taking and Annotation Tool
+# 📝 Digital Note-taking.
 
 A **JavaFX desktop application** that enables students to take lecture notes, organize them by categories, and annotate with images, diagrams, and highlights.  
 The system uses **MariaDB** for persistent storage of notes and categories, ensuring data is secure and easily retrievable.
@@ -13,13 +13,12 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
   - **Font customization** – switch between 4 available fonts.
 
 - **Annotations**
-  - Attach images, diagrams, and screenshots to notes.
   - Highlight important text or concepts.
-  - Inline annotation support.
+  
 
 - **Search & Filter**
   - Search notes by **keywords**.
-  - Filter notes by category, topic, or creation date.
+  - Filter notes by category and topic
 
 - **Productivity Tools**
   - ⏱ **Time Clock** – track how long you've been writing or set a countdown timer for focused writing sessions.
@@ -48,7 +47,7 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 ### `annotations`
 | annotation_id | note_id | type   | data                         |
 |---------------|---------|--------|------------------------------|
-| 1             | 1       | image  | /images/diagram1.png         |
+| 1             | 1       |        |
 | 2             | 1       | text   | Highlighted: "Big-O notation"|
 
 ---
