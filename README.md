@@ -129,15 +129,14 @@ SEP01_Group6/
 ---
 
 ##   Database tables
-notes (
-  note_id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  title VARCHAR(100),
-  content TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-);
+| Column      | Type      | Description                     |
+| ----------- | --------- | ------------------------------- |
+| id          | INT (PK)  | Unique identifier for each note |
+| title       | VARCHAR   | Short title of the note         |
+| content     | TEXT      | Main body of the note           |
+| created\_at | TIMESTAMP | When the note was created       |
+| updated\_at | TIMESTAMP | When the note was last updated  |
+
 
 ##  Contributing
 1. Fork the repository
