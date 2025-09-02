@@ -1,4 +1,4 @@
-# 📝 Digital Note-taking.
+#  Digital Note-taking.
 
 A **JavaFX desktop application** that enables students to take lecture notes, organize them by categories, and highlights.  
 The system uses **MariaDB** for persistent storage of notes and categories, ensuring data is secure and easily retrievable.
@@ -10,7 +10,7 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 - Omar Al-Dulaimi
 - Sarujan Mathyruban
 
-## 🚀 Features
+##  Features
 - **Note Management**
   - Add, edit, and delete notes.
   - Categorize notes into subjects or custom categories.
@@ -42,7 +42,7 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 
 ---
 
-## 🛠 Technologies
+##  Technologies
 - **Frontend:** JavaFX  
 - **Backend:** Java (JDBC)  
 - **Database:** MariaDB  
@@ -56,13 +56,13 @@ We chose Java because it is the main language we are studying right now, which h
 
 ---
 
-## 📸 UI Preview
+##  UI Preview
 <img width="927" height="655" alt="Screenshot 2025-08-26 at 16 18 36" src="https://github.com/user-attachments/assets/daed67fa-0e09-41de-bb9a-a6c3ae5229cf" />
 
 
 ---
 
-## ⚡ Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
 ```bash
@@ -100,7 +100,7 @@ SEP01_Group6/
 
 ---
 
-## 🎯 Usage
+##  Usage
 1. **Create Categories**: Organize your notes by subject or topic
 2. **Add Notes**: Write and format your lecture notes
 3. **Annotate**: Add images, highlights, and inline comments
@@ -109,7 +109,10 @@ SEP01_Group6/
 
 ---
 
-## 👨‍💻 Contributing
+##   Database tables
+1. **Notes**: creating notes
+
+##  Contributing
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
