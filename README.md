@@ -57,7 +57,7 @@ We chose Java because it is the main language we are studying right now, which h
 ---
 
 ##  UI Preview
-<img width="927" height="655" alt="Screenshot 2025-08-26 at 16 18 36" src="https://github.com/user-attachments/assets/daed67fa-0e09-41de-bb9a-a6c3ae5229cf" />
+<img width="969" height="674" alt="Screenshot 2025-09-02 at 13 54 40" src="https://github.com/user-attachments/assets/ead1ce5f-238c-4a6f-90e2-628a2f21a045" />
 
 
 ---
