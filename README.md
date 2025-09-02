@@ -129,14 +129,7 @@ SEP01_Group6/
 
 ---
 
-##   Database Tables
-| Column      | Type      | Description                     |
-| ----------- | --------- | ------------------------------- |
-| id          | INT (PK)  | Unique identifier for each note |
-| title       | VARCHAR   | Short title of the note         |
-| content     | TEXT      | Main body of the note           |
-| created\_at | TIMESTAMP | When the note was created       |
-| updated\_at | TIMESTAMP | When the note was last updated  |
+
 
 
 ##  Contributing
