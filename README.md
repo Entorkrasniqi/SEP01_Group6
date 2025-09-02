@@ -62,6 +62,25 @@ We chose Java because it is the main language we are studying right now, which h
 
 ---
 
+Database Structure
+
+The project uses a simple database with a single table, notes, since there is no user authentication. The table is designed to store notes along with their category and status.
+
+Table: notes
+
+Column       Type          Description
+id           INT           Primary key, auto-incremented note ID
+title        VARCHAR(255)  The title of the note
+content      TEXT          The main content of the note
+category     VARCHAR(100)  Category of the note (e.g., Work, Personal)
+status       VARCHAR(50)   Status of the note (default: 'Todo', e.g., 'In Progress', 'Done')
+created_at   TIMESTAMP     Timestamp when the note was created
+updated_at   TIMESTAMP     Timestamp of the last update (auto-updates on edit)
+
+This structure allows the application to store and manage notes efficiently, including categorization and tracking of their status.
+
+---
+
 ##  Getting Started
 
 ### 1. Clone the Repository
