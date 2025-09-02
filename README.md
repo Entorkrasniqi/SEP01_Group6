@@ -128,7 +128,7 @@ SEP01_Group6/
 
 ---
 
-##   Database tables
+##   Database Tables
 | Column      | Type      | Description                     |
 | ----------- | --------- | ------------------------------- |
 | id          | INT (PK)  | Unique identifier for each note |
