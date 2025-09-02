@@ -110,7 +110,15 @@ SEP01_Group6/
 ---
 
 ##   Database tables
-1. **Notes**: creating notes
+notes (
+  note_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  title VARCHAR(100),
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
 
 ##  Contributing
 1. Fork the repository
