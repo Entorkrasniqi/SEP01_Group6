@@ -11,6 +11,7 @@ public class Note {
     private String content;
     // When note was created
     private Timestamp createdAt;
+    private Timestamp updatedAt;
 }
 
 // Default constructor
