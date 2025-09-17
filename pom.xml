@@ -19,12 +19,15 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.8</version>
+            <classifier>win</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.8</version>
+            <classifier>win</classifier>
         </dependency>
+
         <!-- MariaDB JDBC driver -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
