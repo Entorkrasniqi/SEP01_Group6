@@ -1,3 +1,4 @@
-com/group6/digitalnotes/view/View.class
-com/group6/digitalnotes/model/Note.class
-com/group6/digitalnotes/view/Main.class
+com\group6\digitalnotes\view\Main.class
+com\group6\digitalnotes\controller\Cal.class
+com\group6\digitalnotes\model\Note.class
+com\group6\digitalnotes\view\Note.class
