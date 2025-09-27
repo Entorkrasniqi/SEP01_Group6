@@ -18,5 +18,44 @@ public class MainViewController implements Initializable {
     @FXML private Button newNoteBtn;
     @FXML private Button allNotesBtn;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setupEventHandlers();
+        loadNotesList();
+    }
 
+    private void setupEventHandlers() {
+        newNoteBtn.setOnAction(event -> createNewNote());
+        allNotesBtn.setOnAction(event -> showAllNotes());
+    }
+
+    @FXML
+    private void createNewNote() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NoteEditor.fxml"));
+            VBox noteEditor = loader.load();
+            NoteEditorController controller = loader.getController();
+            controller.setNewNoteMode(true);
+            mainLayout.setCenter(noteEditor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void showAllNotes() {
+        loadNotesList();
+    }
+
+    private void loadNotesList() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NoteList.fxml"));
+            VBox noteList = loader.load();
+            NoteListController controller = loader.getController();
+            controller.refreshNotes();
+            mainLayout.setCenter(noteList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
