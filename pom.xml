@@ -2,9 +2,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.group6</groupId>
     <artifactId>digitalnotes</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -13,19 +15,18 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
+
     <dependencies>
-        <!-- JavaFX dependencies (no OS-specific classifiers) -->
+        <!-- JavaFX dependencies (cross-platform) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.8</version>
-            <classifier>win</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.8</version>
-            <classifier>win</classifier>
         </dependency>
 
         <!-- MariaDB JDBC driver -->
@@ -34,6 +35,7 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.3.3</version>
         </dependency>
+
         <!-- JUnit for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -41,6 +43,7 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
+
         <!-- Mockito for mocking in tests -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -48,6 +51,7 @@
             <version>5.7.0</version>
             <scope>test</scope>
         </dependency>
+
         <!-- AssertJ for fluent assertions -->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -55,6 +59,7 @@
             <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
+
         <!-- HikariCP for connection pooling -->
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -62,9 +67,11 @@
             <version>5.0.1</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>notesApp</finalName>
         <plugins>
+            <!-- Compiler plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -74,11 +81,14 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+
+            <!-- Surefire plugin for tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
+
             <!-- JaCoCo plugin for code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -103,7 +113,8 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- JavaFX Maven Plugin -->
+
+            <!-- Jar plugin to set main class -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -116,6 +127,32 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <!-- Exec plugin to run JavaFX app -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>com.group6.digitalnotes.view.Main</mainClass>
+                    <arguments>
+                        <argument>--module-path</argument>
+                        <argument>C:\javafx-sdk-21.0.8\lib</argument>
+                        <argument>--add-modules</argument>
+                        <argument>javafx.controls,javafx.fxml</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>javafx</id>
+            <properties>
+                <!-- Update this path to your local JavaFX SDK lib directory -->
+                <javafx.module.path>C:\javafx-sdk-21.0.8\lib</javafx.module.path>
+            </properties>
+        </profile>
+    </profiles>
 </project>
