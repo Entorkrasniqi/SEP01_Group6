@@ -11,12 +11,6 @@ pipeline {
             }
         }
 
-        stage('📁 Verify Test Files') {
-            steps {
-                bat 'dir /s src\\test\\java\\com\\group6\\digitalnotes\\view'
-            }
-        }
-
         stage('🔧 Build Project') {
             steps {
                 bat 'mvn clean install'
@@ -27,14 +21,7 @@ pipeline {
             steps {
                 bat 'mvn test'
                 bat 'dir /s target\\surefire-reports'
-                junit '**/target/surefire-reports/*.xml'
-            }
-        }
-
-        stage('🧼 Clean Coverage Artifacts') {
-            steps {
-                bat 'del /Q target\\jacoco.exec'
-                bat 'rmdir /S /Q target\\jacoco-report'
+                junit '**/target/surefire-reports/TEST-*.xml'
             }
         }
 
