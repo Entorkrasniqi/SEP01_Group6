@@ -1,5 +1,4 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-digitalnotes,com.group6.digitalnotes.controller,Cal,7,0,0,0,2,0,2,0,2,0
 digitalnotes,com.group6.digitalnotes.model,Note,3,0,0,0,1,0,1,0,1,0
-digitalnotes,com.group6.digitalnotes.view,Note,39,0,0,0,11,0,6,0,6,0
+digitalnotes,com.group6.digitalnotes.view,Note,6,33,0,0,2,9,2,4,2,4
 digitalnotes,com.group6.digitalnotes.view,Main,289,0,6,0,58,0,13,0,10,0
