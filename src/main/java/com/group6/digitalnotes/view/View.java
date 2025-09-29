@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
@@ -20,12 +21,11 @@ public class View extends Application {
     private int timeRemaining = 15 * 60; // 15 minutes in seconds
     private boolean isTimerRunning = false;
     private Label timerLabel;
-    private Button timerBtn;
     private TextArea contentArea;
     private TextField titleField;
 
     private Stage primaryStage;
-    private boolean isHidden = false;
+    private boolean isHidden = true; // Changed to true so sidebar starts hidden
     private VBox sidebar; // Add this field to store sidebar reference
     private Button openBtn; // Add open button field
     private VBox openButtonContainer; // Add this field
@@ -69,34 +69,27 @@ public class View extends Application {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-border-width: 0; -fx-background-color: white;");
 
-        // Create sidebar with buttons (remove hide button from here)
+        // Convert sidebar to note history/list view instead
         sidebar = new VBox(5);
-        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 120px; -fx-border-width: 0;");
+        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px; -fx-border-width: 0;");
 
-        Button newNoteBtn = new Button("New");
-        newNoteBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 40px; -fx-pref-height: 20px; -fx-font-size: 9px;");
-        Button allNotesBtn = new Button("Notes");
-        allNotesBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 40px; -fx-pref-height: 20px; -fx-font-size: 9px;");
+        // Add search field to sidebar
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search notes...");
+        searchField.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 20px; -fx-font-size: 10px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555;");
 
-        // Add timer components
-        timerLabel = new Label("15:00");
-        timerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-border-width: 0;");
+        // Add note list to sidebar
+        ListView<String> listView = new ListView<>();
+        listView.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 11px;");
+        listView.getItems().addAll("Sample Note 1", "Sample Note 2", "Sample Note 3");
 
-        timerBtn = new Button("Start");
-        timerBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
+        // Make the listView fill the available vertical space
+        VBox.setVgrow(listView, Priority.ALWAYS);
 
-        Button resetTimerBtn = new Button("Reset");
-        resetTimerBtn.setStyle("-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
-
-        HBox timerControls = new HBox(3);
-        timerControls.setStyle("-fx-border-width: 0;");
-        timerControls.getChildren().addAll(timerBtn, resetTimerBtn);
-
+        // Add components to sidebar
         sidebar.getChildren().addAll(
-            new VBox(3, newNoteBtn, allNotesBtn),
-            new Separator(),
-            timerLabel,
-            timerControls
+            searchField,
+            listView
         );
 
         // Create main content area with note editor
@@ -105,54 +98,55 @@ public class View extends Application {
 
         titleField = new TextField();
         titleField.setPromptText("Title...");
-        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px;");
+        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
+        titleField.setEditable(false); // Initially disable title editing
 
         contentArea = new TextArea();
-        contentArea.setPromptText("Start writing...");
+        contentArea.setPromptText("Start writing notes...");
         contentArea.setWrapText(true);
-        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px;");
+        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
+        contentArea.setEditable(false); // Initially disable content editing
 
-        // Create button bar with hide/open functionality
-        HBox buttonBar = new HBox(5);
-        buttonBar.setStyle("-fx-border-width: 0; -fx-alignment: bottom-right;");
+        // Make the content area expand to fill available space
+        VBox.setVgrow(contentArea, Priority.ALWAYS);
 
+        // Create button bar with all buttons
+        HBox buttonBar = new HBox(10);
+        buttonBar.setStyle("-fx-border-width: 0; -fx-alignment: bottom-right; -fx-padding: 5px;");
+
+        // Create new button and add to button bar
+        Button newNoteBtn = new Button("New");
+        newNoteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
+
+        // Create save and delete buttons
         Button saveBtn = new Button("Save");
-        saveBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
+        saveBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
 
         Button deleteBtn = new Button("Del");
-        deleteBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 30px; -fx-pref-height: 18px; -fx-font-size: 8px;");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
 
-        // Create hide button for button bar
+        // Create hide/open buttons
         Button hideBtn = new Button("Hide");
-        hideBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
+        hideBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
         hideBtn.setOnAction(e -> toggleSidebarVisibility());
 
-        // Create open button for button bar
         openBtn = new Button("Open");
-        openBtn.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 40px; -fx-pref-height: 18px; -fx-font-size: 8px; -fx-background-color: #3498db; -fx-text-fill: white;");
+        openBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
         openBtn.setOnAction(e -> toggleSidebarVisibility());
-        openBtn.setVisible(false); // Initially hidden
+        openBtn.setVisible(true); // Changed to true since sidebar starts hidden
 
-        buttonBar.getChildren().addAll(saveBtn, deleteBtn, hideBtn, openBtn);
+        // Create timer label for button bar
+        timerLabel = new Label("15:00");
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-border-width: 0; -fx-cursor: hand; -fx-font-family: 'System';");
+
+        // Add all buttons to button bar
+        buttonBar.getChildren().addAll(newNoteBtn, saveBtn, deleteBtn, hideBtn, openBtn, timerLabel);
 
         mainContent.getChildren().addAll(
             titleField,
             contentArea,
             buttonBar
         );
-
-        // Create note list (initially hidden)
-        VBox noteList = new VBox(5);
-        noteList.setStyle("-fx-padding: 5px; -fx-border-width: 0;");
-        ListView<String> listView = new ListView<>();
-        listView.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 11px;");
-        listView.getItems().addAll("Sample Note 1", "Sample Note 2", "Sample Note 3");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search...");
-        searchField.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 20px; -fx-font-size: 10px;");
-
-        noteList.getChildren().addAll(searchField, listView);
 
         // Set up timer functionality
         setupTimer();
@@ -162,13 +156,11 @@ public class View extends Application {
             titleField.clear();
             contentArea.clear();
             contentArea.setPromptText("Start writing...");
-            root.setCenter(mainContent);
+            // Keep the main content view as is
         });
 
-        allNotesBtn.setOnAction(e -> root.setCenter(noteList));
-
-        timerBtn.setOnAction(e -> toggleTimer());
-        resetTimerBtn.setOnAction(e -> resetTimer());
+        // Move click handler from timerBtn to timerLabel
+        timerLabel.setOnMouseClicked(e -> startTimerOnce());
 
         saveBtn.setOnAction(e -> {
             String title = titleField.getText().trim();
@@ -192,14 +184,12 @@ public class View extends Application {
             if (selected != null) {
                 titleField.setText(selected);
                 contentArea.setText("Content for: " + selected);
-                root.setCenter(mainContent);
             }
         });
 
-        // Set initial layout
-        root.setRight(sidebar);
+        // Set initial layout - don't add sidebar since it should start hidden
+        // root.setRight(sidebar); // Removed this line
         root.setCenter(mainContent);
-        // Remove the left container line and don't set anything to left
 
         // Create scene
         Scene scene = new Scene(root, 800, 600);
@@ -209,7 +199,7 @@ public class View extends Application {
             }
         });
 
-        primaryStage.setOnCloseRequest(e -> Platform.exit()); // Normal close behavior
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
 
         primaryStage.setTitle("Digital Notes");
         primaryStage.setScene(scene);
@@ -224,38 +214,32 @@ public class View extends Application {
         updateTimerDisplay();
     }
 
-    private void toggleTimer() {
+    // Update startTimerOnce to work with timerLabel
+    private void startTimerOnce() {
         if (!isTimerRunning) {
-            startTimer();
-        } else {
-            pauseTimer();
+            isTimerRunning = true;
+            timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333; -fx-cursor: default; -fx-font-family: 'System';"); // Darker gray, removed bold
+            timer.play();
+
+            // Enable writing for both title and content
+            titleField.setEditable(true);
+            titleField.setPromptText("Title...");
+            titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
+
+            contentArea.setEditable(true);
+            contentArea.setPromptText("Start writing...");
+            contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
+
+            // Focus on the text area for writing
+            contentArea.requestFocus();
         }
-    }
-
-    private void startTimer() {
-        isTimerRunning = true;
-        timerBtn.setText("Pause");
-        timerBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
-        timer.play();
-
-        // Focus on the text area for writing
-        contentArea.requestFocus();
-        showNotification("Timer started!");
-    }
-
-    private void pauseTimer() {
-        isTimerRunning = false;
-        timerBtn.setText("Resume");
-        timerBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
-        timer.pause();
     }
 
     private void resetTimer() {
         timer.stop();
         isTimerRunning = false;
         timeRemaining = 15 * 60;
-        timerBtn.setText("Start");
-        timerBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';"); // Removed bold
         updateTimerDisplay();
     }
 
@@ -266,8 +250,8 @@ public class View extends Application {
         if (timeRemaining <= 0) {
             timerFinished();
         } else if (timeRemaining <= 60) {
-            // Change color to red when less than 1 minute
-            timerLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
+            // Change color to dark red when less than 1 minute
+            timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #8B0000; -fx-font-family: 'System';"); // Removed bold
         }
     }
 
@@ -280,9 +264,14 @@ public class View extends Application {
     private void timerFinished() {
         timer.stop();
         isTimerRunning = false;
-        timerBtn.setText("Start");
-        timerBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-pref-width: 35px; -fx-pref-height: 18px; -fx-font-size: 8px;");
-        timerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #27ae60; -fx-border-width: 0;");
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';"); // Removed bold
+
+        // Disable writing for both title and content when timer finishes
+        titleField.setEditable(false);
+        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
+
+        contentArea.setEditable(false);
+        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
 
         showNotification("Time's up!");
 
