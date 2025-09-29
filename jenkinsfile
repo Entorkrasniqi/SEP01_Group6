@@ -5,35 +5,19 @@ pipeline {
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage('checking') {
             steps {
-                deleteDir()
+                git branch: 'maven_test', url: 'https://github.com/Entorkrasniqi/SEP01_Group6.git', changelog: false, poll: false
             }
         }
-        stage('Checkout') {
-            steps {
-                git branch: 'maven_test', url: 'https://github.com/Entorkrasniqi/SEP01_Group6.git'
-            }
-        }
-        stage('Verify Source Files') {
-            steps {
-                bat 'dir src\\test\\java\\com\\group6\\digitalnotes\\view'
-            }
-        }
-        stage('Build') {
+        stage ('build') {
             steps {
                 bat 'mvn clean install'
             }
         }
         stage('Test') {
             steps {
-                bat 'mvn test'
-            }
-        }
-        stage('Clean Coverage Artifacts') {
-            steps {
-                bat 'del /Q target\\jacoco.exec'
-                bat 'rmdir /S /Q target\\jacoco-report'
+                 bat 'mvn test'
             }
         }
         stage('Code Coverage') {
@@ -41,6 +25,7 @@ pipeline {
                 bat 'mvn jacoco:report'
             }
         }
+
         stage('Publish Test Results') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
