@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class View extends Application {
 
@@ -23,11 +25,15 @@ public class View extends Application {
     private Label timerLabel;
     private TextArea contentArea;
     private TextField titleField;
+    private ListView<String> listView;
+
+    // Add a map to store note contents
+    private Map<String, String> noteContents = new HashMap<>();
 
     private Stage primaryStage;
     private boolean isHidden = true; // Changed to true so sidebar starts hidden
     private VBox sidebar; // Add this field to store sidebar reference
-    private Button openBtn; // Add open button field
+    private Button notesBtn; // Replace openBtn with notesBtn
     private VBox openButtonContainer; // Add this field
 
     @Override
@@ -67,34 +73,32 @@ public class View extends Application {
 
     private void createFallbackView(Stage primaryStage) {
         BorderPane root = new BorderPane();
-        root.setStyle("-fx-border-width: 0; -fx-background-color: white;");
+        root.setStyle("-fx-border-width: 0; -fx-background-color: white;"); // Changed back to white
 
         // Convert sidebar to note history/list view instead
         sidebar = new VBox(5);
-        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px; -fx-border-width: 0;");
-
-        // Add search field to sidebar
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search notes...");
-        searchField.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 20px; -fx-font-size: 10px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555;");
+        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px; -fx-border-width: 0;"); // Changed back to light gray
 
         // Add note list to sidebar
-        ListView<String> listView = new ListView<>();
-        listView.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 11px;");
-        listView.getItems().addAll("Sample Note 1", "Sample Note 2", "Sample Note 3");
+        listView = new ListView<>();
+        listView.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 11px; -fx-background-color: #f8f8f8;"); // Match sidebar
+
+        // Add sample content for sample notes
+        noteContents.put("Sample Note 1", "This is the content of sample note 1.");
+        noteContents.put("Sample Note 2", "This is the content of sample note 2.");
+        noteContents.put("Sample Note 3", "This is the content of sample note 3.");
 
         // Make the listView fill the available vertical space
         VBox.setVgrow(listView, Priority.ALWAYS);
 
         // Add components to sidebar
         sidebar.getChildren().addAll(
-            searchField,
             listView
         );
 
         // Create main content area with note editor
         VBox mainContent = new VBox(5);
-        mainContent.setStyle("-fx-padding: 5px; -fx-border-width: 0;");
+        mainContent.setStyle("-fx-padding: 15px; -fx-border-width: 0; -fx-background-color: white;"); // Changed back to white
 
         titleField = new TextField();
         titleField.setPromptText("Title...");
@@ -110,7 +114,7 @@ public class View extends Application {
         // Make the content area expand to fill available space
         VBox.setVgrow(contentArea, Priority.ALWAYS);
 
-        // Create button bar with all buttons
+        // Create button bar with all buttons (except save which is now handled by timer)
         HBox buttonBar = new HBox(10);
         buttonBar.setStyle("-fx-border-width: 0; -fx-alignment: bottom-right; -fx-padding: 5px;");
 
@@ -118,29 +122,21 @@ public class View extends Application {
         Button newNoteBtn = new Button("New");
         newNoteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
 
-        // Create save and delete buttons
-        Button saveBtn = new Button("Save");
-        saveBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
-
+        // Remove save button and keep delete button
         Button deleteBtn = new Button("Del");
         deleteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
 
-        // Create hide/open buttons
-        Button hideBtn = new Button("Hide");
-        hideBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
-        hideBtn.setOnAction(e -> toggleSidebarVisibility());
-
-        openBtn = new Button("Open");
-        openBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
-        openBtn.setOnAction(e -> toggleSidebarVisibility());
-        openBtn.setVisible(true); // Changed to true since sidebar starts hidden
+        // Replace hide/open buttons with a single "Notes" button
+        notesBtn = new Button("Notes");
+        notesBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
+        notesBtn.setOnAction(e -> toggleSidebarVisibility());
 
         // Create timer label for button bar
         timerLabel = new Label("15:00");
         timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-border-width: 0; -fx-cursor: hand; -fx-font-family: 'System';");
 
-        // Add all buttons to button bar
-        buttonBar.getChildren().addAll(newNoteBtn, saveBtn, deleteBtn, hideBtn, openBtn, timerLabel);
+        // Add all buttons to button bar (without separate hide/open buttons)
+        buttonBar.getChildren().addAll(newNoteBtn, deleteBtn, notesBtn, timerLabel);
 
         mainContent.getChildren().addAll(
             titleField,
@@ -159,31 +155,35 @@ public class View extends Application {
             // Keep the main content view as is
         });
 
-        // Move click handler from timerBtn to timerLabel
-        timerLabel.setOnMouseClicked(e -> startTimerOnce());
-
-        saveBtn.setOnAction(e -> {
-            String title = titleField.getText().trim();
-            String content = contentArea.getText().trim();
-            if (!title.isEmpty()) {
-                System.out.println("Saving note: " + title);
-                if (!listView.getItems().contains(title)) {
-                    listView.getItems().add(title);
-                }
-                showNotification("Saved!");
-            }
-        });
+        // Update the timer click handler to handle both start and save functionality
+        timerLabel.setOnMouseClicked(e -> toggleTimer());
 
         deleteBtn.setOnAction(e -> {
-            titleField.clear();
-            contentArea.clear();
+            String selectedNote = listView.getSelectionModel().getSelectedItem();
+            if (selectedNote != null) {
+                // Remove the selected note from the list and the content map
+                listView.getItems().remove(selectedNote);
+                noteContents.remove(selectedNote);
+
+                // If the current note being displayed is the one we're deleting, clear the fields
+                if (titleField.getText().equals(selectedNote)) {
+                    titleField.clear();
+                    contentArea.clear();
+                }
+
+                showNotification("Note deleted!");
+            } else {
+                showNotification("Please select a note to delete!");
+            }
         });
 
         listView.setOnMouseClicked(e -> {
             String selected = listView.getSelectionModel().getSelectedItem();
             if (selected != null) {
                 titleField.setText(selected);
-                contentArea.setText("Content for: " + selected);
+                // Retrieve the actual content for the selected note
+                String content = noteContents.get(selected);
+                contentArea.setText(content != null ? content : "");
             }
         });
 
@@ -191,13 +191,14 @@ public class View extends Application {
         // root.setRight(sidebar); // Removed this line
         root.setCenter(mainContent);
 
-        // Create scene
+        // Create scene with white background color
         Scene scene = new Scene(root, 800, 600);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.H && e.isControlDown()) {
                 toggleSidebarVisibility();
             }
         });
+        scene.getRoot().setStyle("-fx-background-color: white;"); // Set background for entire scene back to white
 
         primaryStage.setOnCloseRequest(e -> Platform.exit());
 
@@ -214,33 +215,80 @@ public class View extends Application {
         updateTimerDisplay();
     }
 
-    // Update startTimerOnce to work with timerLabel
-    private void startTimerOnce() {
+    // Replace startTimerOnce with toggleTimer to handle both starting and saving
+    private void toggleTimer() {
         if (!isTimerRunning) {
-            isTimerRunning = true;
-            timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333; -fx-cursor: default; -fx-font-family: 'System';"); // Darker gray, removed bold
-            timer.play();
-
-            // Enable writing for both title and content
-            titleField.setEditable(true);
-            titleField.setPromptText("Title...");
-            titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
-
-            contentArea.setEditable(true);
-            contentArea.setPromptText("Start writing...");
-            contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
-
-            // Focus on the text area for writing
-            contentArea.requestFocus();
+            startTimer();
+        } else {
+            saveAndStopTimer();
         }
     }
 
-    private void resetTimer() {
+    private void startTimer() {
+        isTimerRunning = true;
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333; -fx-cursor: default; -fx-font-family: 'System';");
+        timer.play();
+
+        // Enable writing for both title and content (keep these as they were)
+        titleField.setEditable(true);
+        titleField.setPromptText("Title...");
+        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
+
+        contentArea.setEditable(true);
+        contentArea.setPromptText("Start writing...");
+        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: white;");
+
+        // Clear fields for new note
+        titleField.clear();
+        contentArea.clear();
+
+        // Focus on the text area for writing
+        contentArea.requestFocus();
+    }
+
+    private void saveAndStopTimer() {
+        // Save the current note
+        String title = titleField.getText().trim();
+        String content = contentArea.getText().trim();
+
+        if (title.isEmpty() && !content.isEmpty()) {
+            title = "Timed Session - " + java.time.LocalDateTime.now().format(
+                java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"));
+            titleField.setText(title);
+        }
+
+        if (!title.isEmpty() && !content.isEmpty()) {
+            System.out.println("Saving note: " + title);
+            if (!listView.getItems().contains(title)) {
+                listView.getItems().add(title);
+            }
+            // Store the content with the title
+            noteContents.put(title, content);
+            showNotification("Note saved!");
+        }
+
+        // Stop and reset timer
+        resetTimerAndFields();
+    }
+
+    private void resetTimerAndFields() {
         timer.stop();
         isTimerRunning = false;
         timeRemaining = 15 * 60;
-        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';"); // Removed bold
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';");
         updateTimerDisplay();
+
+        // Disable writing for both title and content
+        titleField.setEditable(false);
+        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
+
+        contentArea.setEditable(false);
+        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
+
+        // Clear fields for new note
+        titleField.clear();
+        contentArea.clear();
+        contentArea.setPromptText("Press the timer to start writing...");
     }
 
     private void updateTimer() {
@@ -262,27 +310,29 @@ public class View extends Application {
     }
 
     private void timerFinished() {
-        timer.stop();
-        isTimerRunning = false;
-        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';"); // Removed bold
-
-        // Disable writing for both title and content when timer finishes
-        titleField.setEditable(false);
-        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-pref-height: 25px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
-
-        contentArea.setEditable(false);
-        contentArea.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-font-family: 'System'; -fx-background-color: #f9f9f9;");
-
-        showNotification("Time's up!");
-
-        // Auto-save if there's content
+        // Save the current note automatically
+        String title = titleField.getText().trim();
         String content = contentArea.getText().trim();
-        if (!content.isEmpty() && titleField.getText().trim().isEmpty()) {
-            titleField.setText("Timed Session - " + java.time.LocalDateTime.now().format(
-                java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm")));
+
+        if (title.isEmpty() && !content.isEmpty()) {
+            title = "Timed Session - " + java.time.LocalDateTime.now().format(
+                java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"));
+            titleField.setText(title);
         }
 
-        resetTimer();
+        if (!title.isEmpty() && !content.isEmpty()) {
+            if (!listView.getItems().contains(title)) {
+                listView.getItems().add(title);
+            }
+            // Store the content with the title
+            noteContents.put(title, content);
+            showNotification("Time's up! Note saved automatically.");
+        } else {
+            showNotification("Time's up!");
+        }
+
+        // Reset timer and prepare for new note
+        resetTimerAndFields();
     }
 
     private void showNotification(String message) {
@@ -300,11 +350,9 @@ public class View extends Application {
 
         if (isHidden) {
             root.setRight(sidebar);
-            openBtn.setVisible(false);
             isHidden = false;
         } else {
             root.setRight(null);
-            openBtn.setVisible(true);
             isHidden = true;
         }
     }

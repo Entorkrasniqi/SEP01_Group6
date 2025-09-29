@@ -21,3 +21,4 @@ public class Note {
 // Full constructor
 
 // Getters and setters
+
