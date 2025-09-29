@@ -11,6 +11,12 @@ pipeline {
             }
         }
 
+        stage('🧾 Show Jenkinsfile') {
+            steps {
+                bat 'type Jenkinsfile'
+            }
+        }
+
         stage('🔧 Build Project') {
             steps {
                 bat 'mvn clean install'
@@ -21,6 +27,7 @@ pipeline {
             steps {
                 bat 'mvn test'
                 bat 'dir /s target\\surefire-reports'
+                echo '📦 Archiving test results now...'
                 junit '**/target/surefire-reports/TEST-*.xml'
             }
         }
