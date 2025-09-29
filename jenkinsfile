@@ -5,37 +5,54 @@ pipeline {
     }
 
     stages {
-        stage('checking') {
+        stage('📥 Checkout Code') {
             steps {
                 git branch: 'maven_test', url: 'https://github.com/Entorkrasniqi/SEP01_Group6.git', changelog: false, poll: false
             }
         }
-        stage ('build') {
+
+        stage('📁 Verify Test Files') {
+            steps {
+                bat 'dir /s src\\test\\java\\com\\group6\\digitalnotes\\view'
+            }
+        }
+
+        stage('🔧 Build Project') {
             steps {
                 bat 'mvn clean install'
             }
         }
-        stage('Test') {
+
+        stage('🧪 Run Tests & Archive Results') {
             steps {
                 bat 'mvn test'
                 bat 'dir /s target\\surefire-reports'
                 junit '**/target/surefire-reports/*.xml'
             }
         }
-        stage('Code Coverage') {
+
+        stage('🧼 Clean Coverage Artifacts') {
+            steps {
+                bat 'del /Q target\\jacoco.exec'
+                bat 'rmdir /S /Q target\\jacoco-report'
+            }
+        }
+
+        stage('📊 Generate Coverage Report') {
             steps {
                 bat 'mvn jacoco:report'
             }
         }
 
-        /* stage('Publish Test Results') {
-            steps {
-                junit '**//* target/surefire-reports *//*.xml'
-            }
-        } */
-        stage('Publish Coverage Report') {
+        stage('📈 Publish Coverage Report') {
             steps {
                 jacoco()
+            }
+        }
+
+        stage('📁 Archive Test Files (Debug)') {
+            steps {
+                archiveArtifacts artifacts: 'target/surefire-reports/*.xml', fingerprint: true
             }
         }
     }
