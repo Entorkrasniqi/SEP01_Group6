@@ -30,6 +30,6 @@ public class ViewTest {
             }
         });
 
-        latch.await(); // Wait until test finishes
+        latch.await();
     }
 }
