@@ -1,56 +1,120 @@
 package com.group6.digitalnotes.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NoteListController implements Initializable {
+/**
+ * Controller for the note list sidebar.
+ * Manages displaying, selecting, and deleting notes.
+ */
+public class NoteListController {
 
-    @FXML private ListView<String> noteListView;
-    @FXML private TextField searchField;
+    @FXML private ListView<String> listView;
+    @FXML private VBox sidebarView;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setupSearchField();
-        loadNotesFromBackend();
+    private NoteEditorController editorController;
+    private Map<String, String> noteContents = new HashMap<>();
+    private ObservableList<String> notesList = FXCollections.observableArrayList();
+
+    /**
+     * Constructor that takes the editor controller for coordination
+     */
+    public NoteListController(NoteEditorController editorController) {
+        this.editorController = editorController;
+
+        // Set up callback for saving notes
+        editorController.setOnSaveCallback(this::saveNote);
+
+        // Add sample notes
+        addSampleNotes();
     }
 
-    private void setupSearchField() {
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterNotes(newValue);
-        });
-    }
+    /**
+     * Initializes the view and event handlers
+     */
+    @FXML
+    private void initialize() {
+        listView.setItems(notesList);
 
-    public void refreshNotes() {
-        loadNotesFromBackend();
-    }
-
-    private void loadNotesFromBackend() {
-        // TODO: Connect to backend service
-        // For now, add sample data
-        noteListView.getItems().clear();
-        noteListView.getItems().addAll(
-            "Sample Note 1",
-            "Sample Note 2",
-            "Sample Note 3"
+        // Handle note selection
+        listView.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    String content = noteContents.get(newValue);
+                    if (content != null) {
+                        editorController.loadNote(newValue, content);
+                    }
+                }
+            }
         );
     }
 
-    private void filterNotes(String searchText) {
-        // TODO: Implement search filtering with backend
-        System.out.println("Searching for: " + searchText);
+    /**
+     * Returns the sidebar view component
+     */
+    public VBox getView() {
+        return sidebarView;
     }
 
-    @FXML
-    private void onNoteSelected() {
-        String selectedNote = noteListView.getSelectionModel().getSelectedItem();
-        if (selectedNote != null) {
-            // TODO: Open note in editor
-            System.out.println("Selected note: " + selectedNote);
+    /**
+     * Adds sample notes for initial display
+     */
+    private void addSampleNotes() {
+        saveNote(new String[]{"Sample Note 1", "This is the content of sample note 1."});
+        saveNote(new String[]{"Sample Note 2", "This is the content of sample note 2."});
+        saveNote(new String[]{"Sample Note 3", "This is the content of sample note 3."});
+    }
+
+    /**
+     * Saves a note to the list
+     */
+    public void saveNote(String[] noteData) {
+        String title = noteData[0];
+        String content = noteData[1];
+
+        // Add to the list if it doesn't exist
+        if (!notesList.contains(title)) {
+            notesList.add(title);
         }
+
+        // Store the content
+        noteContents.put(title, content);
+    }
+
+    /**
+     * Deletes the selected note
+     */
+    @FXML
+    public void deleteSelectedNote() {
+        String selectedNote = listView.getSelectionModel().getSelectedItem();
+        if (selectedNote != null) {
+            // Remove from list and storage
+            notesList.remove(selectedNote);
+            noteContents.remove(selectedNote);
+
+            showNotification("Note deleted!");
+        } else {
+            showNotification("Please select a note to delete!");
+        }
+    }
+
+    /**
+     * Shows a notification to the user
+     */
+    private void showNotification(String message) {
+        System.out.println("Notification: " + message);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Notes");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

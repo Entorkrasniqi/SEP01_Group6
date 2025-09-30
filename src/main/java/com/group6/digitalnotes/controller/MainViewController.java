@@ -1,61 +1,84 @@
 package com.group6.digitalnotes.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Main controller for the application window.
+ * Handles global navigation and coordinates between sub-controllers.
+ */
 public class MainViewController implements Initializable {
 
-    @FXML private BorderPane mainLayout;
-    @FXML private VBox sideBar;
-    @FXML private Button newNoteBtn;
-    @FXML private Button allNotesBtn;
+    @FXML private BorderPane rootPane;
+    @FXML private Button notesBtn;
+    @FXML private VBox sidebar;
+
+    private NoteEditorController noteEditorController;
+    private NoteListController noteListController;
+    private boolean sidebarVisible = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setupEventHandlers();
-        loadNotesList();
+        // Set up controllers
+        noteEditorController = new NoteEditorController();
+        noteListController = new NoteListController(noteEditorController);
+
+        // Initial UI setup
+        sidebarVisible = false;
+
+        // Set up event handlers
+        notesBtn.setOnAction(e -> toggleSidebar());
     }
 
-    private void setupEventHandlers() {
-        newNoteBtn.setOnAction(event -> createNewNote());
-        allNotesBtn.setOnAction(event -> showAllNotes());
-    }
-
-    @FXML
-    private void createNewNote() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NoteEditor.fxml"));
-            VBox noteEditor = loader.load();
-            NoteEditorController controller = loader.getController();
-            controller.setNewNoteMode(true);
-            mainLayout.setCenter(noteEditor);
-        } catch (IOException e) {
-            e.printStackTrace();
+    /**
+     * Handles key press events for global shortcuts
+     */
+    public void handleKeyPress(KeyEvent event) {
+        if (event.isControlDown() && event.getCode() == KeyCode.H) {
+            toggleSidebar();
         }
     }
 
+    /**
+     * Toggles the sidebar visibility
+     */
     @FXML
-    private void showAllNotes() {
-        loadNotesList();
+    public void toggleSidebar() {
+        if (sidebarVisible) {
+            rootPane.setRight(null);
+            sidebarVisible = false;
+        } else {
+            rootPane.setRight(sidebar);
+            sidebarVisible = true;
+        }
     }
 
-    private void loadNotesList() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NoteList.fxml"));
-            VBox noteList = loader.load();
-            NoteListController controller = loader.getController();
-            controller.refreshNotes();
-            mainLayout.setCenter(noteList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Switches to the note editor view
+     */
+    @FXML
+    public void showNoteEditor() {
+        rootPane.setCenter(noteEditorController.getView());
+    }
+
+    /**
+     * Exits the application
+     */
+    @FXML
+    public void exitApplication() {
+        // Save any unsaved changes
+        noteEditorController.saveCurrentNoteIfNeeded();
+
+        // Close the application
+        ((Stage) rootPane.getScene().getWindow()).close();
     }
 }
