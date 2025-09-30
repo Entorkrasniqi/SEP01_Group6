@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBConnection {
     private static final String URL = "jdbc:mariadb://localhost:3306/digitalnotes";
     private static final String USER = "root"; // Replace with your DB username
-    private static final String PASSWORD = "Amoury123"; // Replace with your DB password
+    private static final String PASSWORD = "1234"; // Replace with your DB password
 
     private static Connection connection;
 
