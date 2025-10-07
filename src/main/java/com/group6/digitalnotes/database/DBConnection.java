@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mariadb://localhost:3306/digitalnotes";
-    private static final String USER = "root"; // Replace with your DB username
-    private static final String PASSWORD = "Amoury123"; // Replace with your DB password
+
+    // Use DB_HOST from environment, fallback to localhost
+    private static final String DB_HOST = System.getenv().getOrDefault("DB_HOST", "host.docker.internal");
+    private static final String URL = "jdbc:mariadb://" + DB_HOST + ":3306/digitalnotes";
+    private static final String USER = "root"; // your DB username
+    private static final String PASSWORD = "Amoury123"; // your DB password
 
     private static Connection connection;
 
@@ -18,4 +21,3 @@ public class DBConnection {
         return connection;
     }
 }
-
