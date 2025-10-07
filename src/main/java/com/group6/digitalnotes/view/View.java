@@ -29,6 +29,7 @@ public class View extends Application {
     private boolean isHidden = true;
     private VBox sidebar;
     private Button notesBtn;
+    private HBox buttonBar; // fixed: now class-level
 
     private NoteDAO noteDAO = new NoteDAO();
 
@@ -100,7 +101,7 @@ public class View extends Application {
         VBox.setVgrow(contentArea, Priority.ALWAYS);
 
         // Buttons
-        HBox buttonBar = new HBox(10);
+        buttonBar = new HBox(10); // fixed: use class field
         buttonBar.setStyle("-fx-border-width: 0; -fx-alignment: bottom-right; -fx-padding: 5px;");
 
         Button newNoteBtn = new Button("New");
@@ -301,4 +302,15 @@ public class View extends Application {
     public static void launchApp(String[] args) {
         Application.launch(View.class, args);
     }
+
+    // ----------------------------
+    // Getters for testing
+    // ----------------------------
+    public ListView<String> getListView() { return listView; }
+    public TextField getTitleField() { return titleField; }
+    public TextArea getContentArea() { return contentArea; }
+    public Label getTimerLabel() { return timerLabel; }
+    public Button getNotesButton() { return notesBtn; }
+    public Stage getPrimaryStage() { return primaryStage; }
+    public HBox getButtonBar() { return buttonBar; }
 }
