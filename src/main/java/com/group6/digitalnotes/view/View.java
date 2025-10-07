@@ -29,9 +29,9 @@ public class View extends Application {
     private boolean isHidden = true;
     private VBox sidebar;
     private Button notesBtn;
-    private HBox buttonBar; // fixed: now class-level
+    private HBox buttonBar;
 
-    private NoteDAO noteDAO = new NoteDAO();
+    NoteDAO noteDAO = new NoteDAO(); // package-private for testing
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,93 +39,61 @@ public class View extends Application {
         createFallbackView(primaryStage);
     }
 
-    private void createFallbackView(Stage primaryStage) {
+    public void setNoteDAO(NoteDAO noteDAO) {
+        this.noteDAO = noteDAO;
+    }
+
+    void createFallbackView(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
         BorderPane root = new BorderPane();
         root.setStyle("-fx-border-width: 0; -fx-background-color: white;");
 
-        // Sidebar for notes
         sidebar = new VBox(5);
-        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px; -fx-border-width: 0;");
+        sidebar.setStyle("-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px;");
 
         listView = new ListView<>();
-        listView.setStyle(
-                "-fx-border-width: 0; " +
-                        "-fx-background-radius: 0; " +
-                        "-fx-border-radius: 0; " +
-                        "-fx-focus-color: transparent; " +
-                        "-fx-faint-focus-color: transparent; " +
-                        "-fx-font-size: 11px; " +
-                        "-fx-background-color: #f8f8f8;"
-        );
+        listView.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 11px; -fx-background-color: #f8f8f8;");
         VBox.setVgrow(listView, Priority.ALWAYS);
-
         sidebar.getChildren().addAll(listView);
 
-        // Main content area
         VBox mainContent = new VBox(5);
-        mainContent.setStyle("-fx-padding: 15px; -fx-border-width: 0; -fx-background-color: white;");
+        mainContent.setStyle("-fx-padding: 15px; -fx-background-color: white;");
 
         titleField = new TextField();
         titleField.setPromptText("Title...");
-        titleField.setStyle(
-                "-fx-font-size: 14px; " +
-                        "-fx-border-width: 0; " +
-                        "-fx-background-radius: 0; " +
-                        "-fx-border-radius: 0; " +
-                        "-fx-focus-color: transparent; " +
-                        "-fx-faint-focus-color: transparent; " +
-                        "-fx-pref-height: 25px; " +
-                        "-fx-text-fill: #000000; " +
-                        "-fx-prompt-text-fill: #555555; " +
-                        "-fx-font-family: 'System'; " +
-                        "-fx-background-color: #f9f9f9;"
-        );
         titleField.setEditable(false);
+        titleField.setStyle("-fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 0; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-background-color: #f9f9f9;");
 
         contentArea = new TextArea();
         contentArea.setPromptText("Start writing notes...");
         contentArea.setWrapText(true);
-        contentArea.setStyle(
-                "-fx-border-width: 0; " +
-                        "-fx-background-radius: 0; " +
-                        "-fx-border-radius: 0; " +
-                        "-fx-focus-color: transparent; " +
-                        "-fx-faint-focus-color: transparent; " +
-                        "-fx-font-size: 12px; " +
-                        "-fx-text-fill: #000000; " +
-                        "-fx-prompt-text-fill: #555555; " +
-                        "-fx-font-family: 'System'; " +
-                        "-fx-background-color: #f9f9f9;"
-        );
         contentArea.setEditable(false);
+        contentArea.setStyle("-fx-border-width: 0; -fx-font-size: 12px; -fx-text-fill: #000000; -fx-prompt-text-fill: #555555; -fx-background-color: #f9f9f9;");
         VBox.setVgrow(contentArea, Priority.ALWAYS);
 
-        // Buttons
-        buttonBar = new HBox(10); // fixed: use class field
+        buttonBar = new HBox(10);
         buttonBar.setStyle("-fx-border-width: 0; -fx-alignment: bottom-right; -fx-padding: 5px;");
 
         Button newNoteBtn = new Button("New");
-        newNoteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
-
+        newNoteBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 8px; -fx-text-fill: #000000; -fx-padding: 2px;");
         Button deleteBtn = new Button("Del");
-        deleteBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 8px; -fx-text-fill: #000000; -fx-padding: 2px;");
 
         notesBtn = new Button("Notes");
-        notesBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;");
+        notesBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 8px; -fx-text-fill: #000000; -fx-padding: 2px;");
         notesBtn.setOnAction(e -> toggleSidebarVisibility());
 
         timerLabel = new Label("15:00");
-        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';");
+        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand;");
 
         buttonBar.getChildren().addAll(newNoteBtn, deleteBtn, notesBtn, timerLabel);
 
         mainContent.getChildren().addAll(titleField, contentArea, buttonBar);
 
-        // Timer setup
         setupTimer();
         timerLabel.setOnMouseClicked(e -> toggleTimer());
 
-        // Button actions
         newNoteBtn.setOnAction(e -> {
             titleField.clear();
             contentArea.clear();
@@ -135,10 +103,8 @@ public class View extends Application {
         });
 
         deleteBtn.setOnAction(e -> deleteSelectedNote());
-
         listView.setOnMouseClicked(e -> loadSelectedNote());
 
-        // Load notes from database
         loadNotesFromDB();
 
         root.setCenter(mainContent);
@@ -149,8 +115,6 @@ public class View extends Application {
                 toggleSidebarVisibility();
             }
         });
-        scene.getRoot().setStyle("-fx-background-color: white;");
-
         primaryStage.setOnCloseRequest(e -> Platform.exit());
         primaryStage.setTitle("Digital Notes");
         primaryStage.setScene(scene);
@@ -159,25 +123,21 @@ public class View extends Application {
         primaryStage.show();
     }
 
-    private void setupTimer() {
+    void setupTimer() {
         timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
         timer.setCycleCount(Timeline.INDEFINITE);
         updateTimerDisplay();
     }
 
-    private void toggleTimer() {
-        if (!isTimerRunning) {
-            startTimer();
-        } else {
-            saveAndStopTimer();
-        }
+    void toggleTimer() {
+        if (!isTimerRunning) startTimer();
+        else saveAndStopTimer();
     }
 
-    private void startTimer() {
+    void startTimer() {
         isTimerRunning = true;
-        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333; -fx-cursor: default; -fx-font-family: 'System';");
+        timerLabel.setStyle("-fx-text-fill: #333333;");
         timer.play();
-
         titleField.setEditable(true);
         contentArea.setEditable(true);
         titleField.clear();
@@ -185,69 +145,58 @@ public class View extends Application {
         contentArea.requestFocus();
     }
 
-    private void saveAndStopTimer() {
+    void saveAndStopTimer() {
         String title = titleField.getText().trim();
         String content = contentArea.getText().trim();
 
         if (title.isEmpty() && !content.isEmpty()) {
-            title = "Timed Session - " + java.time.LocalDateTime.now().format(
-                    java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"));
+            title = "Timed Session - " + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"));
             titleField.setText(title);
         }
 
-        if (!title.isEmpty() && !content.isEmpty()) {
-            // Save to DB
+        if (!title.isEmpty() && !content.isEmpty() && noteDAO != null) {
             Note note = new Note(title, content);
             noteDAO.addNote(note);
-
-            if (!listView.getItems().contains(title)) {
-                listView.getItems().add(title);
-            }
+            if (!listView.getItems().contains(title)) listView.getItems().add(title);
             showNotification("Note saved!");
         }
 
         resetTimerAndFields();
     }
 
-    private void resetTimerAndFields() {
+    void resetTimerAndFields() {
         timer.stop();
         isTimerRunning = false;
         timeRemaining = 15 * 60;
         updateTimerDisplay();
-
-        titleField.setEditable(false);
-        contentArea.setEditable(false);
-
         titleField.clear();
         contentArea.clear();
+        titleField.setEditable(false);
+        contentArea.setEditable(false);
         contentArea.setPromptText("Press the timer to start writing...");
-
-        timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';");
+        timerLabel.setStyle("-fx-text-fill: #000000;");
     }
 
-    private void updateTimer() {
+    void updateTimer() {
         timeRemaining--;
         updateTimerDisplay();
-
-        if (timeRemaining <= 0) {
-            timerFinished();
-        } else if (timeRemaining <= 60) {
-            timerLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #8B0000; -fx-font-family: 'System';");
-        }
+        if (timeRemaining <= 0) timerFinished();
+        else if (timeRemaining <= 60) timerLabel.setStyle("-fx-text-fill: #8B0000;");
     }
 
-    private void updateTimerDisplay() {
+    void updateTimerDisplay() {
         int minutes = timeRemaining / 60;
         int seconds = timeRemaining % 60;
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    private void timerFinished() {
+    void timerFinished() {
         saveAndStopTimer();
         showNotification("Time's up!");
     }
 
-    private void toggleSidebarVisibility() {
+    void toggleSidebarVisibility() {
+        if (primaryStage == null || primaryStage.getScene() == null) return;
         BorderPane root = (BorderPane) primaryStage.getScene().getRoot();
         if (isHidden) {
             root.setRight(sidebar);
@@ -258,40 +207,37 @@ public class View extends Application {
         }
     }
 
-    private void deleteSelectedNote() {
+    void deleteSelectedNote() {
         String selectedNote = listView.getSelectionModel().getSelectedItem();
-        if (selectedNote != null) {
+        if (selectedNote != null && noteDAO != null) {
             noteDAO.deleteNoteByTitle(selectedNote);
             listView.getItems().remove(selectedNote);
-
             if (titleField.getText().equals(selectedNote)) {
                 titleField.clear();
                 contentArea.clear();
             }
-
             showNotification("Note deleted!");
         } else {
             showNotification("Please select a note to delete!");
         }
     }
 
-    private void loadSelectedNote() {
+    void loadSelectedNote() {
         String selected = listView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
+        if (selected != null && noteDAO != null) {
             titleField.setText(selected);
             String content = noteDAO.getNoteByTitle(selected);
             contentArea.setText(content != null ? content : "");
         }
     }
 
-    private void loadNotesFromDB() {
+    void loadNotesFromDB() {
+        if (noteDAO == null) return;
         List<Note> notes = noteDAO.getAllNotes();
-        for (Note note : notes) {
-            listView.getItems().add(note.getTitle());
-        }
+        for (Note note : notes) listView.getItems().add(note.getTitle());
     }
 
-    private void showNotification(String message) {
+    void showNotification(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Notes");
         alert.setHeaderText(null);
@@ -299,12 +245,8 @@ public class View extends Application {
         alert.showAndWait();
     }
 
-    public static void launchApp(String[] args) {
-        Application.launch(View.class, args);
-    }
-
     // ----------------------------
-    // Getters for testing
+    // Public getters for testing
     // ----------------------------
     public ListView<String> getListView() { return listView; }
     public TextField getTitleField() { return titleField; }
@@ -313,4 +255,8 @@ public class View extends Application {
     public Button getNotesButton() { return notesBtn; }
     public Stage getPrimaryStage() { return primaryStage; }
     public HBox getButtonBar() { return buttonBar; }
+
+    public static void launchApp(String[] args) {
+        Application.launch(View.class, args);
+    }
 }
