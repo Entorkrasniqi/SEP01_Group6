@@ -1,89 +1,165 @@
 package com.group6.digitalnotes.view;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import com.group6.digitalnotes.dao.NoteDAO;
+import com.group6.digitalnotes.model.Note;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collections;
+import java.util.concurrent.TimeoutException;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ViewTest extends ApplicationTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+
+@ExtendWith(ApplicationExtension.class)
+class ViewTest {
 
     private View view;
+    private NoteDAO noteDAOMock;
 
-    @BeforeAll
-    public void initToolkit() throws Exception {
-        // Initialize JavaFX toolkit once
-        FxToolkit.registerPrimaryStage();
+    @Start
+    private void start(Stage stage) {
+        noteDAOMock = Mockito.mock(NoteDAO.class);
+
+        // Override showNotification to prevent blocking alerts
+        view = new View() {
+            @Override
+            void showNotification(String message) {
+                // Do nothing or log for testing
+                System.out.println("Notification: " + message);
+            }
+        };
+
+        view.setNoteDAO(noteDAOMock);
+        view.createFallbackView(stage);
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
-        // Launch the View application
-        view = new View();
-        FxToolkit.setupApplication(() -> view);
-        // Wait for JavaFX thread to finish setup
-        interact(() -> {});
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        FxToolkit.cleanupStages();
+    void setUp() throws Exception {
+        FxToolkit.setupFixture(() -> {
+            view.getTitleField().clear();
+            view.getContentArea().clear();
+            view.getListView().getItems().clear();
+        });
     }
 
     @Test
-    public void testStartViewInitializesUI() {
-        assertNotNull(view.getListView(), "ListView should be initialized");
-        assertNotNull(view.getTitleField(), "TitleField should be initialized");
-        assertNotNull(view.getContentArea(), "ContentArea should be initialized");
-        assertNotNull(view.getTimerLabel(), "TimerLabel should be initialized");
-        assertNotNull(view.getNotesButton(), "Notes button should be initialized");
-        assertNotNull(view.getButtonBar(), "Button bar should be initialized");
-        assertNotNull(view.getPrimaryStage(), "Primary stage should be initialized");
+    void testNewNoteButton() throws TimeoutException {
+        FxToolkit.setupFixture(() -> {
+            Button newBtn = (Button) view.getButtonBar().getChildren().get(0);
+            newBtn.fire();
+        });
+
+        assertThat(view.getTitleField().isEditable()).isTrue();
+        assertThat(view.getContentArea().isEditable()).isTrue();
+        assertThat(view.getTitleField().getText()).isEmpty();
+        assertThat(view.getContentArea().getText()).isEmpty();
     }
 
     @Test
-    public void testNewNoteButtonClearsFields() {
-        Button newNoteBtn = (Button) view.getButtonBar().getChildren().get(0); // New button
-        interact(() -> newNoteBtn.fire());
+    void testDeleteSelectedNote() throws TimeoutException {
+        FxToolkit.setupFixture(() -> {
+            view.getListView().getItems().add("Note1");
+            view.getListView().getSelectionModel().select("Note1");
+            view.deleteSelectedNote();
+        });
 
-        assertTrue(view.getTitleField().isEditable(), "TitleField should be editable after New button");
-        assertTrue(view.getContentArea().isEditable(), "ContentArea should be editable after New button");
-        assertEquals("", view.getTitleField().getText(), "TitleField should be empty");
-        assertEquals("", view.getContentArea().getText(), "ContentArea should be empty");
+        Mockito.verify(noteDAOMock).deleteNoteByTitle("Note1");
+        assertThat(view.getListView().getItems()).doesNotContain("Note1");
     }
 
     @Test
-    public void testToggleSidebarVisibility() {
-        BorderPane root = (BorderPane) view.getPrimaryStage().getScene().getRoot();
-        boolean initialState = root.getRight() != null;
+    void testLoadSelectedNote() throws TimeoutException {
+        Mockito.when(noteDAOMock.getNoteByTitle("Note1")).thenReturn("Hello content");
 
-        interact(() -> view.getNotesButton().fire());
+        FxToolkit.setupFixture(() -> {
+            view.getListView().getItems().add("Note1");
+            view.getListView().getSelectionModel().select("Note1");
+            view.loadSelectedNote();
+        });
 
-        boolean afterToggle = root.getRight() != null;
-        assertNotEquals(initialState, afterToggle, "Sidebar visibility should toggle");
+        assertThat(view.getTitleField().getText()).isEqualTo("Note1");
+        assertThat(view.getContentArea().getText()).isEqualTo("Hello content");
     }
 
     @Test
-    public void testTimerLabelDisplaysCorrectFormat() {
-        String text = view.getTimerLabel().getText();
-        assertTrue(text.matches("\\d{2}:\\d{2}"), "Timer label should be in MM:SS format");
+    void testSaveAndStopTimer() throws TimeoutException {
+        FxToolkit.setupFixture(() -> {
+            view.getTitleField().setText("MyTitle");
+            view.getContentArea().setText("MyContent");
+            view.saveAndStopTimer();
+        });
+
+        Mockito.verify(noteDAOMock).addNote(any(Note.class));
+        assertThat(view.getTitleField().isEditable()).isFalse();
+        assertThat(view.getContentArea().isEditable()).isFalse();
+        assertThat(view.getTitleField().getText()).isEmpty();
+        assertThat(view.getContentArea().getText()).isEmpty();
     }
 
     @Test
-    public void testStartTimerMakesFieldsEditable() {
-        interact(() -> view.getTimerLabel().fireEvent(new javafx.scene.input.MouseEvent(
-                javafx.scene.input.MouseEvent.MOUSE_CLICKED,
-                0,0,0,0,
-                javafx.scene.input.MouseButton.PRIMARY,
-                1,false,false,false,false,false,false,false,false,false,false,
-                null
-        )));
-        assertTrue(view.getTitleField().isEditable(), "TitleField should be editable when timer starts");
-        assertTrue(view.getContentArea().isEditable(), "ContentArea should be editable when timer starts");
+    void testToggleSidebarVisibility() throws TimeoutException {
+        FxToolkit.setupFixture(() -> view.toggleSidebarVisibility());
+
+        var root = view.getPrimaryStage().getScene().getRoot();
+        assertThat(root instanceof javafx.scene.layout.BorderPane).isTrue();
+        javafx.scene.layout.BorderPane borderPane = (javafx.scene.layout.BorderPane) root;
+        assertThat(borderPane.getRight()).isNotNull(); // sidebar should be visible
+
+        FxToolkit.setupFixture(() -> view.toggleSidebarVisibility());
+        assertThat(borderPane.getRight()).isNull(); // sidebar should be hidden
+    }
+
+    @Test
+    void testTimerFunctionality() throws TimeoutException {
+        FxToolkit.setupFixture(() -> {
+            view.startTimer(); // startTimer clears fields
+            view.getTitleField().setText("TimerTest");
+            view.getContentArea().setText("TimerContent");
+            view.saveAndStopTimer(); // save and stop timer
+        });
+
+        Mockito.verify(noteDAOMock).addNote(any(Note.class));
+        assertThat(view.getTitleField().isEditable()).isFalse();
+        assertThat(view.getContentArea().isEditable()).isFalse();
+    }
+
+    @Test
+    void testLoadNotesFromDB() throws TimeoutException {
+        Mockito.when(noteDAOMock.getAllNotes())
+                .thenReturn(Collections.singletonList(new Note("NoteDB", "Content")));
+
+        FxToolkit.setupFixture(view::loadNotesFromDB);
+
+        ListView<String> listView = view.getListView();
+        assertThat(listView.getItems()).contains("NoteDB");
+    }
+
+    @Test
+    void testToggleTimer() throws TimeoutException {
+        FxToolkit.setupFixture(view::toggleTimer);
+        assertThat(view.getTitleField().isEditable()).isTrue();
+    }
+
+    @Test
+    void testResetTimerAndFields() throws TimeoutException {
+        FxToolkit.setupFixture(() -> {
+            view.getTitleField().setText("Title");
+            view.getContentArea().setText("Content");
+            view.resetTimerAndFields();
+        });
+
+        assertThat(view.getTitleField().getText()).isEmpty();
+        assertThat(view.getContentArea().getText()).isEmpty();
+        assertThat(view.getTitleField().isEditable()).isFalse();
+        assertThat(view.getContentArea().isEditable()).isFalse();
     }
 }
