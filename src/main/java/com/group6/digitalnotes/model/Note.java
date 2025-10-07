@@ -1,22 +1,28 @@
 package com.group6.digitalnotes.model;
 
-import java.sql.Timestamp;
-// Core database table columns of notes app
 public class Note {
-    // Primary key that identifies each note
-    private Integer id;
-    // Title of your notes
+    private int id;
     private String title;
-    // Main content of note
     private String content;
-    // When note was created
-    private Timestamp createdAt;
+
+    public Note() {}
+
+    public Note(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public Note(int id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    // Getters & Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 }
-
-// Default constructor
-
-// Constructor with essential fields
-
-// Full constructor
-
-// Getters and setters
