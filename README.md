@@ -119,10 +119,7 @@ SEP01_Group6/
 ---
 
 ##  Usage
-1. **Create Categories**: Organize your notes by subject or topic
 2. **Add Notes**: Write and format your lecture notes
-3. **Annotate**: Add images, highlights, and inline comments
-4. **Search**: Find specific notes using keywords
 5. **Timer**: Track your study/writing sessions
 
 ---
