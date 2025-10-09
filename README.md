@@ -12,9 +12,8 @@ The system uses **MariaDB** for persistent storage of notes and categories, ensu
 
 ##  Features
 - **Note Management**
-  - Add, edit, and delete notes.
+  - Add and delete notes.
   - Categorize notes into subjects or custom categories.
-  - Rich text editing (bold, italic, highlight).
   - **Font customization** – switch between 4 available fonts.
  
 ##  Target audience and vision
@@ -119,8 +118,8 @@ SEP01_Group6/
 ---
 
 ##  Usage
-2. **Add Notes**: Write and format your lecture notes
-5. **Timer**: Track your study/writing sessions
+1. **Add Notes**: Write and format your lecture notes
+2. **Timer**: Track your study/writing sessions
 
 ---
 
