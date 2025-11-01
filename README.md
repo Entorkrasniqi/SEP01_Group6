@@ -134,4 +134,103 @@ SEP01_Group6/
 
 
 
+# 📝 Digital Notes (UI localization)
+ 
+In Sprint 5, multilingual support was added through **UI localization** to make the app accessible to users in different languages.
+
+---
+
+## 🌐 Localization Setup
+
+The Digital Notes app supports multiple languages using Java’s `ResourceBundle`.  
+All static UI text (buttons, labels, alerts, placeholders, etc.) is now loaded dynamically from localization files.
+
+### 🗣️ Supported Languages
+- English (default)
+- Arabic
+- Japanese
+
+---
+
+### 📁 Folder Structure
+
+```
+src/
+ ├── main/
+ │   ├── java/com/group6/digitalnotes/view/View.java
+ │   └── resources/
+ │       ├── MessagesBundle.properties
+ │       ├── MessagesBundle_en_US.properties
+ │       ├── MessagesBundle_ar_SA.properties
+ │       ├── MessagesBundle_ja_JP.properties
+
+```
+
+Each `.properties` file contains the same keys with translated values.  
+For example:
+
+**MessagesBundle.properties**
+```
+btn.new=New
+btn.delete=Delete
+label.timer=15:00
+msg.noteSaved=Note saved!
+msg.noteDeleted=Note deleted!
+msg.selectNote=Please select a note to delete!
+```
+
+### ⚙️ How to Change Language
+
+1. Open the Digital Notes app.  
+2. Use the **language selector** (dropdown or menu) to choose your language.  
+3. The interface text (buttons, labels, alerts) will update automatically.  
+4. The selected language will remain active until you close the app.
+
+---
+
+### ➕ Adding a New Language
+
+1. Go to:  
+   `src/main/resources/`
+2. Create a new file named:  
+   `MessagesBundle_<language>_<country>.properties`  
+   (Example: `MessagesBundle_es_ES.properties` for Spanish)
+3. Copy all keys from the base file `MessagesBundle.properties` and translate the values.
+4. Add a corresponding button or dropdown option in `View.java` to call:
+   ```java
+   onLoadLanguage("es", "ES");
+   ```
+5. Re-run the app and verify the new language works correctly.
+
+---
+
+### ✅ Sprint 5 Deliverables Summary
+
+| Task | Description | Owner |
+|------|--------------|-------|
+| UI Localization | Externalized all static text and added `ResourceBundle` files. | Entor |
+| Language Switcher | Added button/menu to switch between languages. | Entor |
+| Full GUI Localization | Implemented English, French, Urdu, and Vietnamese translations. | Sarujan |
+| RTL Support | Ensured correct layout for Urdu (Right-to-Left text). | Sarujan |
+| Localization testing & QA | Test translations across the app, verify prompts/alerts, report bugs. | Doni |
+| Sprint Review & Report | Assist with sprint review, compile results, challenges, and improvements for Sprint 5 report. | Omar / Doni |
+| Documentation Update | Added localization setup to README. | Omar |
+| Backlog Update | Added localization stories, acceptance criteria, and tasks. | Omar |
+
+---
+
+### 📄 Notes
+- Default locale: English (en_US)  
+- Localization files are easy to expand — just create a new `.properties` file for the new locale.  
+- The layout supports both LTR (Left-to-Right) and RTL (Right-to-Left) languages.
+
+---
+
+**Author:** Group 6  
+**Sprint 5:** UI and Database Localization Planning  
+**Scrum Master:** Omar Al-Dulaimi
+
+
+
+
 
