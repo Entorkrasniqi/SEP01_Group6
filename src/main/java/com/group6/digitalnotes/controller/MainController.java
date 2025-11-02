@@ -44,6 +44,9 @@ public class MainController {
     private int timeRemaining = 15 * 60;
     private Timeline timer;
 
+    private boolean isArabic = false;
+
+
     @FXML
     public void initialize() {
         loadLanguage("en", "US");
@@ -55,6 +58,11 @@ public class MainController {
     }
 
     private void loadLanguage(String lang, String country) {
+        if (lang.equalsIgnoreCase("ar")) {
+            isArabic = true;
+        } else {
+            isArabic = false;
+        }
         Locale locale = new Locale(lang, country);
         bundle = ResourceBundle.getBundle("MessagesBundle", locale);
         updateTexts();
@@ -67,6 +75,21 @@ public class MainController {
         searchField.setPromptText(bundle.getString("placeholder.search"));
         titleField.setPromptText(bundle.getString("placeholder.title"));
         contentArea.setPromptText(bundle.getString("placeholder.content"));
+
+        if (isArabic) {
+            /*rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);*/
+            /*sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);*/
+            titleField.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+            contentArea.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+            searchField.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+        } else {
+            /*rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);*/
+            /*sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);*/
+            titleField.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
+            contentArea.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
+            searchField.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
+        }
+
     }
 
     private void setupTimer() {

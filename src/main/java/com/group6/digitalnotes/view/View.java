@@ -14,6 +14,7 @@ public class View extends Application {
         Locale locale = new Locale("en", "US");
         ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"), bundle);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
