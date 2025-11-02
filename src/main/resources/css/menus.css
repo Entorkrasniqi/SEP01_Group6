@@ -1,0 +1,41 @@
+.combo-box, .menu-button {
+    -fx-background-color: #2a2c30;
+    -fx-border-color: #3a3c41;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 11px;
+    -fx-text-fill: #f1f1f1;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover, .menu-button:hover,
+.combo-box:focused, .menu-button:focused {
+    -fx-border-color: #58b0a7;
+    -fx-background-color: #2e3236;
+}
+
+.combo-box .arrow-button, .menu-button .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-shape: "M0,0 L4,4 L8,0 Z";
+    -fx-background-color: #58b0a7;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.combo-box-popup .list-view, .context-menu {
+    -fx-background-color: #2b2d31;
+    -fx-border-color: #3a3c41;
+    -fx-border-radius: 6px;
+}
+
+.combo-box-popup .list-cell, .menu-item {
+    -fx-text-fill: #f1f1f1;
+}
+
+.combo-box-popup .list-cell:hover, .menu-item:hover {
+    -fx-background-color: #3a3e43;
+}

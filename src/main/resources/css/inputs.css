@@ -1,0 +1,21 @@
+.text-field, .text-area {
+    -fx-background-color: #2a2c30;
+    -fx-border-color: #3a3c41;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: #f1f1f1;
+    -fx-font-size: 11px;
+}
+
+.text-area .content, .text-field .content {
+    -fx-background-color: #2a2c30;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #58b0a7;
+    -fx-background-color: #2e3035;
+}
