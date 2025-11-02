@@ -1,50 +1,51 @@
-Sprint 5 requirments
--
+# 🏁 Sprint 5 Report
 
-Sprint objective
--
-- Code refactoring, taking out all inline style and use main fxml file and add css styling also taking the logic out of View.java and create main controller what take care of it.
-- Add UI localization (English, Arabic and Japanese).
-- Take out all the hard code messages and add resource bundles with the mentioned languages.
-- add UI comboBox to the app and sure that is working with no bugs
-- Github and Trello are both up to date
-- Update the product backlog to include localization-related user stories and tasks
-
-Challenegs
-- 
-- Arabic language right to left
-
-improvements
--
-- App styling
-- Code clarity
-- UI localization
-- Right to left RTL support
-- Bug fixing
-  
-
-
+## 🎯 Sprint Objective
+- Refactor code to remove all inline styles and apply consistent styling using the main FXML file and a dedicated CSS stylesheet.  
+- Separate logic from `View.java` by creating a main controller responsible for handling UI interactions and events.  
+- Implement UI localization for **English**, **Arabic**, and **Japanese** languages.  
+- Externalize all hard-coded messages into **resource bundles** to support multiple languages.  
+- Add and test a **ComboBox** component in the UI to ensure proper functionality.  
+- Keep **GitHub** and **Trello** updated throughout the sprint.  
+- Update the **product backlog** to include localization-related user stories and tasks.
 
 ---
 
-### ✅ Sprint 5 individual contributions
+## ⚙️ Challenges
+- Implementing **Right-to-Left (RTL)** layout support for the Arabic language.
 
-| Task | Time | Owner | 
-|------|--------------|-------|
+---
+
+## 🚀 Improvements
+- Enhanced application styling through consistent CSS.  
+- Increased code clarity and maintainability.  
+- Complete UI localization for multilingual support.  
+- Added Right-to-Left (RTL) layout handling for Arabic.  
+- General bug fixes and interface refinements.
+
+---
+
+## 👥 Individual Contributions
+
+| Task | Time Spent | Owner |
+|------|-------------|-------|
 | UI Localization | 10h | Entor |
 | Language Switcher | 4h | Entor / Omar |
 | Full GUI Localization | 5h | Sarujan |
 | RTL Support | 3h | Sarujan / Omar |
-| Localization testing & QA | 1h | Doni |
+| Localization Testing & QA | 1h | Doni |
 | Sprint Review & Report | 2h | Omar / Doni |
 | Documentation Update | 2h | Omar |
 | Backlog Update | 2h | Omar |
 
 ---
 
-Sprint 5 trello Link
--
-https://trello.com/invite/b/6905d04cadb89e0888da30c9/ATTIf9f7954808eedc1bc3e970354935d65742D27ADD/sprint-5
+## 🗂️ Sprint 5 Resources
 
-  
+**Trello Board:**  
+🔗 [Sprint 5 Trello Board](https://trello.com/invite/b/6905d04cadb89e0888da30c9/ATTIf9f7954808eedc1bc3e970354935d65742D27ADD/sprint-5)
 
+---
+
+**Summary:**  
+Sprint 5 focused on improving the project’s maintainability and user experience through localization, UI consistency, and code refactoring. The team successfully implemented multilingual support and ensured the application works seamlessly across all supported languages, including Arabic RTL layout.
