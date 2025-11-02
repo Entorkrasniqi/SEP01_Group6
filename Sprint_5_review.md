@@ -37,6 +37,8 @@
 | Sprint Review & Report | 2h | Omar / Doni |
 | Documentation Update | 2h | Omar |
 | Backlog Update | 2h | Omar |
+| Code refactoring | 4h | Omar |
+| Styling| 3h | Omar |
 
 ---
 
