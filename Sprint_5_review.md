@@ -54,16 +54,13 @@ Sprint 5 focused on improving the project’s maintainability and user experienc
 
 ## Sprint 6 Planning
 
-### Tasks
+### 📝 Tasks
 - Redesign the database to include multiple tables with proper relational setup  
 - Implement database localization  
 - Handle additional tasks discovered during the sprint  
 
-### Roles
+### 👥 Roles
 - **Scrum Master:** Doni  
 - **Backend Development:** Omar, Entor  
 - **Frontend Development:** Sarujan  
-- **Code Testing:** Sarujan  
-
-  
-  
+- **Code Testing:** Sarujan
