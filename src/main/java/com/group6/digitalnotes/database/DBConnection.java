@@ -11,7 +11,7 @@ public class DBConnection {
     private static final String DB_PORT = System.getenv().getOrDefault("DB_PORT", "3306");
     private static final String DB_NAME = System.getenv().getOrDefault("DB_NAME", "digitalnotes");
     private static final String DB_USER = System.getenv().getOrDefault("DB_USER", "root");
-    private static final String DB_PASSWORD = System.getenv().getOrDefault("DB_PASSWORD", "Amoury123");
+    private static final String DB_PASSWORD = System.getenv().getOrDefault("DB_PASSWORD", "Kraskras");
 
     private static final String URL = "jdbc:mariadb://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME;
 
