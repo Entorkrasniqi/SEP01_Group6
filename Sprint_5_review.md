@@ -51,3 +51,19 @@
 
 **Summary:**  
 Sprint 5 focused on improving the project’s maintainability and user experience through localization, UI consistency, and code refactoring. The team successfully implemented multilingual support and ensured the application works seamlessly across all supported languages, including Arabic RTL layout.
+
+## Sprint 6 Planning
+
+### Tasks
+- Redesign the database to include multiple tables with proper relational setup  
+- Implement database localization  
+- Handle additional tasks discovered during the sprint  
+
+### Roles
+- **Scrum Master:** Doni  
+- **Backend Development:** Omar, Entor  
+- **Frontend Development:** Sarujan  
+- **Code Testing:** Sarujan  
+
+  
+  
