@@ -77,14 +77,14 @@ public class MainController {
         contentArea.setPromptText(bundle.getString("placeholder.content"));
 
         if (isArabic) {
-            rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
-            sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+            /*rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);*/
+            /*sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);*/
             titleField.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
             contentArea.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
             searchField.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
         } else {
-            rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
-            sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
+            /*rootPane.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);*/
+            /*sidebar.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);*/
             titleField.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
             contentArea.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
             searchField.setNodeOrientation(javafx.geometry.NodeOrientation.LEFT_TO_RIGHT);
