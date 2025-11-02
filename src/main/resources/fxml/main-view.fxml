@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.group6.digitalnotes.controller.MainController">
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15" />
+            </padding>
+
+            <TextField fx:id="titleField" promptText="%placeholder.title" />
+            <TextArea fx:id="contentArea" promptText="%placeholder.content" VBox.vgrow="ALWAYS" />
+
+            <HBox spacing="8" alignment="CENTER_RIGHT">
+                <Button fx:id="newNoteBtn" text="%btn.new" onAction="#onNewNote"/>
+                <Button fx:id="deleteBtn" text="%btn.delete" onAction="#onDelete"/>
+                <Button fx:id="toggleSidebarBtn" text="%btn.notes" onAction="#onToggleSidebar"/>
+
+                <MenuButton fx:id="languageMenuBtn" text="🌐">
+                    <items>
+                        <MenuItem text="English" onAction="#onSwitchToEnglish"/>
+                        <MenuItem text="العربية" onAction="#onSwitchToArabic"/>
+                        <MenuItem text="日本語" onAction="#onSwitchToJapanese"/>
+                    </items>
+                </MenuButton>
+
+                <Label fx:id="timerLabel" text="15:00"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox fx:id="sidebar" spacing="5" prefWidth="210">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+
+            <TextField fx:id="searchField" promptText="%placeholder.search"/>
+            <ListView fx:id="noteList" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </right>
+
+</BorderPane>

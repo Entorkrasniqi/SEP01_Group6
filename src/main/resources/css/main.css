@@ -1,0 +1,11 @@
+@import url("inputs.css");
+@import url("buttons.css");
+@import url("menus.css");
+@import url("listview.css");
+@import url("labels.css");
+@import url("scrollbars.css");
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #1e1f22;
+}
