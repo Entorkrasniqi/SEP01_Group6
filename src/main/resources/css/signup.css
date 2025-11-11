@@ -1,0 +1,58 @@
+/* ==============================
+   SIGNUP SCENE STYLES
+   ============================== */
+
+/* ---------- General Inputs ---------- */
+.text-field, .password-field {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 6px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #7B5FFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(123,95,255,0.3), 8, 0, 0, 0);
+}
+
+/* ---------- Main Sign Up Button ---------- */
+.button {
+    -fx-background-color: linear-gradient(to bottom right, #7B5FFF, #2A0061);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+/* Hover effect for signup button */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #8A6BFF, #400080);
+}
+
+/* Pressed effect */
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom right, #5A3DCC, #24004D);
+    -fx-translate-y: 1px;
+}
+
+/* ---------- Small Login Button ---------- */
+#loginButton {
+    -fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D);
+    -fx-font-size: 12px;
+    -fx-pref-width: 70px;
+}
+
+#loginButton:hover {
+    -fx-background-color: linear-gradient(to bottom right, #4AAEFF, #003D8F);
+}
+
+#loginButton:pressed {
+    -fx-background-color: linear-gradient(to bottom right, #003D8F, #001F44);
+}
