@@ -17,7 +17,7 @@ public class View extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"), bundle);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+        // scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
 
         stage.setTitle("Digital Notes");
         stage.setScene(scene);

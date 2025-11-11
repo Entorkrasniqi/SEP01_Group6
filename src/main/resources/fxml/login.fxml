@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <AnchorPane prefHeight="800.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D); -fx-effect: innershadow(gaussian, rgba(30,144,255,0.5), 20, 0.5, 0, 0);;" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="67.0" layoutY="214.0" text="Digital Notes" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="30.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" layoutX="72.0" layoutY="275.0" prefHeight="22.0" prefWidth="209.0" text="Write smarter, faster" textFill="#e0e0e0">
+               <font>
+                  <Font name="Consolas Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <Line endX="171.0" layoutX="141.0" layoutY="262.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Line>
+            <Circle fill="#1f93ff00" layoutX="177.0" layoutY="263.0" radius="150.0" stroke="#ffffff30" strokeType="INSIDE" />
+            <ImageView fitHeight="130.0" fitWidth="130.0" layoutX="33.0" layoutY="316.0">
+               <image>
+                  <Image url="@../images/notebook-unscreen.gif" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="800.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="142.0" layoutY="108.0" prefHeight="38.0" prefWidth="326.0" text="Secure Login">
+               <font>
+                  <Font name="Verdana" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_CENTER" layoutX="252.0" layoutY="237.0" prefHeight="25.0" prefWidth="107.0" text="Username">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_CENTER" layoutX="252.0" layoutY="343.0" prefHeight="25.0" prefWidth="107.0" text="Password">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Label>
+            <TextField layoutX="133.0" layoutY="268.0" prefHeight="40.0" prefWidth="345.0" />
+            <PasswordField layoutX="133.0" layoutY="374.0" prefHeight="40.0" prefWidth="345.0" />
+            <Button layoutX="120.0" layoutY="475.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="371.0" style="-fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D); -fx-effect: innershadow(gaussian, rgba(30,144,255,0.5), 20, 0.5, 0, 0); -fx-text-fill: #FFFFFF; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-border-radius: 6px; -fx-padding: 6px 12px; -fx-cursor: hand;" text="Login" textFill="WHITE" />
+            <Label layoutX="175.0" layoutY="549.0" style="-fx-text-fill: #5A5A5A; -fx-font-size: 14px; -fx-font-weight: normal;" text="You dont have an account." />
+            <Button layoutX="349.0" layoutY="544.0" mnemonicParsing="false" opacity="0.89" prefHeight="0.0" prefWidth="69.0" style="-fx-background-color: linear-gradient(to bottom right, #7B5FFF, #2A0061);; -fx-text-fill: #FFFFFF; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-border-radius: 6px; -fx-padding: 6px 12px; -fx-cursor: hand;" text="Sign Up" textFill="WHITE" />
+         </children></AnchorPane>
+   </right>
+</BorderPane>

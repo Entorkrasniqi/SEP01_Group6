@@ -5,7 +5,8 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.group6.digitalnotes.controller.MainController">
+            fx:controller="com.group6.digitalnotes.controller.MainController"
+            stylesheets="@../css/main.css">
 
     <center>
         <VBox spacing="10">
