@@ -16,14 +16,15 @@ public class View extends Application {
     public static boolean isLoggedIn = false;
     public static User loggedInUser; // store logged-in user
 
+    // Track current language globally
+    public static String currentLanguage = "en"; // default
+
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
 
-        Locale locale = new Locale("en", "US");
-        ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", locale);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"), bundle);
+        // Load login view with current language
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
         Scene scene = new Scene(loader.load());
 
         stage.setTitle("Digital Notes");
@@ -37,11 +38,9 @@ public class View extends Application {
         launch(args);
     }
 
-    public static void switchScene(Stage stage, String fxmlPath, ResourceBundle bundle) {
+    public static void switchScene(Stage stage, String fxmlPath) {
         try {
-            FXMLLoader loader = (bundle != null)
-                    ? new FXMLLoader(View.class.getResource(fxmlPath), bundle)
-                    : new FXMLLoader(View.class.getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(View.class.getResource(fxmlPath));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
@@ -49,3 +48,4 @@ public class View extends Application {
         }
     }
 }
+

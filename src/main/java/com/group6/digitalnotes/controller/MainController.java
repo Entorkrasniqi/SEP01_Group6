@@ -1,5 +1,6 @@
 package com.group6.digitalnotes.controller;
 
+import com.group6.digitalnotes.dao.LocalizationDAO;
 import com.group6.digitalnotes.dao.NoteDAO;
 import com.group6.digitalnotes.model.Note;
 import com.group6.digitalnotes.view.View;
@@ -17,9 +18,7 @@ import javafx.util.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController {
 
@@ -37,8 +36,10 @@ public class MainController {
     @FXML private Button logoutBtn;
     @FXML private MenuButton languageMenuBtn;
 
-    private ResourceBundle bundle;
     private final NoteDAO noteDAO = new NoteDAO();
+    private final LocalizationDAO localizationDAO = new LocalizationDAO();
+
+    private Map<String, String> localization;
     private ObservableList<String> allNotes = FXCollections.observableArrayList();
     private ObservableList<String> filteredNotes = FXCollections.observableArrayList();
 
@@ -57,29 +58,30 @@ public class MainController {
 
         rootPane.setRight(null); // hide sidebar initially
 
-        loadLanguage("en", "US");
+        // Use globally tracked language
+        loadLanguage(View.currentLanguage);
         loadNotesFromDB();
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> filterNotes(newVal));
         noteList.setOnMouseClicked(e -> loadSelectedNote());
     }
 
-    // -------------------- Language --------------------
-    private void loadLanguage(String lang, String country) {
-        isArabic = lang.equalsIgnoreCase("ar");
-        Locale locale = new Locale(lang, country);
-        bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+    // -------------------- Localization --------------------
+    private void loadLanguage(String langCode) {
+        localization = localizationDAO.loadLanguage(langCode);
+        isArabic = langCode.equalsIgnoreCase("ar");
         updateTexts();
     }
 
     private void updateTexts() {
-        newNoteBtn.setText(bundle.getString("btn.new"));
-        deleteBtn.setText(bundle.getString("btn.delete"));
-        toggleSidebarBtn.setText(bundle.getString("btn.notes"));
-        logoutBtn.setText(bundle.getString("btn.logout"));
-        searchField.setPromptText(bundle.getString("placeholder.search"));
-        titleField.setPromptText(bundle.getString("placeholder.title"));
-        contentArea.setPromptText(bundle.getString("placeholder.content"));
+        newNoteBtn.setText(text("btn.new"));
+        deleteBtn.setText(text("btn.delete"));
+        toggleSidebarBtn.setText(text("btn.notes"));
+        logoutBtn.setText(text("button.logout"));
+
+        searchField.setPromptText(text("placeholder.search"));
+        titleField.setPromptText(text("placeholder.title"));
+        contentArea.setPromptText(text("placeholder.content"));
 
         var orientation = isArabic
                 ? javafx.geometry.NodeOrientation.RIGHT_TO_LEFT
@@ -90,9 +92,13 @@ public class MainController {
         searchField.setNodeOrientation(orientation);
     }
 
-    @FXML private void onSwitchToEnglish() { loadLanguage("en", "US"); }
-    @FXML private void onSwitchToArabic() { loadLanguage("ar", "SA"); }
-    @FXML private void onSwitchToJapanese() { loadLanguage("ja", "JP"); }
+    private String text(String key) {
+        return localization.getOrDefault(key, "[" + key + "]");
+    }
+
+    @FXML private void onSwitchToEnglish() { View.currentLanguage = "en"; loadLanguage("en"); }
+    @FXML private void onSwitchToArabic()  { View.currentLanguage = "ar"; loadLanguage("ar"); }
+    @FXML private void onSwitchToJapanese() { View.currentLanguage = "ja"; loadLanguage("ja"); }
 
     // -------------------- Timer --------------------
     private void setupTimer() {
@@ -168,7 +174,7 @@ public class MainController {
                 noteList.setItems(filteredNotes);
             }
 
-            showAlert(bundle.getString("msg.noteSaved") + ": " + title);
+            showAlert(text("msg.noteSaved") + ": " + title);
         } else {
             System.out.println("Note not saved: title or content empty");
         }
@@ -237,7 +243,7 @@ public class MainController {
             noteList.setItems(null);
             noteList.setItems(filteredNotes);
         } else {
-            showAlert(bundle.getString("msg.selectNote"));
+            showAlert(text("msg.selectNote"));
         }
     }
 
@@ -267,8 +273,7 @@ public class MainController {
         View.loggedInUser = null;
         View.isLoggedIn = false;
 
-        ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", Locale.ENGLISH);
-        View.switchScene(View.primaryStage, "/fxml/login-view.fxml", bundle);
+        View.switchScene(View.primaryStage, "/fxml/login-view.fxml");
     }
 
     @FXML

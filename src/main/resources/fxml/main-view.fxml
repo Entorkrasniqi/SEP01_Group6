@@ -12,53 +12,75 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group6.digitalnotes.controller.MainController">
+<BorderPane fx:id="rootPane" prefHeight="800.0" prefWidth="1000.0"
+            stylesheets="@../css/main.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.group6.digitalnotes.controller.MainController">
 
     <!-- Center: Note editor -->
     <center>
         <AnchorPane fx:id="editorPane" style="-fx-background-color: #262a31;" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="titleField" layoutX="25.0" layoutY="14.0" prefHeight="40.0" prefWidth="950.0" promptText="%placeholder.title" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                <TextField fx:id="titleField" layoutX="25.0" layoutY="14.0"
+                           prefHeight="40.0" prefWidth="950.0"
+                           promptText="Title"
+                           AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
 
-                <TextArea fx:id="contentArea" layoutX="25.0" layoutY="75.0" prefHeight="650.0" prefWidth="950.0" promptText="%placeholder.content" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="75.0" />
+                <TextArea fx:id="contentArea" layoutX="25.0" layoutY="75.0"
+                          prefHeight="650.0" prefWidth="950.0"
+                          promptText="Write your note here..."
+                          AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="75.0" />
 
                 <!-- Bottom Controls in HBox -->
                 <HBox layoutX="25.0" layoutY="745.0" spacing="10">
                     <children>
-                        <Label fx:id="timerLabel" onMouseClicked="#onTimerClicked" prefHeight="28.0" styleClass="label-button" text="15:00">
+                        <Label fx:id="timerLabel" onMouseClicked="#onTimerClicked"
+                               prefHeight="28.0" styleClass="label-button" text="15:00">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
 
-                        <Button fx:id="newNoteBtn" mnemonicParsing="false" onAction="#onNewNote" prefHeight="28.0" text="%btn.new" />
+                        <Button fx:id="newNoteBtn" mnemonicParsing="false"
+                                onAction="#onNewNote" prefHeight="28.0" text="New" />
 
-                        <Button fx:id="toggleSidebarBtn" mnemonicParsing="false" onAction="#onToggleSidebar" prefHeight="28.0" text="%btn.notes" />
+                        <Button fx:id="toggleSidebarBtn" mnemonicParsing="false"
+                                onAction="#onToggleSidebar" prefHeight="28.0" text="Notes" />
 
-                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#onLogout" prefHeight="28.0" text="%btn.logout" />
+                        <Button fx:id="logoutBtn" mnemonicParsing="false"
+                                onAction="#onLogout" prefHeight="28.0" text="Logout" />
                     </children>
                 </HBox>
 
-                  <MenuButton fx:id="languageMenuBtn" layoutX="416.0" layoutY="741.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="78.0" styleClass="menu-button-minimal" text="🌐" textFill="WHITE">
-                      <items>
-                          <MenuItem onAction="#onSwitchToEnglish" text="English" />
-                          <MenuItem onAction="#onSwitchToArabic" text="العربية" />
-                          <MenuItem onAction="#onSwitchToJapanese" text="日本語" />
-                      </items>
-                  </MenuButton>
+                <MenuButton fx:id="languageMenuBtn" layoutX="416.0" layoutY="741.0"
+                            mnemonicParsing="false" prefHeight="28.0" prefWidth="78.0"
+                            styleClass="menu-button-minimal" text="🌐" textFill="WHITE">
+                    <items>
+                        <MenuItem onAction="#onSwitchToEnglish" text="English" />
+                        <MenuItem onAction="#onSwitchToArabic" text="العربية" />
+                        <MenuItem onAction="#onSwitchToJapanese" text="日本語" />
+                    </items>
+                </MenuButton>
             </children>
         </AnchorPane>
     </center>
 
     <!-- Right side: Sidebar and controls -->
     <right>
-        <AnchorPane fx:id="sidebar" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #262a31;" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="sidebar" prefHeight="800.0" prefWidth="250.0"
+                    style="-fx-background-color: #262a31;" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="searchField" layoutX="11.0" layoutY="14.0" prefHeight="40.0" prefWidth="228.0" promptText="%placeholder.search" />
+                <TextField fx:id="searchField" layoutX="11.0" layoutY="14.0"
+                           prefHeight="40.0" prefWidth="228.0"
+                           promptText="Search notes..." />
 
-                <ListView fx:id="noteList" layoutX="11.0" layoutY="75.0" prefHeight="650.0" prefWidth="228.0" />
+                <ListView fx:id="noteList" layoutX="11.0" layoutY="75.0"
+                          prefHeight="650.0" prefWidth="228.0" />
 
-                <Button fx:id="deleteBtn" layoutX="159.0" layoutY="744.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="28.0" text="%btn.delete" />
+                <Button fx:id="deleteBtn" layoutX="159.0" layoutY="744.0"
+                        mnemonicParsing="false" onAction="#onDelete"
+                        prefHeight="28.0" text="Delete" />
             </children>
         </AnchorPane>
     </right>
