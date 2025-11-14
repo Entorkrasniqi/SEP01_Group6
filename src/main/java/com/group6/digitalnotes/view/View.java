@@ -7,23 +7,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class View extends Application {
 
     public static Stage primaryStage;
     public static boolean isLoggedIn = false;
-    public static User loggedInUser; // store logged-in user
-
-    // Track current language globally
-    public static String currentLanguage = "en"; // default
+    public static User loggedInUser;
+    public static String currentLanguage = "en";
 
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
 
-        // Load login view with current language
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
         Scene scene = new Scene(loader.load());
 
@@ -48,4 +43,3 @@ public class View extends Application {
         }
     }
 }
-

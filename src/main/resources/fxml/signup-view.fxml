@@ -85,6 +85,13 @@
                         <MenuItem onAction="#onSwitchToJapanese" text="日本語" />
                     </items>
                 </MenuButton>
+                <Label fx:id="invalidLabel"
+                       layoutY="478.0"
+                       prefWidth="650.0"
+                       alignment="CENTER"
+                       textAlignment="CENTER"
+                       textFill="#ee0000"
+                       text="" />
             </children>
         </AnchorPane>
     </right>

@@ -3,7 +3,11 @@ package com.group6.digitalnotes.dao;
 import com.group6.digitalnotes.database.DBConnection;
 import com.group6.digitalnotes.model.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDAO {
 
@@ -14,10 +18,9 @@ public class UserDAO {
 
             stmt.setString(1, user.getNickname());
             stmt.setString(2, user.getUsername());
-            stmt.setString(3, user.getPassword()); // ideally hash this
+            stmt.setString(3, user.getPassword());
             int rows = stmt.executeUpdate();
 
-            // Get auto-generated user_id
             try (ResultSet keys = stmt.getGeneratedKeys()) {
                 if (keys.next()) {
                     user.setUserId(keys.getInt(1));
@@ -55,6 +58,6 @@ public class UserDAO {
 
     public boolean validateUser(String username, String password) {
         User user = getUserByUsername(username);
-        return user != null && user.getPassword().equals(password); // compare hashed if hashed
+        return user != null && user.getPassword().equals(password);
     }
 }

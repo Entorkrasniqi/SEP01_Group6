@@ -25,9 +25,9 @@ public class SignupController {
     @FXML private Label passwordLabel;
     @FXML private Label haveAccountLabel;
     @FXML private HBox accountBox;
-
     @FXML private Label titleLabel;
     @FXML private Label subtitleLabel;
+    @FXML private Label invalidLabel;
 
     private final UserDAO userDAO = new UserDAO();
     private final LocalizationDAO localizationDAO = new LocalizationDAO();
@@ -37,12 +37,14 @@ public class SignupController {
     @FXML
     public void initialize() {
         loadLanguage(View.currentLanguage);
+        invalidLabel.setText("");
     }
 
     private void loadLanguage(String langCode) {
         localization = localizationDAO.loadLanguage(langCode);
         isArabic = langCode.equalsIgnoreCase("ar");
         updateTexts();
+        invalidLabel.setText("");
     }
 
     private void updateTexts() {
@@ -52,7 +54,6 @@ public class SignupController {
         signUpButton.setText(localization.getOrDefault("button.signup", "Sign Up"));
         loginButton.setText(localization.getOrDefault("button.login", "Login"));
 
-        // ✅ Use new DB key
         createAccountLabel.setText(localization.getOrDefault("label.createAccount", "Create Account"));
         nicknameLabel.setText(localization.getOrDefault("label.nickname", "Nickname"));
         usernameLabel.setText(localization.getOrDefault("label.username", "Username"));
@@ -70,7 +71,7 @@ public class SignupController {
         accountBox.getChildren().clear();
         if (isArabic) {
             accountBox.getChildren().addAll(loginButton, haveAccountLabel);
-            loginButton.setStyle("-fx-pref-width: 140px;"); // widen for Arabic text
+            loginButton.setStyle("-fx-pref-width: 140px;");
         } else {
             accountBox.getChildren().addAll(haveAccountLabel, loginButton);
             loginButton.setStyle("-fx-pref-width: 89px;");
@@ -84,18 +85,24 @@ public class SignupController {
         String password = passwordField.getText().trim();
 
         if (nickname.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            System.out.println(localization.getOrDefault("msg.invalidInput", "Invalid input!"));
+            invalidLabel.setText(localization.getOrDefault("label.emptyFields", "Please fill in all fields."));
+            return;
+        }
+
+        if (username.length() < 8 || password.length() < 8) {
+            invalidLabel.setText(localization.getOrDefault("label.credentialLength", "Must be 8 characters or more."));
             return;
         }
 
         User newUser = new User(nickname, username, password);
         boolean success = userDAO.addUser(newUser);
         if (success) {
+            invalidLabel.setText("");
             View.loggedInUser = newUser;
             View.isLoggedIn = true;
             View.switchScene(View.primaryStage, "/fxml/main-view.fxml");
         } else {
-            System.out.println(localization.getOrDefault("msg.invalidInput", "Username already exists!"));
+            invalidLabel.setText(localization.getOrDefault("label.invalidCredential", "Username already exists!"));
         }
     }
 
@@ -104,7 +111,18 @@ public class SignupController {
         View.switchScene(View.primaryStage, "/fxml/login-view.fxml");
     }
 
-    public void onSwitchToEnglish(ActionEvent e) { View.currentLanguage = "en"; loadLanguage("en"); }
-    public void onSwitchToArabic(ActionEvent e)  { View.currentLanguage = "ar"; loadLanguage("ar"); }
-    public void onSwitchToJapanese(ActionEvent e){ View.currentLanguage = "ja"; loadLanguage("ja"); }
+    public void onSwitchToEnglish(ActionEvent e) {
+        View.currentLanguage = "en";
+        loadLanguage("en");
+    }
+
+    public void onSwitchToArabic(ActionEvent e) {
+        View.currentLanguage = "ar";
+        loadLanguage("ar");
+    }
+
+    public void onSwitchToJapanese(ActionEvent e) {
+        View.currentLanguage = "ja";
+        loadLanguage("ja");
+    }
 }

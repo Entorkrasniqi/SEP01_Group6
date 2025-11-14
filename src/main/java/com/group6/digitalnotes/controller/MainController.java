@@ -18,7 +18,8 @@ import javafx.util.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class MainController {
 
@@ -35,13 +36,14 @@ public class MainController {
     @FXML private Button toggleSidebarBtn;
     @FXML private Button logoutBtn;
     @FXML private MenuButton languageMenuBtn;
+    @FXML private Label statusLabel;
 
     private final NoteDAO noteDAO = new NoteDAO();
     private final LocalizationDAO localizationDAO = new LocalizationDAO();
 
     private Map<String, String> localization;
-    private ObservableList<String> allNotes = FXCollections.observableArrayList();
-    private ObservableList<String> filteredNotes = FXCollections.observableArrayList();
+    private final ObservableList<String> allNotes = FXCollections.observableArrayList();
+    private final ObservableList<String> filteredNotes = FXCollections.observableArrayList();
 
     private boolean isSidebarHidden = true;
     private boolean isTimerRunning = false;
@@ -49,28 +51,25 @@ public class MainController {
     private Timeline timer;
     private boolean isArabic = false;
 
-    // -------------------- Initialization --------------------
     @FXML
     public void initialize() {
-        System.out.println("MainController initialized");
-
         if (View.loggedInUser == null) return;
 
-        rootPane.setRight(null); // hide sidebar initially
-
-        // Use globally tracked language
+        rootPane.setRight(null);
         loadLanguage(View.currentLanguage);
         loadNotesFromDB();
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> filterNotes(newVal));
         noteList.setOnMouseClicked(e -> loadSelectedNote());
+
+        statusLabel.setText("");
     }
 
-    // -------------------- Localization --------------------
     private void loadLanguage(String langCode) {
         localization = localizationDAO.loadLanguage(langCode);
         isArabic = langCode.equalsIgnoreCase("ar");
         updateTexts();
+        statusLabel.setText("");
     }
 
     private void updateTexts() {
@@ -97,10 +96,9 @@ public class MainController {
     }
 
     @FXML private void onSwitchToEnglish() { View.currentLanguage = "en"; loadLanguage("en"); }
-    @FXML private void onSwitchToArabic()  { View.currentLanguage = "ar"; loadLanguage("ar"); }
+    @FXML private void onSwitchToArabic() { View.currentLanguage = "ar"; loadLanguage("ar"); }
     @FXML private void onSwitchToJapanese() { View.currentLanguage = "ja"; loadLanguage("ja"); }
 
-    // -------------------- Timer --------------------
     private void setupTimer() {
         timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> Platform.runLater(this::updateTimer)));
         timer.setCycleCount(Timeline.INDEFINITE);
@@ -109,7 +107,6 @@ public class MainController {
 
     @FXML
     private void onTimerClicked() {
-        System.out.println("Timer label clicked");
         if (timer == null) setupTimer();
         toggleTimer();
     }
@@ -165,18 +162,16 @@ public class MainController {
             int userId = View.loggedInUser.getUserId();
             Note note = new Note(userId, title, content);
             noteDAO.addNote(note);
-            System.out.println("Note saved: " + title);
 
             if (!allNotes.contains(title)) {
                 allNotes.add(title);
                 filterNotes(searchField.getText());
-                noteList.setItems(null);
                 noteList.setItems(filteredNotes);
             }
 
-            showAlert(text("msg.noteSaved") + ": " + title);
+            setStatus(text("msg.noteSaved") + ": " + title, "#00cc66");
         } else {
-            System.out.println("Note not saved: title or content empty");
+            setStatus(text("msg.noteNotSaved"), "#ee0000");
         }
 
         resetTimer();
@@ -192,12 +187,13 @@ public class MainController {
         timerLabel.setStyle("-fx-text-fill: black;");
     }
 
-    // -------------------- Notes --------------------
     private void loadNotesFromDB() {
         int userId = View.loggedInUser.getUserId();
         List<Note> notes = noteDAO.getNotesForUser(userId);
         allNotes.clear();
-        for (Note note : notes) allNotes.add(note.getTitle());
+        for (Note note : notes) {
+            allNotes.add(note.getTitle());
+        }
         filteredNotes.setAll(allNotes);
         noteList.setItems(filteredNotes);
     }
@@ -209,7 +205,9 @@ public class MainController {
         } else {
             String f = filter.toLowerCase();
             for (String n : allNotes) {
-                if (n.toLowerCase().contains(f)) filteredNotes.add(n);
+                if (n.toLowerCase().contains(f)) {
+                    filteredNotes.add(n);
+                }
             }
         }
     }
@@ -230,6 +228,7 @@ public class MainController {
         contentArea.setEditable(true);
         titleField.clear();
         contentArea.clear();
+        setStatus(text("msg.newNote"), "#00cc66");
     }
 
     @FXML
@@ -240,14 +239,13 @@ public class MainController {
             noteDAO.deleteNoteByTitle(userId, selectedNote);
             allNotes.remove(selectedNote);
             filterNotes(searchField.getText());
-            noteList.setItems(null);
             noteList.setItems(filteredNotes);
+            setStatus(text("msg.noteDeleted") + ": " + selectedNote, "#00cc66");
         } else {
-            showAlert(text("msg.selectNote"));
+            setStatus(text("msg.selectNote"), "#007bff");
         }
     }
 
-    // -------------------- Sidebar Toggle --------------------
     @FXML
     private void onToggleSidebar(ActionEvent event) {
         if (isSidebarHidden) {
@@ -258,26 +256,22 @@ public class MainController {
         isSidebarHidden = !isSidebarHidden;
     }
 
-    // -------------------- Utility --------------------
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
+    private void setStatus(String msg, String color) {
+        statusLabel.setText(msg);
+        statusLabel.setStyle("-fx-text-fill: " + color + ";");
+
+        Timeline clearStatus = new Timeline(new KeyFrame(Duration.seconds(4), e -> {
+            statusLabel.setText("");
+            statusLabel.setStyle("-fx-text-fill: transparent;");
+        }));
+        clearStatus.setCycleCount(1);
+        clearStatus.play();
     }
 
     @FXML
     private void onLogout() {
-        System.out.println("Logging out...");
         View.loggedInUser = null;
         View.isLoggedIn = false;
-
         View.switchScene(View.primaryStage, "/fxml/login-view.fxml");
-    }
-
-    @FXML
-    private void onExit() {
-        Platform.exit();
     }
 }

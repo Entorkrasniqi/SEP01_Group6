@@ -22,9 +22,9 @@ public class LoginController {
     @FXML private Label passwordLabel;
     @FXML private Label noAccountLabel;
     @FXML private HBox accountBox;
-
     @FXML private Label titleLabel;
     @FXML private Label subtitleLabel;
+    @FXML private Label invalidLabel;
 
     private final UserDAO userDAO = new UserDAO();
     private final LocalizationDAO localizationDAO = new LocalizationDAO();
@@ -34,12 +34,14 @@ public class LoginController {
     @FXML
     public void initialize() {
         loadLanguage(View.currentLanguage);
+        invalidLabel.setText("");
     }
 
     private void loadLanguage(String langCode) {
         localization = localizationDAO.loadLanguage(langCode);
         isArabic = langCode.equalsIgnoreCase("ar");
         updateTexts();
+        invalidLabel.setText("");
     }
 
     private void updateTexts() {
@@ -48,12 +50,10 @@ public class LoginController {
         loginButton.setText(localization.getOrDefault("button.login", "Login"));
         signUpButton.setText(localization.getOrDefault("button.signup", "Sign Up"));
 
-        // ✅ Use new DB keys
         secureLoginLabel.setText(localization.getOrDefault("label.secureLogin", "Secure Login"));
         usernameLabel.setText(localization.getOrDefault("label.username", "Username"));
         passwordLabel.setText(localization.getOrDefault("label.password", "Password"));
         noAccountLabel.setText(localization.getOrDefault("label.noAccount", "You don't have an account."));
-
         titleLabel.setText(localization.getOrDefault("label.appTitle", "Digital Notes"));
         subtitleLabel.setText(localization.getOrDefault("label.subtitle", "Write smarter, faster"));
 
@@ -64,7 +64,7 @@ public class LoginController {
         accountBox.getChildren().clear();
         if (isArabic) {
             accountBox.getChildren().addAll(signUpButton, noAccountLabel);
-            signUpButton.setStyle("-fx-pref-width: 120px;"); // widen for Arabic text
+            signUpButton.setStyle("-fx-pref-width: 120px;");
         } else {
             accountBox.getChildren().addAll(noAccountLabel, signUpButton);
             signUpButton.setStyle("-fx-pref-width: 80px;");
@@ -77,17 +77,18 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            System.out.println(localization.getOrDefault("msg.invalidInput", "Invalid input!"));
+            invalidLabel.setText(localization.getOrDefault("label.emptyFields", "Please fill in all fields."));
             return;
         }
 
         boolean valid = userDAO.validateUser(username, password);
         if (valid) {
+            invalidLabel.setText("");
             View.loggedInUser = userDAO.getUserByUsername(username);
             View.isLoggedIn = true;
             View.switchScene(View.primaryStage, "/fxml/main-view.fxml");
         } else {
-            System.out.println(localization.getOrDefault("msg.invalidInput", "Invalid username or password!"));
+            invalidLabel.setText(localization.getOrDefault("label.invalidCredential", "Invalid username or password!"));
         }
     }
 
@@ -96,7 +97,18 @@ public class LoginController {
         View.switchScene(View.primaryStage, "/fxml/signup-view.fxml");
     }
 
-    public void onSwitchToEnglish(ActionEvent e) { View.currentLanguage = "en"; loadLanguage("en"); }
-    public void onSwitchToArabic(ActionEvent e)  { View.currentLanguage = "ar"; loadLanguage("ar"); }
-    public void onSwitchToJapanese(ActionEvent e){ View.currentLanguage = "ja"; loadLanguage("ja"); }
+    public void onSwitchToEnglish(ActionEvent e) {
+        View.currentLanguage = "en";
+        loadLanguage("en");
+    }
+
+    public void onSwitchToArabic(ActionEvent e) {
+        View.currentLanguage = "ar";
+        loadLanguage("ar");
+    }
+
+    public void onSwitchToJapanese(ActionEvent e) {
+        View.currentLanguage = "ja";
+        loadLanguage("ja");
+    }
 }
