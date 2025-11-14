@@ -10,27 +10,35 @@ import java.util.List;
 public class NoteDAO {
 
     public void addNote(Note note) {
-        String sql = "INSERT INTO notes (title, content) VALUES (?, ?)";
+        String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, note.getTitle());
-            stmt.setString(2, note.getContent());
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, note.getUserId());
+            stmt.setString(2, note.getTitle());
+            stmt.setString(3, note.getContent());
             stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) note.setNoteId(keys.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Note> getAllNotes() {
+    public List<Note> getNotesForUser(int userId) {
         List<Note> notes = new ArrayList<>();
-        String sql = "SELECT * FROM notes";
+        String sql = "SELECT * FROM notes WHERE user_id = ?";
         try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-                notes.add(new Note(title, content));
+                notes.add(new Note(
+                        rs.getInt("note_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("title"),
+                        rs.getString("content")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,26 +46,26 @@ public class NoteDAO {
         return notes;
     }
 
-    public String getNoteByTitle(String title) {
-        String sql = "SELECT content FROM notes WHERE title = ?";
+    public String getNoteByTitle(int userId, String title) {
+        String sql = "SELECT content FROM notes WHERE user_id = ? AND title = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, title);
+            stmt.setInt(1, userId);
+            stmt.setString(2, title);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("content");
-            }
+            if (rs.next()) return rs.getString("content");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void deleteNoteByTitle(String title) {
-        String sql = "DELETE FROM notes WHERE title = ?";
+    public void deleteNoteByTitle(int userId, String title) {
+        String sql = "DELETE FROM notes WHERE user_id = ? AND title = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, title);
+            stmt.setInt(1, userId);
+            stmt.setString(2, title);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

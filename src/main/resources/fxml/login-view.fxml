@@ -13,13 +13,10 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group6.digitalnotes.controller.LoginController">
 
    <left>
-      <AnchorPane prefHeight="800.0" prefWidth="350.0"
-                  style="-fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D);
-                         -fx-effect: innershadow(gaussian, rgba(30,144,255,0.5), 20, 0.5, 0, 0);"
-                  BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="800.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D);                          -fx-effect: innershadow(gaussian, rgba(30,144,255,0.5), 20, 0.5, 0, 0);" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="titleLabel" layoutX="67.0" layoutY="214.0" text="Digital Notes" textFill="WHITE">
                <font>
@@ -57,33 +54,33 @@
    </left>
 
    <right>
-      <AnchorPane prefHeight="800.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="800.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(to bottom, #2b2f3a, #1a1c22); -fx-effect: innershadow(gaussian, rgba(30,144,255,0.5), 20, 0.5, 0, 0);" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="secureLoginLabel" layoutX="227.0" layoutY="95.0" text="Secure Login">
+            <Label fx:id="secureLoginLabel" layoutX="227.0" layoutY="95.0" text="Secure Login" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="24.0" />
                </font>
             </Label>
 
-            <Label fx:id="usernameLabel" layoutX="252.0" layoutY="237.0" text="Username">
+            <Label fx:id="usernameLabel" layoutX="255.0" layoutY="233.0" text="Username" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
             <TextField fx:id="usernameField" layoutX="133.0" layoutY="268.0" prefHeight="40.0" prefWidth="345.0" />
 
-            <Label fx:id="passwordLabel" layoutX="252.0" layoutY="343.0" text="Password">
+            <Label fx:id="passwordLabel" layoutX="258.0" layoutY="339.0" text="Password" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
             <PasswordField fx:id="passwordField" layoutX="133.0" layoutY="374.0" prefHeight="40.0" prefWidth="345.0" />
 
-            <Button fx:id="loginButton" layoutX="120.0" layoutY="509.0" prefHeight="50.0" prefWidth="371.0" text="Login" />
+            <Button fx:id="loginButton" layoutX="120.0" layoutY="509.0" onAction="#onLogin" prefHeight="50.0" prefWidth="371.0" text="Login" />
 
-            <Label fx:id="noAccountLabel" layoutX="180.0" layoutY="573.0" text="You don't have an account." />
+            <Label fx:id="noAccountLabel" layoutX="180.0" layoutY="573.0" text="You don't have an account." textFill="WHITE" />
 
-            <Button fx:id="signUpButton" layoutX="365.0" layoutY="569.0" text="Sign Up" />
+            <Button fx:id="signUpButton" layoutX="365.0" layoutY="569.0" onAction="#goToSignUp" text="Sign Up" />
          </children>
       </AnchorPane>
    </right>

@@ -1,34 +1,45 @@
 .list-view {
-    -fx-background-color: #252729;
-    -fx-border-color: #3a3c41;
-    -fx-border-radius: 6px;
-    -fx-control-inner-background: #252729;
-    -fx-control-inner-background-alt: #252729;
-}
-
-.list-view .list-cell {
-    -fx-background-color: #252729;
-    -fx-text-fill: #f1f1f1;
-    -fx-border-color: transparent;
-    -fx-padding: 6px 8px;
-    -fx-cursor: default;
-}
-
-.list-view .list-cell:filled {
-    -fx-cursor: hand;
-}
-
-.list-view .list-cell:filled:hover {
-    -fx-background-color: #2e3236;
-    -fx-border-color: #58b0a7;
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(100,150,255,0.3);
     -fx-border-width: 1px;
-    -fx-border-radius: 4px;
+    -fx-border-radius: 16;
+    -fx-padding: 0;
 }
 
-.list-view .list-cell:filled:selected {
-    -fx-background-color: #3a3e43;
-    -fx-text-fill: #58b0a7;
-    -fx-font-weight: bold;
-    -fx-border-color: #58b0a7;
-    -fx-border-radius: 4px;
+.list-view .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    -fx-border-color: transparent;
+    -fx-border-radius: 16;
+}
+
+.list-view .scroll-pane .viewport {
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+}
+
+.list-view .virtual-flow {
+    -fx-background-color: #2f313a;
+    -fx-background-radius: 16;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-padding: 6px 12px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #34363f;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #444;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(160,160,160,0.15), 6, 0.2, 0, 0);
 }

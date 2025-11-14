@@ -1,28 +1,36 @@
 package com.group6.digitalnotes.model;
 
 public class Note {
-    private int id;
+    private int noteId;
+    private int userId;
     private String title;
     private String content;
 
-    public Note() {}
-
-    public Note(String title, String content) {
+    // Constructor for creating new note (no noteId yet)
+    public Note(int userId, String title, String content) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
     }
 
-    public Note(int id, String title, String content) {
-        this.id = id;
+    // Constructor for note from DB (with noteId)
+    public Note(int noteId, int userId, String title, String content) {
+        this.noteId = noteId;
+        this.userId = userId;
         this.title = title;
         this.content = content;
     }
 
-    // Getters & Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // Getters and setters
+    public int getNoteId() { return noteId; }
+    public void setNoteId(int noteId) { this.noteId = noteId; }
+
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 }

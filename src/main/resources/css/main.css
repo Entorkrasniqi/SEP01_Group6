@@ -9,3 +9,7 @@
     -fx-font-family: "Segoe UI", sans-serif;
     -fx-background-color: #1e1f22;
 }
+
+#editorPane, #sidebar {
+    -fx-background-color: #262a31;
+}
