@@ -29,6 +29,7 @@
 
 ## 🧱 Database Schema (Visual Representation)
 
+### Users Table
 | Column        | Type        | Notes               |
 |---------------|-------------|----------------------|
 | user_id       | INT         | PK                  |
@@ -38,6 +39,7 @@
 | created_at    | TIMESTAMP   | DEFAULT CURRENT_TIMESTAMP |
 | updated_at    | TIMESTAMP   | Auto-updated        |
 
+### Notes Table
 | Column        | Type        | Notes               |
 |---------------|-------------|----------------------|
 | note_id       | INT         | PK                  |
@@ -47,16 +49,16 @@
 | created_at    | TIMESTAMP   | DEFAULT CURRENT_TIMESTAMP |
 | updated_at    | TIMESTAMP   | Auto-updated        |
 
+**Relationship:**  
 users (1) —— (∞) notes
 
+### Localization Strings Table
 | Column  | Type        | Notes      |
 |---------|-------------|------------|
 | id      | INT         | PK         |
 | key     | VARCHAR     | NOT NULL   |
 | value   | VARCHAR     | NOT NULL   |
 | language| VARCHAR(10) | NOT NULL   |
-
-
 
 ---
 
@@ -69,8 +71,9 @@ users (1) —— (∞) notes
 | Implemented Login/Signup Controllers | |
 | Created UserDAO and User Model | |
 | Performed Database Redesign (Users + Localization Tables) | |
-| Ensured Consistent UI Styling & Positioning | |
-| Performed Full Code Clean-Up (removed static text/alerts) | |
+| Implemented Database Localization | |
+| Ensured Consistent UI Styling & Positioning Across All Languages | |
+| Performed Full Code Clean-Up (Removed Static Text & Alerts) | |
 | **Total Time Spent** | **45h** |
 
 ---
@@ -83,4 +86,3 @@ users (1) —— (∞) notes
 
 ## 📄 Summary
 Sprint 6 significantly improved the structure, readability, and maintainability of the project. It introduced database-powered localization, strengthened backend architecture through schema redesign and DAO improvements, and established a functional authentication workflow. The UI now maintains consistent styling across all languages, and the codebase is fully cleaned and ready for acceptance test planning.
-
