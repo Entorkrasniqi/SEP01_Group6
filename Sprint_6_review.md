@@ -1,1 +1,86 @@
+# 🏁 Sprint 6 Report
+
+## 🎯 Sprint Objective
+- Extend localization support into the **database layer** while improving code quality and maintainability.  
+- Perform **static code review**, refactoring, and code cleanup.  
+- Prepare **acceptance test plans** for the system.  
+- Implement a complete **authentication system** including Login and Signup pages.  
+- Build login and signup UIs using Scene Builder with full controller logic.  
+- Redesign and expand the database schema (Users table + Localization Strings table).  
+- Remove all static text and alerts from the codebase.  
+- Maintain consistent UI styling and component positioning across all languages.  
+- Update architecture documentation (ER diagram & UML models).  
+
+---
+
+## ⚙️ Challenges
+- Keeping all UI elements **consistent across all supported languages**, including RTL and languages with varying text lengths.
+
+---
+
+## 🚀 Improvements
+- Full **authentication system** implemented (login + signup pages + controllers).  
+- Codebase fully cleaned and refactored, removing all static text.  
+- Transition from resource bundles to **database-based localization**.  
+- Unified and consistent UI styling & layout across English, Arabic, and Japanese.  
+- Database redesigned for better localization support and scalability.
+
+---
+
+## 🧱 Database Schema (Visual Representation)
+
+| Column        | Type        | Notes               |
+|---------------|-------------|----------------------|
+| user_id       | INT         | PK                  |
+| username      | VARCHAR     | UNIQUE, NOT NULL    |
+| password      | VARCHAR     | NOT NULL            |
+| nickname      | VARCHAR     |                      |
+| created_at    | TIMESTAMP   | DEFAULT CURRENT_TIMESTAMP |
+| updated_at    | TIMESTAMP   | Auto-updated        |
+
+| Column        | Type        | Notes               |
+|---------------|-------------|----------------------|
+| note_id       | INT         | PK                  |
+| user_id       | INT         | FK → users.user_id  |
+| title         | VARCHAR     | NOT NULL            |
+| content       | TEXT        | NOT NULL            |
+| created_at    | TIMESTAMP   | DEFAULT CURRENT_TIMESTAMP |
+| updated_at    | TIMESTAMP   | Auto-updated        |
+
+users (1) —— (∞) notes
+
+| Column  | Type        | Notes      |
+|---------|-------------|------------|
+| id      | INT         | PK         |
+| key     | VARCHAR     | NOT NULL   |
+| value   | VARCHAR     | NOT NULL   |
+| language| VARCHAR(10) | NOT NULL   |
+
+
+
+---
+
+## 👥 Individual Contributions (Omar)
+
+| Task | Time Spent |
+|------|------------|
+| Implemented Auth System (Login & Signup) | |
+| Designed Login/Signup UI using Scene Builder | |
+| Implemented Login/Signup Controllers | |
+| Created UserDAO and User Model | |
+| Performed Database Redesign (Users + Localization Tables) | |
+| Ensured Consistent UI Styling & Positioning | |
+| Performed Full Code Clean-Up (removed static text/alerts) | |
+| **Total Time Spent** | **45h** |
+
+---
+
+## 🗂️ Sprint 6 Resources
+- Requirements PDF included in GitHub Sprint 6 documentation.  
+- Updated ER Diagram & UML sketches located in `/docs`.  
+
+---
+
+## 📄 Summary
+Sprint 6 significantly improved the structure, readability, and maintainability of the project. It introduced database-powered localization, strengthened backend architecture through schema redesign and DAO improvements, and established a functional authentication workflow. The UI now maintains consistent styling across all languages, and the codebase is fully cleaned and ready for acceptance test planning.
 
