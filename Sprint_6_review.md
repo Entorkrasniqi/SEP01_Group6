@@ -79,8 +79,7 @@ users (1) —— (∞) notes
 ---
 
 ## 🗂️ Sprint 6 Resources
-- Requirements PDF included in GitHub Sprint 6 documentation.  
-- Updated ER Diagram & UML sketches located in `/docs`.  
+
 
 ---
 
