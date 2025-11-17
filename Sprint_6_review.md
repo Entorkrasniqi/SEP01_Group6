@@ -82,6 +82,7 @@ users (1) —— (∞) notes
 PMD report: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD_Code_Review_Report.pdf
 
 PMD report evidence: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD_report_evidence.png
+
 ---
 
 ---
@@ -90,6 +91,7 @@ PMD report evidence: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD
 ER-Diagram: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/erdiagram_projekti.png
 
 Relational schema: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/ERDIAGRAM.png
+
 ---
 
 ---
