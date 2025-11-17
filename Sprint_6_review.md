@@ -79,9 +79,9 @@ users (1) —— (∞) notes
 ---
 ## Static code review
 
-PMD report: 
+PMD report: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD_Code_Review_Report.pdf
 
-PMD report evidence:
+PMD report evidence: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD_report_evidence.png
 
 ---
 ---
