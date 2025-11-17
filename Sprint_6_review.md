@@ -85,7 +85,7 @@ PMD report evidence: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD
 ---
 
 ---
-ER-Diagram and relational schema
+## ER-Diagram and relational schema
 
 ER-Diagram: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/erdiagram_projekti.png
 
