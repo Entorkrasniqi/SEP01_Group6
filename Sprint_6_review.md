@@ -77,6 +77,14 @@ users (1) —— (∞) notes
 | **Total Time Spent** | **45h** |
 
 ---
+## Static code review
+
+PMD report: 
+
+PMD report evidence:
+
+---
+---
 
 ## 🗂️ Sprint 6 Resources
 
