@@ -105,6 +105,10 @@ Relational schema: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/ERDIA
 
 ## 🗂️ Sprint 6 Resources
 
+**Trello Board:**  
+🔗 [Sprint 6 Trello Board](https://trello.com/invite/b/690b1c9ba21f1cb17fbf1303/ATTI6bd64b2761ca88119fb4ec0df4bd8702C8B2165C/sprint-6)
+
+---
 
 ---
 
