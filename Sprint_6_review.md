@@ -77,7 +77,7 @@ users (1) —— (∞) notes
 | Acceptance Test Planning | 1h | Doni |
 | Sprint Review & Report | 2h | Omar / Doni |
 | Documentation Update | 3h | Doni |
-| Code CleanUp | 10h | Omar/doni7saru |
+| Code CleanUp | 10h | Omar / doni / saru |
 | Make a Login page & Login controller | 10h | Omar |
 | Make Signup page & signup controller | 10h | Omar |
 
