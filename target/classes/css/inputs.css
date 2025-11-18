@@ -1,0 +1,56 @@
+/* TextField and PasswordField */
+.text-field, .password-field {
+    -fx-background-color: #2f313a;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(100,150,255,0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 16;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #999;
+    -fx-effect: none;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: #34363f;
+    -fx-border-color: rgba(100,150,255,0.6);
+    -fx-effect: dropshadow(gaussian, rgba(100,150,255,0.25), 6, 0.2, 0, 0);
+}
+
+/* TextArea */
+.text-area {
+    -fx-background-color: #2f313a;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(100,150,255,0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 16;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #999;
+}
+
+.text-area:focused {
+    -fx-background-color: #34363f;
+    -fx-border-color: rgba(100,150,255,0.6);
+    -fx-effect: dropshadow(gaussian, rgba(100,150,255,0.25), 6, 0.2, 0, 0);
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    -fx-border-color: transparent;
+    -fx-border-radius: 16;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}

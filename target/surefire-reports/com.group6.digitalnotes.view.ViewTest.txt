@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.group6.digitalnotes.view.ViewTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.608 s -- in com.group6.digitalnotes.view.ViewTest

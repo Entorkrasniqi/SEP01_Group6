@@ -1,0 +1,34 @@
+.button,
+.menu-button-minimal,
+.label-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-border-color: rgba(100,150,255,0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6px 12px;
+    -fx-pref-height: 28px;
+    -fx-cursor: hand;
+}
+
+.button:hover,
+.menu-button-minimal:hover,
+.label-button:hover {
+    -fx-background-color: #34363f;
+    -fx-border-color: rgba(100,150,255,0.6);
+}
+
+.button:pressed,
+.menu-button-minimal:pressed,
+.label-button:pressed {
+    -fx-background-color: #444;
+    -fx-border-color: rgba(100,150,255,0.8);
+    -fx-translate-y: 1px;
+}
+
+.menu-button .arrow-button {
+    -fx-padding: 0 6px 0 6px;
+}

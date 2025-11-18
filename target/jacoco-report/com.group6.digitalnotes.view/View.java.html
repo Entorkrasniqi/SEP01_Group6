@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>View.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.view</a> &gt; <span class="el_source">View.java</span></div><h1>View.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.view;
+
+import com.group6.digitalnotes.dao.NoteDAO;
+import com.group6.digitalnotes.model.Note;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.util.List;
+
+<span class="fc" id="L18">public class View extends Application {</span>
+
+    private Timeline timer;
+<span class="fc" id="L21">    private int timeRemaining = 15 * 60; // 15 minutes in seconds</span>
+<span class="fc" id="L22">    private boolean isTimerRunning = false;</span>
+    private Label timerLabel;
+    private TextArea contentArea;
+    private TextField titleField;
+    private ListView&lt;String&gt; listView;
+
+    private Stage primaryStage;
+<span class="fc" id="L29">    private boolean isHidden = true;</span>
+    private VBox sidebar;
+    private Button notesBtn;
+
+<span class="fc" id="L33">    private NoteDAO noteDAO = new NoteDAO();</span>
+
+    @Override
+    public void start(Stage primaryStage) {
+<span class="fc" id="L37">        this.primaryStage = primaryStage;</span>
+<span class="fc" id="L38">        createFallbackView(primaryStage);</span>
+<span class="fc" id="L39">    }</span>
+
+    private void createFallbackView(Stage primaryStage) {
+<span class="fc" id="L42">        BorderPane root = new BorderPane();</span>
+<span class="fc" id="L43">        root.setStyle(&quot;-fx-border-width: 0; -fx-background-color: white;&quot;);</span>
+
+        // Sidebar for notes
+<span class="fc" id="L46">        sidebar = new VBox(5);</span>
+<span class="fc" id="L47">        sidebar.setStyle(&quot;-fx-padding: 5px; -fx-background-color: #f8f8f8; -fx-pref-width: 150px; -fx-border-width: 0;&quot;);</span>
+
+<span class="fc" id="L49">        listView = new ListView&lt;&gt;();</span>
+<span class="fc" id="L50">        listView.setStyle(</span>
+                &quot;-fx-border-width: 0; &quot; +
+                        &quot;-fx-background-radius: 0; &quot; +
+                        &quot;-fx-border-radius: 0; &quot; +
+                        &quot;-fx-focus-color: transparent; &quot; +
+                        &quot;-fx-faint-focus-color: transparent; &quot; +
+                        &quot;-fx-font-size: 11px; &quot; +
+                        &quot;-fx-background-color: #f8f8f8;&quot;
+        );
+<span class="fc" id="L59">        VBox.setVgrow(listView, Priority.ALWAYS);</span>
+
+<span class="fc" id="L61">        sidebar.getChildren().addAll(listView);</span>
+
+        // Main content area
+<span class="fc" id="L64">        VBox mainContent = new VBox(5);</span>
+<span class="fc" id="L65">        mainContent.setStyle(&quot;-fx-padding: 15px; -fx-border-width: 0; -fx-background-color: white;&quot;);</span>
+
+<span class="fc" id="L67">        titleField = new TextField();</span>
+<span class="fc" id="L68">        titleField.setPromptText(&quot;Title...&quot;);</span>
+<span class="fc" id="L69">        titleField.setStyle(</span>
+                &quot;-fx-font-size: 14px; &quot; +
+                        &quot;-fx-border-width: 0; &quot; +
+                        &quot;-fx-background-radius: 0; &quot; +
+                        &quot;-fx-border-radius: 0; &quot; +
+                        &quot;-fx-focus-color: transparent; &quot; +
+                        &quot;-fx-faint-focus-color: transparent; &quot; +
+                        &quot;-fx-pref-height: 25px; &quot; +
+                        &quot;-fx-text-fill: #000000; &quot; +
+                        &quot;-fx-prompt-text-fill: #555555; &quot; +
+                        &quot;-fx-font-family: 'System'; &quot; +
+                        &quot;-fx-background-color: #f9f9f9;&quot;
+        );
+<span class="fc" id="L82">        titleField.setEditable(false);</span>
+
+<span class="fc" id="L84">        contentArea = new TextArea();</span>
+<span class="fc" id="L85">        contentArea.setPromptText(&quot;Start writing notes...&quot;);</span>
+<span class="fc" id="L86">        contentArea.setWrapText(true);</span>
+<span class="fc" id="L87">        contentArea.setStyle(</span>
+                &quot;-fx-border-width: 0; &quot; +
+                        &quot;-fx-background-radius: 0; &quot; +
+                        &quot;-fx-border-radius: 0; &quot; +
+                        &quot;-fx-focus-color: transparent; &quot; +
+                        &quot;-fx-faint-focus-color: transparent; &quot; +
+                        &quot;-fx-font-size: 12px; &quot; +
+                        &quot;-fx-text-fill: #000000; &quot; +
+                        &quot;-fx-prompt-text-fill: #555555; &quot; +
+                        &quot;-fx-font-family: 'System'; &quot; +
+                        &quot;-fx-background-color: #f9f9f9;&quot;
+        );
+<span class="fc" id="L99">        contentArea.setEditable(false);</span>
+<span class="fc" id="L100">        VBox.setVgrow(contentArea, Priority.ALWAYS);</span>
+
+        // Buttons
+<span class="fc" id="L103">        HBox buttonBar = new HBox(10);</span>
+<span class="fc" id="L104">        buttonBar.setStyle(&quot;-fx-border-width: 0; -fx-alignment: bottom-right; -fx-padding: 5px;&quot;);</span>
+
+<span class="fc" id="L106">        Button newNoteBtn = new Button(&quot;New&quot;);</span>
+<span class="fc" id="L107">        newNoteBtn.setStyle(&quot;-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;&quot;);</span>
+
+<span class="fc" id="L109">        Button deleteBtn = new Button(&quot;Del&quot;);</span>
+<span class="fc" id="L110">        deleteBtn.setStyle(&quot;-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;&quot;);</span>
+
+<span class="fc" id="L112">        notesBtn = new Button(&quot;Notes&quot;);</span>
+<span class="fc" id="L113">        notesBtn.setStyle(&quot;-fx-background-color: transparent; -fx-border-width: 0; -fx-font-size: 8px; -fx-cursor: hand; -fx-text-fill: #000000; -fx-padding: 2px;&quot;);</span>
+<span class="pc" id="L114">        notesBtn.setOnAction(e -&gt; toggleSidebarVisibility());</span>
+
+<span class="fc" id="L116">        timerLabel = new Label(&quot;15:00&quot;);</span>
+<span class="fc" id="L117">        timerLabel.setStyle(&quot;-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';&quot;);</span>
+
+<span class="fc" id="L119">        buttonBar.getChildren().addAll(newNoteBtn, deleteBtn, notesBtn, timerLabel);</span>
+
+<span class="fc" id="L121">        mainContent.getChildren().addAll(titleField, contentArea, buttonBar);</span>
+
+        // Timer setup
+<span class="fc" id="L124">        setupTimer();</span>
+<span class="pc" id="L125">        timerLabel.setOnMouseClicked(e -&gt; toggleTimer());</span>
+
+        // Button actions
+<span class="fc" id="L128">        newNoteBtn.setOnAction(e -&gt; {</span>
+<span class="nc" id="L129">            titleField.clear();</span>
+<span class="nc" id="L130">            contentArea.clear();</span>
+<span class="nc" id="L131">            contentArea.setPromptText(&quot;Start writing...&quot;);</span>
+<span class="nc" id="L132">            titleField.setEditable(true);</span>
+<span class="nc" id="L133">            contentArea.setEditable(true);</span>
+<span class="nc" id="L134">        });</span>
+
+<span class="pc" id="L136">        deleteBtn.setOnAction(e -&gt; deleteSelectedNote());</span>
+
+<span class="pc" id="L138">        listView.setOnMouseClicked(e -&gt; loadSelectedNote());</span>
+
+        // Load notes from database
+<span class="fc" id="L141">        loadNotesFromDB();</span>
+
+<span class="fc" id="L143">        root.setCenter(mainContent);</span>
+
+<span class="fc" id="L145">        Scene scene = new Scene(root, 800, 600);</span>
+<span class="fc" id="L146">        scene.setOnKeyPressed(e -&gt; {</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">            if (e.getCode() == KeyCode.H &amp;&amp; e.isControlDown()) {</span>
+<span class="nc" id="L148">                toggleSidebarVisibility();</span>
+            }
+<span class="nc" id="L150">        });</span>
+<span class="fc" id="L151">        scene.getRoot().setStyle(&quot;-fx-background-color: white;&quot;);</span>
+
+<span class="pc" id="L153">        primaryStage.setOnCloseRequest(e -&gt; Platform.exit());</span>
+<span class="fc" id="L154">        primaryStage.setTitle(&quot;Digital Notes&quot;);</span>
+<span class="fc" id="L155">        primaryStage.setScene(scene);</span>
+<span class="fc" id="L156">        primaryStage.setMinWidth(600);</span>
+<span class="fc" id="L157">        primaryStage.setMinHeight(400);</span>
+<span class="fc" id="L158">        primaryStage.show();</span>
+<span class="fc" id="L159">    }</span>
+
+    private void setupTimer() {
+<span class="pc" id="L162">        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -&gt; updateTimer()));</span>
+<span class="fc" id="L163">        timer.setCycleCount(Timeline.INDEFINITE);</span>
+<span class="fc" id="L164">        updateTimerDisplay();</span>
+<span class="fc" id="L165">    }</span>
+
+    private void toggleTimer() {
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!isTimerRunning) {</span>
+<span class="nc" id="L169">            startTimer();</span>
+        } else {
+<span class="nc" id="L171">            saveAndStopTimer();</span>
+        }
+<span class="nc" id="L173">    }</span>
+
+    private void startTimer() {
+<span class="nc" id="L176">        isTimerRunning = true;</span>
+<span class="nc" id="L177">        timerLabel.setStyle(&quot;-fx-font-size: 12px; -fx-text-fill: #333333; -fx-cursor: default; -fx-font-family: 'System';&quot;);</span>
+<span class="nc" id="L178">        timer.play();</span>
+
+<span class="nc" id="L180">        titleField.setEditable(true);</span>
+<span class="nc" id="L181">        contentArea.setEditable(true);</span>
+<span class="nc" id="L182">        titleField.clear();</span>
+<span class="nc" id="L183">        contentArea.clear();</span>
+<span class="nc" id="L184">        contentArea.requestFocus();</span>
+<span class="nc" id="L185">    }</span>
+
+    private void saveAndStopTimer() {
+<span class="nc" id="L188">        String title = titleField.getText().trim();</span>
+<span class="nc" id="L189">        String content = contentArea.getText().trim();</span>
+
+<span class="nc bnc" id="L191" title="All 4 branches missed.">        if (title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
+<span class="nc" id="L192">            title = &quot;Timed Session - &quot; + java.time.LocalDateTime.now().format(</span>
+<span class="nc" id="L193">                    java.time.format.DateTimeFormatter.ofPattern(&quot;MM-dd HH:mm&quot;));</span>
+<span class="nc" id="L194">            titleField.setText(title);</span>
+        }
+
+<span class="nc bnc" id="L197" title="All 4 branches missed.">        if (!title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
+            // Save to DB
+<span class="nc" id="L199">            Note note = new Note(title, content);</span>
+<span class="nc" id="L200">            noteDAO.addNote(note);</span>
+
+<span class="nc bnc" id="L202" title="All 2 branches missed.">            if (!listView.getItems().contains(title)) {</span>
+<span class="nc" id="L203">                listView.getItems().add(title);</span>
+            }
+<span class="nc" id="L205">            showNotification(&quot;Note saved!&quot;);</span>
+        }
+
+<span class="nc" id="L208">        resetTimerAndFields();</span>
+<span class="nc" id="L209">    }</span>
+
+    private void resetTimerAndFields() {
+<span class="nc" id="L212">        timer.stop();</span>
+<span class="nc" id="L213">        isTimerRunning = false;</span>
+<span class="nc" id="L214">        timeRemaining = 15 * 60;</span>
+<span class="nc" id="L215">        updateTimerDisplay();</span>
+
+<span class="nc" id="L217">        titleField.setEditable(false);</span>
+<span class="nc" id="L218">        contentArea.setEditable(false);</span>
+
+<span class="nc" id="L220">        titleField.clear();</span>
+<span class="nc" id="L221">        contentArea.clear();</span>
+<span class="nc" id="L222">        contentArea.setPromptText(&quot;Press the timer to start writing...&quot;);</span>
+
+<span class="nc" id="L224">        timerLabel.setStyle(&quot;-fx-font-size: 12px; -fx-text-fill: #000000; -fx-cursor: hand; -fx-font-family: 'System';&quot;);</span>
+<span class="nc" id="L225">    }</span>
+
+    private void updateTimer() {
+<span class="nc" id="L228">        timeRemaining--;</span>
+<span class="nc" id="L229">        updateTimerDisplay();</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (timeRemaining &lt;= 0) {</span>
+<span class="nc" id="L232">            timerFinished();</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        } else if (timeRemaining &lt;= 60) {</span>
+<span class="nc" id="L234">            timerLabel.setStyle(&quot;-fx-font-size: 12px; -fx-text-fill: #8B0000; -fx-font-family: 'System';&quot;);</span>
+        }
+<span class="nc" id="L236">    }</span>
+
+    private void updateTimerDisplay() {
+<span class="fc" id="L239">        int minutes = timeRemaining / 60;</span>
+<span class="fc" id="L240">        int seconds = timeRemaining % 60;</span>
+<span class="fc" id="L241">        timerLabel.setText(String.format(&quot;%02d:%02d&quot;, minutes, seconds));</span>
+<span class="fc" id="L242">    }</span>
+
+    private void timerFinished() {
+<span class="nc" id="L245">        saveAndStopTimer();</span>
+<span class="nc" id="L246">        showNotification(&quot;Time's up!&quot;);</span>
+<span class="nc" id="L247">    }</span>
+
+    private void toggleSidebarVisibility() {
+<span class="nc" id="L250">        BorderPane root = (BorderPane) primaryStage.getScene().getRoot();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        if (isHidden) {</span>
+<span class="nc" id="L252">            root.setRight(sidebar);</span>
+<span class="nc" id="L253">            isHidden = false;</span>
+        } else {
+<span class="nc" id="L255">            root.setRight(null);</span>
+<span class="nc" id="L256">            isHidden = true;</span>
+        }
+<span class="nc" id="L258">    }</span>
+
+    private void deleteSelectedNote() {
+<span class="nc" id="L261">        String selectedNote = listView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (selectedNote != null) {</span>
+<span class="nc" id="L263">            noteDAO.deleteNoteByTitle(selectedNote);</span>
+<span class="nc" id="L264">            listView.getItems().remove(selectedNote);</span>
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (titleField.getText().equals(selectedNote)) {</span>
+<span class="nc" id="L267">                titleField.clear();</span>
+<span class="nc" id="L268">                contentArea.clear();</span>
+            }
+
+<span class="nc" id="L271">            showNotification(&quot;Note deleted!&quot;);</span>
+        } else {
+<span class="nc" id="L273">            showNotification(&quot;Please select a note to delete!&quot;);</span>
+        }
+<span class="nc" id="L275">    }</span>
+
+    private void loadSelectedNote() {
+<span class="nc" id="L278">        String selected = listView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (selected != null) {</span>
+<span class="nc" id="L280">            titleField.setText(selected);</span>
+<span class="nc" id="L281">            String content = noteDAO.getNoteByTitle(selected);</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            contentArea.setText(content != null ? content : &quot;&quot;);</span>
+        }
+<span class="nc" id="L284">    }</span>
+
+    private void loadNotesFromDB() {
+<span class="fc" id="L287">        List&lt;Note&gt; notes = noteDAO.getAllNotes();</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">        for (Note note : notes) {</span>
+<span class="nc" id="L289">            listView.getItems().add(note.getTitle());</span>
+<span class="nc" id="L290">        }</span>
+<span class="fc" id="L291">    }</span>
+
+    private void showNotification(String message) {
+<span class="nc" id="L294">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L295">        alert.setTitle(&quot;Notes&quot;);</span>
+<span class="nc" id="L296">        alert.setHeaderText(null);</span>
+<span class="nc" id="L297">        alert.setContentText(message);</span>
+<span class="nc" id="L298">        alert.showAndWait();</span>
+<span class="nc" id="L299">    }</span>
+
+    public static void launchApp(String[] args) {
+<span class="nc" id="L302">        Application.launch(View.class, args);</span>
+<span class="nc" id="L303">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
