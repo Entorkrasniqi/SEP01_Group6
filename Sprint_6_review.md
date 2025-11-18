@@ -70,16 +70,16 @@ users (1) —— (∞) notes
 
 | Task | Time Spent | Owner |
 |------|-------------|-------|
-| UI Localization | 10h | Entor |
-| Language Switcher | 4h | Entor / Omar |
-| Full GUI Localization | 5h | Sarujan |
-| RTL Support | 3h | Sarujan / Omar |
-| Localization Testing & QA | 1h | Doni |
+| Database Localization | 10h | Entor / omar |
+| Static Code Review | 10h | Doni |
+| Architecture Documentation | 10h | Entor / Doni |
+| Refactoring | 3h | Sarujan / Omar |
+| Acceptance Test Planning | 1h | Doni |
 | Sprint Review & Report | 2h | Omar / Doni |
-| Documentation Update | 2h | Omar |
-| Backlog Update | 2h | Omar |
-| Code refactoring | 4h | Omar |
-| Styling| 3h | Omar |
+| Documentation Update | 3h | Doni |
+| Code CleanUp | 10h | Omar/doni7saru |
+| Make a Login page & Login controller | 10h | Omar |
+| Make Signup page & signup controller | 10h | Omar |
 
 ---
 
