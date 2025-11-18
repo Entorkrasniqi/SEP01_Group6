@@ -64,17 +64,24 @@ users (1) —— (∞) notes
 
 ## 👥 Individual Contributions (Omar)
 
-| Task | Time Spent |
-|------|------------|
-| Implemented Auth System (Login & Signup) | |
-| Designed Login/Signup UI using Scene Builder | |
-| Implemented Login/Signup Controllers | |
-| Created UserDAO and User Model | |
-| Performed Database Redesign (Users + Localization Tables) | |
-| Implemented Database Localization | |
-| Ensured Consistent UI Styling & Positioning Across All Languages | |
-| Performed Full Code Clean-Up (Removed Static Text & Alerts) | |
-| **Total Time Spent** | **45h** |
+---
+
+## 👥 Individual Contributions
+
+| Task | Time Spent | Owner |
+|------|-------------|-------|
+| UI Localization | 10h | Entor |
+| Language Switcher | 4h | Entor / Omar |
+| Full GUI Localization | 5h | Sarujan |
+| RTL Support | 3h | Sarujan / Omar |
+| Localization Testing & QA | 1h | Doni |
+| Sprint Review & Report | 2h | Omar / Doni |
+| Documentation Update | 2h | Omar |
+| Backlog Update | 2h | Omar |
+| Code refactoring | 4h | Omar |
+| Styling| 3h | Omar |
+
+---
 
 ---
 ## Static code review
