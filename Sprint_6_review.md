@@ -93,11 +93,13 @@ PMD report evidence: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/PMD
 ---
 
 ---
-## ER-Diagram and relational schema
+## ER-Diagram, UML-Diagram and relational schema
 
 ER-Diagram: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/erdiagram_projekti.png
 
 Relational schema: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/ERDIAGRAM.png
+
+UML-Diagram: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/Screenshot%202025-11-18%20at%2019.24.17.png
 
 ---
 
