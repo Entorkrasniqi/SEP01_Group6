@@ -73,7 +73,7 @@ users (1) —— (∞) notes
 | Database Localization | 10h | Entor / omar |
 | Static Code Review | 10h | Doni |
 | Architecture Documentation | 10h | Entor / Doni |
-| Refactoring | 3h | Sarujan / Omar |
+| Refactoring | 7h | Sarujan / Doni |
 | Acceptance Test Planning | 1h | Doni |
 | Sprint Review & Report | 2h | Omar / Doni |
 | Documentation Update | 3h | Doni |
