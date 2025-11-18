@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.dao</a> &gt; <span class="el_source">LocalizationDAO.java</span></div><h1>LocalizationDAO.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.dao;
+
+import com.group6.digitalnotes.database.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="fc" id="L12">public class LocalizationDAO {</span>
+
+    // Get a single key and language
+    public String getTranslation(String key, String language) {
+<span class="nc" id="L16">        String sql = &quot;SELECT value FROM localization_strings WHERE `key` = ? AND language = ? LIMIT 1&quot;;</span>
+
+<span class="nc" id="L18">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="nc" id="L19">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+
+<span class="nc" id="L21">            stmt.setString(1, key);</span>
+<span class="nc" id="L22">            stmt.setString(2, language);</span>
+
+<span class="nc" id="L24">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">                if (rs.next()) {</span>
+<span class="nc" id="L26">                    return rs.getString(&quot;value&quot;);</span>
+                }
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            }</span>
+<span class="nc bnc" id="L29" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L30">            e.printStackTrace();</span>
+<span class="nc" id="L31">        }</span>
+<span class="nc" id="L32">        return null;</span>
+    }
+
+    // Get all translations for a language, Map&lt;key, value&gt;
+    public Map&lt;String, String&gt; getTranslationsForLanguage(String language) {
+<span class="fc" id="L37">        String sql = &quot;SELECT `key`, value FROM localization_strings WHERE language = ?&quot;;</span>
+<span class="fc" id="L38">        Map&lt;String, String&gt; translations = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L40">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L41">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L43">            stmt.setString(1, language);</span>
+
+<span class="fc" id="L45">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L47">                    translations.put(rs.getString(&quot;key&quot;), rs.getString(&quot;value&quot;));</span>
+                }
+            }
+<span class="nc" id="L50">        } catch (SQLException e) {</span>
+<span class="nc" id="L51">            e.printStackTrace();</span>
+<span class="fc" id="L52">        }</span>
+
+<span class="fc" id="L54">        return translations;</span>
+    }
+
+    // default language
+    public String getTranslationWithFallback(String key, String language, String defaultLanguage) {
+<span class="nc" id="L59">        String value = getTranslation(key, language);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (value != null) {</span>
+<span class="nc" id="L61">            return value;</span>
+        }
+<span class="nc" id="L63">        return getTranslation(key, defaultLanguage);</span>
+    }
+
+    // Convenience method used by controllers: load all key/value pairs for a language
+    public Map&lt;String, String&gt; loadLanguage(String language) {
+        // Delegate to getTranslationsForLanguage so there is a single implementation
+<span class="fc" id="L69">        return getTranslationsForLanguage(language);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

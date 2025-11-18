@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoteDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.dao</a> &gt; <span class="el_source">NoteDAO.java</span></div><h1>NoteDAO.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.dao;
+
+import com.group6.digitalnotes.database.DBConnection;
+import com.group6.digitalnotes.model.Note;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L10">public class NoteDAO {</span>
+
+    public void addNote(Note note) {
+<span class="fc" id="L13">        String sql = &quot;INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)&quot;;</span>
+<span class="fc" id="L14">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L15">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
+<span class="fc" id="L16">            stmt.setInt(1, note.getUserId());</span>
+<span class="fc" id="L17">            stmt.setString(2, note.getTitle());</span>
+<span class="fc" id="L18">            stmt.setString(3, note.getContent());</span>
+<span class="fc" id="L19">            stmt.executeUpdate();</span>
+
+<span class="fc" id="L21">            ResultSet keys = stmt.getGeneratedKeys();</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">            if (keys.next()) note.setNoteId(keys.getInt(1));</span>
+<span class="nc" id="L23">        } catch (SQLException e) {</span>
+<span class="nc" id="L24">            e.printStackTrace();</span>
+<span class="fc" id="L25">        }</span>
+<span class="fc" id="L26">    }</span>
+
+    public List&lt;Note&gt; getNotesForUser(int userId) {
+<span class="fc" id="L29">        List&lt;Note&gt; notes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L30">        String sql = &quot;SELECT * FROM notes WHERE user_id = ?&quot;;</span>
+<span class="fc" id="L31">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L32">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L33">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L34">            ResultSet rs = stmt.executeQuery();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L36">                notes.add(new Note(</span>
+<span class="fc" id="L37">                        rs.getInt(&quot;note_id&quot;),</span>
+<span class="fc" id="L38">                        rs.getInt(&quot;user_id&quot;),</span>
+<span class="fc" id="L39">                        rs.getString(&quot;title&quot;),</span>
+<span class="fc" id="L40">                        rs.getString(&quot;content&quot;)</span>
+                ));
+            }
+<span class="nc" id="L43">        } catch (SQLException e) {</span>
+<span class="nc" id="L44">            e.printStackTrace();</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">        return notes;</span>
+    }
+
+    public String getNoteByTitle(int userId, String title) {
+<span class="fc" id="L50">        String sql = &quot;SELECT content FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
+<span class="fc" id="L51">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L52">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L53">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L54">            stmt.setString(2, title);</span>
+<span class="fc" id="L55">            ResultSet rs = stmt.executeQuery();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (rs.next()) return rs.getString(&quot;content&quot;);</span>
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L58">            e.printStackTrace();</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">        return null;</span>
+    }
+
+    public void deleteNoteByTitle(int userId, String title) {
+<span class="fc" id="L64">        String sql = &quot;DELETE FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
+<span class="fc" id="L65">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L66">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L67">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L68">            stmt.setString(2, title);</span>
+<span class="fc" id="L69">            stmt.executeUpdate();</span>
+<span class="nc" id="L70">        } catch (SQLException e) {</span>
+<span class="nc" id="L71">            e.printStackTrace();</span>
+<span class="fc" id="L72">        }</span>
+<span class="fc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

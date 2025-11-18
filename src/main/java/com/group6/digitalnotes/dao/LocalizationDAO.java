@@ -11,28 +11,61 @@ import java.util.Map;
 
 public class LocalizationDAO {
 
-    public Map<String, String> loadLanguage(String langCode) {
-        Map<String, String> map = new HashMap<>();
-
-        String sql = "SELECT `key`, value FROM localization_strings WHERE language = ?";
+    // Get a single key and language
+    public String getTranslation(String key, String language) {
+        String sql = "SELECT value FROM localization_strings WHERE `key` = ? AND language = ? LIMIT 1";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, langCode);
+            stmt.setString(1, key);
+            stmt.setString(2, language);
 
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                map.put(rs.getString("key"), rs.getString("value"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("value");
+                }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error loading localization for: " + langCode);
+        }
+        return null;
+    }
+
+    // Get all translations for a language, Map<key, value>
+    public Map<String, String> getTranslationsForLanguage(String language) {
+        String sql = "SELECT `key`, value FROM localization_strings WHERE language = ?";
+        Map<String, String> translations = new HashMap<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, language);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    translations.put(rs.getString("key"), rs.getString("value"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return map;
+        return translations;
+    }
+
+    // default language
+    public String getTranslationWithFallback(String key, String language, String defaultLanguage) {
+        String value = getTranslation(key, language);
+        if (value != null) {
+            return value;
+        }
+        return getTranslation(key, defaultLanguage);
+    }
+
+    // Convenience method used by controllers: load all key/value pairs for a language
+    public Map<String, String> loadLanguage(String language) {
+        // Delegate to getTranslationsForLanguage so there is a single implementation
+        return getTranslationsForLanguage(language);
     }
 }
-

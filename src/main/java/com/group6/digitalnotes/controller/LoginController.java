@@ -97,17 +97,17 @@ public class LoginController {
         View.switchScene(View.primaryStage, "/fxml/signup-view.fxml");
     }
 
-    public void onSwitchToEnglish(ActionEvent e) {
+    public void onSwitchToEnglish() {
         View.currentLanguage = "en";
         loadLanguage("en");
     }
 
-    public void onSwitchToArabic(ActionEvent e) {
+    public void onSwitchToArabic() {
         View.currentLanguage = "ar";
         loadLanguage("ar");
     }
 
-    public void onSwitchToJapanese(ActionEvent e) {
+    public void onSwitchToJapanese() {
         View.currentLanguage = "ja";
         loadLanguage("ja");
     }
