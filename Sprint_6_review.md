@@ -74,9 +74,9 @@ users (1) —— (∞) notes
 | Static Code Review | 10h | Doni |
 | Architecture Documentation | 10h | Entor / Doni |
 | Refactoring | 7h | Sarujan / Doni |
-| Acceptance Test Planning | 1h | Doni |
-| Sprint Review & Report | 2h | Omar / Doni |
-| Documentation Update | 3h | Doni |
+| Acceptance Test Planning | 7h | Doni |
+| Sprint Review & Report | 5h | Saru / Doni |
+| Documentation Update | 5h | Doni |
 | Code CleanUp | 10h | Omar / doni / saru |
 | Make a Login page & Login controller | 10h | Omar |
 | Make Signup page & signup controller | 10h | Omar |
