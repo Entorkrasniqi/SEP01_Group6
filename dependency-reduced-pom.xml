@@ -54,7 +54,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.group6.digitalnotes.view.Main</mainClass>
+                  <mainClass>com.group6.digitalnotes.App</mainClass>
                 </transformer>
               </transformers>
             </configuration>

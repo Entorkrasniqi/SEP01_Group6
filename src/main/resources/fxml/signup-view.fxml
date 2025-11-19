@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@../css/signup.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group6.digitalnotes.controller.SignupController">
+
+    <!-- Left branding panel -->
+    <left>
+        <AnchorPane prefHeight="800.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom right, #7B5FFF, #2A0061);                            -fx-effect: innershadow(gaussian, rgba(123,95,255,0.5), 20, 0.5, 0, 0);" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="titleLabel" alignment="CENTER" layoutY="214.0" prefWidth="350.0" text="Digital Notes" textAlignment="CENTER" textFill="WHITE">
+                    <font><Font name="Verdana Bold" size="30.0" /></font>
+                    <effect><DropShadow /></effect>
+                </Label>
+
+                <Label fx:id="subtitleLabel" alignment="CENTER" layoutY="275.0" prefWidth="350.0" text="Write smarter, faster" textAlignment="CENTER" textFill="#e0e0e0">
+                    <font><Font name="Consolas Bold" size="18.0" /></font>
+                    <effect><DropShadow /></effect>
+                </Label>
+
+                <Line fx:id="decorLine" endX="171.0" layoutX="141.0" layoutY="262.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0">
+                    <effect><DropShadow /></effect>
+                </Line>
+
+                <Circle fx:id="decorCircle" fill="#1f93ff00" layoutX="177.0" layoutY="263.0" radius="150.0" stroke="#ffffff30" strokeType="INSIDE" />
+
+                <ImageView fx:id="sideImage" fitHeight="130.0" fitWidth="130.0" layoutX="33.0" layoutY="316.0">
+                    <image><Image url="@../images/notebook-unscreen.gif" /></image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+    </left>
+
+    <!-- Right form panel -->
+    <right>
+        <AnchorPane prefHeight="800.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(to bottom, #2b2f3a, #1a1c22);                            -fx-effect: innershadow(gaussian, rgba(123,95,255,0.5), 20, 0.5, 0, 0);" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="createAccountLabel" alignment="CENTER" layoutY="95.0" prefWidth="650.0" text="Create Account" textAlignment="CENTER" textFill="WHITE">
+                    <font><Font name="Verdana" size="24.0" /></font>
+                </Label>
+
+                <Label fx:id="nicknameLabel" alignment="CENTER" layoutY="180.0" prefWidth="650.0" text="Nickname" textAlignment="CENTER" textFill="WHITE">
+                    <font><Font name="Verdana" size="20.0" /></font>
+                </Label>
+                <TextField fx:id="nicknameField" layoutX="153.0" layoutY="212.0" prefHeight="40.0" prefWidth="345.0" />
+
+                <Label fx:id="usernameLabel" alignment="CENTER" layoutY="280.0" prefWidth="650.0" text="Username" textAlignment="CENTER" textFill="WHITE">
+                    <font><Font name="Verdana" size="20.0" /></font>
+                </Label>
+                <TextField fx:id="usernameField" layoutX="153.0" layoutY="312.0" prefHeight="40.0" prefWidth="345.0" />
+
+                <Label fx:id="passwordLabel" alignment="CENTER" layoutY="380.0" prefWidth="650.0" text="Password" textAlignment="CENTER" textFill="WHITE">
+                    <font><Font name="Verdana" size="20.0" /></font>
+                </Label>
+                <PasswordField fx:id="passwordField" layoutX="153.0" layoutY="413.0" prefHeight="40.0" prefWidth="345.0" />
+
+                <Button fx:id="signUpButton" layoutX="140.0" layoutY="509.0" onAction="#onSignUp" prefHeight="50.0" prefWidth="371.0" text="Sign Up" />
+
+                <HBox fx:id="accountBox" alignment="CENTER" layoutX="197.0" layoutY="574.0" spacing="10">
+                    <children>
+                        <Label fx:id="haveAccountLabel" text="Do you already have an account?" textFill="WHITE" />
+                        <Button fx:id="loginButton" onAction="#goToLogin" text="Login" />
+                    </children>
+                </HBox>
+
+
+                <MenuButton fx:id="languageMenuBtn" layoutX="558.0" layoutY="745.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="78.0" styleClass="menu-button-minimal" text="🌐" textAlignment="CENTER" textFill="WHITE">
+                    <items>
+                        <MenuItem onAction="#onSwitchToEnglish" text="English" />
+                        <MenuItem onAction="#onSwitchToArabic" text="العربية" />
+                        <MenuItem onAction="#onSwitchToJapanese" text="日本語" />
+                    </items>
+                </MenuButton>
+                <Label fx:id="invalidLabel"
+                       layoutY="478.0"
+                       prefWidth="650.0"
+                       alignment="CENTER"
+                       textAlignment="CENTER"
+                       textFill="#ee0000"
+                       text="" />
+            </children>
+        </AnchorPane>
+    </right>
+</BorderPane>

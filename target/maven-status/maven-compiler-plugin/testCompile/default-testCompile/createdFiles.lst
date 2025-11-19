@@ -1,0 +1,4 @@
+com/group6/digitalnotes/database/DBConnectionTest.class
+com/group6/digitalnotes/controller/LoginControllerTest.class
+com/group6/digitalnotes/dao/NoteDAOTest.class
+com/group6/digitalnotes/controller/MainControllerTest.class

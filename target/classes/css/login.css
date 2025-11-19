@@ -1,0 +1,122 @@
+/* ==============================
+   LOGIN SCENE STYLES
+   ============================== */
+
+/* ---------- General Inputs ---------- */
+.text-field, .password-field {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 6px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #1E90FF;
+    -fx-effect: dropshadow(three-pass-box, rgba(30,144,255,0.3), 8, 0, 0, 0);
+}
+
+/* ---------- Main Login Button ---------- */
+.button {
+    -fx-background-color: linear-gradient(to bottom right, #1E90FF, #002F5D);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+/* Hover effect for main button */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #4AAEFF, #003D8F);
+}
+
+/* Pressed (active) effect */
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom right, #003D8F, #001F44);
+    -fx-translate-y: 1px;
+}
+
+/* ---------- Small Sign Up Button ---------- */
+#signUpButton {
+    -fx-background-color: linear-gradient(to bottom right, #7B5FFF, #2A0061);
+    -fx-font-size: 12px;
+    -fx-pref-width: 70px;
+}
+
+#signUpButton:hover {
+    -fx-background-color: linear-gradient(to bottom right, #8A6BFF, #400080);
+}
+
+#signUpButton:pressed {
+    -fx-background-color: linear-gradient(to bottom right, #5A3DCC, #24004D);
+}
+.menu-button-minimal{
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-border-color: rgba(100,150,255,0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6px 12px;
+    -fx-pref-height: 28px;
+    -fx-cursor: hand;
+}
+
+.menu-button-minimal:hover{
+    -fx-background-color: #34363f;
+    -fx-border-color: rgba(100,150,255,0.6);
+}
+
+.menu-button-minimal:pressed {
+    -fx-background-color: #444;
+    -fx-border-color: rgba(100,150,255,0.8);
+    -fx-translate-y: 1px;
+}
+
+.menu-button .arrow-button {
+    -fx-padding: 0 6px 0 6px;
+}
+.menu-button-minimal {
+    -fx-text-fill: white;
+}
+
+.menu-button-minimal > .label {
+    -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: #2f313a;
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(100,150,255,0.3);
+    -fx-border-radius: 12;
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-font-size: 13px;
+    -fx-padding: 6px 12px;
+}
+
+.menu-item > .label {
+    -fx-text-fill: #e0e0e0;
+}
+
+.menu-item:hover,
+.menu-item:focused {
+    -fx-background-color: #34363f;
+}
+
+.menu-item:hover > .label,
+.menu-item:focused > .label {
+    -fx-text-fill: white;
+}
+
+

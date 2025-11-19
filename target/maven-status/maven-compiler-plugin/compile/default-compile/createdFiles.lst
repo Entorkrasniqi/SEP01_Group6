@@ -1,0 +1,11 @@
+com/group6/digitalnotes/controller/SignupController.class
+com/group6/digitalnotes/App.class
+com/group6/digitalnotes/model/Note.class
+com/group6/digitalnotes/model/User.class
+com/group6/digitalnotes/controller/LoginController.class
+com/group6/digitalnotes/database/DBConnection.class
+com/group6/digitalnotes/dao/NoteDAO.class
+com/group6/digitalnotes/controller/MainController.class
+com/group6/digitalnotes/view/View.class
+com/group6/digitalnotes/dao/LocalizationDAO.class
+com/group6/digitalnotes/dao/UserDAO.class
