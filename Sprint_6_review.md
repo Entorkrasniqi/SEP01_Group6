@@ -60,11 +60,7 @@ users (1) —— (∞) notes
 | value   | VARCHAR     | NOT NULL   |
 | language| VARCHAR(10) | NOT NULL   |
 
----
 
-## 👥 Individual Contributions (Omar)
-
----
 
 ## 👥 Individual Contributions
 
