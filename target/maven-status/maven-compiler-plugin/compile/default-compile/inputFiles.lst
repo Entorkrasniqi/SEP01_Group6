@@ -1,5 +1,12 @@
-C:\Users\User\IdeaProjects\SEP01_Group6\src\main\java\com\group6\digitalnotes\view\Main.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\main\java\com\group6\digitalnotes\view\View.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\main\java\com\group6\digitalnotes\dao\NoteDAO.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\main\java\com\group6\digitalnotes\database\DBConnection.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\main\java\com\group6\digitalnotes\model\Note.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\controller\LoginController.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\database\DBConnection.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\dao\NoteDAO.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\dao\UserDAO.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\view\View.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\App.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\model\User.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\model\Note.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\controller\SignupController.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\controller\BaseLocalizedController.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\controller\MainController.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\main\java\com\group6\digitalnotes\dao\LocalizationDAO.java

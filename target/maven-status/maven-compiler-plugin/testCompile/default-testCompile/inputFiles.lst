@@ -1,4 +1,7 @@
-C:\Users\User\IdeaProjects\SEP01_Group6\src\test\java\com\example\AppTest.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\test\java\com\group6\digitalnotes\view\ViewTest.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\test\java\com\group6\digitalnotes\dao\NoteDAOTest.java
-C:\Users\User\IdeaProjects\SEP01_Group6\src\test\java\com\group6\digitalnotes\database\DBConnectionTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\dao\LocalizationDAOTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\controller\MainControllerTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\dao\NoteDAOTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\controller\LoginControllerTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\database\DBConnectionTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\dao\UserDAOTest.java
+C:\Users\aldul\Desktop\java\SEP01_Group6\src\test\java\com\group6\digitalnotes\view\ViewTest.java

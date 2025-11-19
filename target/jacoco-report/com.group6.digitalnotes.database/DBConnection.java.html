@@ -1,22 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DBConnection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.database</a> &gt; <span class="el_source">DBConnection.java</span></div><h1>DBConnection.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.database;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DBConnection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.database</a> &gt; <span class="el_source">DBConnection.java</span></div><h1>DBConnection.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 <span class="nc" id="L7">public class DBConnection {</span>
-    private static final String URL = &quot;jdbc:mariadb://localhost:3306/digitalnotes&quot;;
-    private static final String USER = &quot;root&quot;; // Replace with your DB username
-    private static final String PASSWORD = &quot;1234&quot;; // Replace with your DB password
+
+<span class="fc" id="L9">    private static final String DB_HOST = System.getenv().getOrDefault(&quot;DB_HOST&quot;, &quot;localhost&quot;);</span>
+<span class="fc" id="L10">    private static final String DB_PORT = System.getenv().getOrDefault(&quot;DB_PORT&quot;, &quot;3306&quot;);</span>
+<span class="fc" id="L11">    private static final String DB_NAME = System.getenv().getOrDefault(&quot;DB_NAME&quot;, &quot;notesapp&quot;);</span>
+<span class="fc" id="L12">    private static final String DB_USER = System.getenv().getOrDefault(&quot;DB_USER&quot;, &quot;root&quot;);</span>
+<span class="fc" id="L13">    private static final String DB_PASSWORD = System.getenv().getOrDefault(&quot;DB_PASSWORD&quot;, &quot;Amoury123&quot;);</span>
+
+<span class="fc" id="L15">    private static final String URL = &quot;jdbc:mariadb://&quot; + DB_HOST + &quot;:&quot; + DB_PORT + &quot;/&quot; + DB_NAME;</span>
 
     private static Connection connection;
 
     public static Connection getConnection() throws SQLException {
-<span class="pc bpc" id="L15" title="1 of 4 branches missed.">        if (connection == null || connection.isClosed()) {</span>
-<span class="fc" id="L16">            connection = DriverManager.getConnection(URL, USER, PASSWORD);</span>
+<span class="pc bpc" id="L20" title="1 of 4 branches missed.">        if (connection == null || connection.isClosed()) {</span>
+<span class="fc" id="L21">            connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);</span>
         }
-<span class="fc" id="L18">        return connection;</span>
+<span class="fc" id="L23">        return connection;</span>
     }
 }
-
+//Hello world
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
