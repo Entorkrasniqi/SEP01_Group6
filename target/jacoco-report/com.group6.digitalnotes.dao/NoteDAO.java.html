@@ -2,74 +2,78 @@
 
 import com.group6.digitalnotes.database.DBConnection;
 import com.group6.digitalnotes.model.Note;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-<span class="fc" id="L10">public class NoteDAO {</span>
+<span class="fc" id="L12">public class NoteDAO {</span>
+
+<span class="fc" id="L14">    private static final Logger logger = LoggerFactory.getLogger(NoteDAO.class);</span>
 
     public void addNote(Note note) {
-<span class="fc" id="L13">        String sql = &quot;INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)&quot;;</span>
-<span class="fc" id="L14">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L15">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
-<span class="fc" id="L16">            stmt.setInt(1, note.getUserId());</span>
-<span class="fc" id="L17">            stmt.setString(2, note.getTitle());</span>
-<span class="fc" id="L18">            stmt.setString(3, note.getContent());</span>
-<span class="fc" id="L19">            stmt.executeUpdate();</span>
+<span class="fc" id="L17">        String sql = &quot;INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)&quot;;</span>
+<span class="fc" id="L18">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L19">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
+<span class="fc" id="L20">            stmt.setInt(1, note.getUserId());</span>
+<span class="fc" id="L21">            stmt.setString(2, note.getTitle());</span>
+<span class="fc" id="L22">            stmt.setString(3, note.getContent());</span>
+<span class="fc" id="L23">            stmt.executeUpdate();</span>
 
-<span class="fc" id="L21">            ResultSet keys = stmt.getGeneratedKeys();</span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">            if (keys.next()) note.setNoteId(keys.getInt(1));</span>
-<span class="nc" id="L23">        } catch (SQLException e) {</span>
-<span class="nc" id="L24">            e.printStackTrace();</span>
-<span class="fc" id="L25">        }</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L25">            ResultSet keys = stmt.getGeneratedKeys();</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            if (keys.next()) note.setNoteId(keys.getInt(1));</span>
+<span class="nc" id="L27">        } catch (SQLException e) {</span>
+<span class="nc" id="L28">            logger.error(&quot;Failed to add note for user: {}, title: {}&quot;, note.getUserId(), note.getTitle(), e);</span>
+<span class="fc" id="L29">        }</span>
+<span class="fc" id="L30">    }</span>
 
     public List&lt;Note&gt; getNotesForUser(int userId) {
-<span class="fc" id="L29">        List&lt;Note&gt; notes = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L30">        String sql = &quot;SELECT * FROM notes WHERE user_id = ?&quot;;</span>
-<span class="fc" id="L31">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L32">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
-<span class="fc" id="L33">            stmt.setInt(1, userId);</span>
-<span class="fc" id="L34">            ResultSet rs = stmt.executeQuery();</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">            while (rs.next()) {</span>
-<span class="fc" id="L36">                notes.add(new Note(</span>
-<span class="fc" id="L37">                        rs.getInt(&quot;note_id&quot;),</span>
-<span class="fc" id="L38">                        rs.getInt(&quot;user_id&quot;),</span>
-<span class="fc" id="L39">                        rs.getString(&quot;title&quot;),</span>
-<span class="fc" id="L40">                        rs.getString(&quot;content&quot;)</span>
+<span class="fc" id="L33">        List&lt;Note&gt; notes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L34">        String sql = &quot;SELECT * FROM notes WHERE user_id = ?&quot;;</span>
+<span class="fc" id="L35">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L36">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L37">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L38">            ResultSet rs = stmt.executeQuery();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L40">                notes.add(new Note(</span>
+<span class="fc" id="L41">                        rs.getInt(&quot;note_id&quot;),</span>
+<span class="fc" id="L42">                        rs.getInt(&quot;user_id&quot;),</span>
+<span class="fc" id="L43">                        rs.getString(&quot;title&quot;),</span>
+<span class="fc" id="L44">                        rs.getString(&quot;content&quot;)</span>
                 ));
             }
-<span class="nc" id="L43">        } catch (SQLException e) {</span>
-<span class="nc" id="L44">            e.printStackTrace();</span>
-<span class="fc" id="L45">        }</span>
-<span class="fc" id="L46">        return notes;</span>
+<span class="nc" id="L47">        } catch (SQLException e) {</span>
+<span class="nc" id="L48">            logger.error(&quot;Failed to fetch notes for user: {}&quot;, userId, e);</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">        return notes;</span>
     }
 
     public String getNoteByTitle(int userId, String title) {
-<span class="fc" id="L50">        String sql = &quot;SELECT content FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
-<span class="fc" id="L51">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L52">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
-<span class="fc" id="L53">            stmt.setInt(1, userId);</span>
-<span class="fc" id="L54">            stmt.setString(2, title);</span>
-<span class="fc" id="L55">            ResultSet rs = stmt.executeQuery();</span>
-<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (rs.next()) return rs.getString(&quot;content&quot;);</span>
-<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
-<span class="nc" id="L58">            e.printStackTrace();</span>
-<span class="fc" id="L59">        }</span>
-<span class="fc" id="L60">        return null;</span>
+<span class="fc" id="L54">        String sql = &quot;SELECT content FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
+<span class="fc" id="L55">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L56">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L57">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L58">            stmt.setString(2, title);</span>
+<span class="fc" id="L59">            ResultSet rs = stmt.executeQuery();</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (rs.next()) return rs.getString(&quot;content&quot;);</span>
+<span class="pc bpc" id="L61" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L62">            logger.error(&quot;Failed to fetch note by title for user: {}, title: {}&quot;, userId, title, e);</span>
+<span class="fc" id="L63">        }</span>
+<span class="fc" id="L64">        return null;</span>
     }
 
     public void deleteNoteByTitle(int userId, String title) {
-<span class="fc" id="L64">        String sql = &quot;DELETE FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
-<span class="fc" id="L65">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L66">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
-<span class="fc" id="L67">            stmt.setInt(1, userId);</span>
-<span class="fc" id="L68">            stmt.setString(2, title);</span>
-<span class="fc" id="L69">            stmt.executeUpdate();</span>
-<span class="nc" id="L70">        } catch (SQLException e) {</span>
-<span class="nc" id="L71">            e.printStackTrace();</span>
-<span class="fc" id="L72">        }</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L68">        String sql = &quot;DELETE FROM notes WHERE user_id = ? AND title = ?&quot;;</span>
+<span class="fc" id="L69">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L70">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L71">            stmt.setInt(1, userId);</span>
+<span class="fc" id="L72">            stmt.setString(2, title);</span>
+<span class="fc" id="L73">            stmt.executeUpdate();</span>
+<span class="nc" id="L74">        } catch (SQLException e) {</span>
+<span class="nc" id="L75">            logger.error(&quot;Failed to delete note for user: {}, title: {}&quot;, userId, title, e);</span>
+<span class="fc" id="L76">        }</span>
+<span class="fc" id="L77">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

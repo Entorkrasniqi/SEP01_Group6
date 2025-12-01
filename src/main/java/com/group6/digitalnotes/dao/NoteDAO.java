@@ -2,12 +2,16 @@ package com.group6.digitalnotes.dao;
 
 import com.group6.digitalnotes.database.DBConnection;
 import com.group6.digitalnotes.model.Note;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NoteDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(NoteDAO.class);
 
     public void addNote(Note note) {
         String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
@@ -21,7 +25,7 @@ public class NoteDAO {
             ResultSet keys = stmt.getGeneratedKeys();
             if (keys.next()) note.setNoteId(keys.getInt(1));
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to add note for user: {}, title: {}", note.getUserId(), note.getTitle(), e);
         }
     }
 
@@ -41,7 +45,7 @@ public class NoteDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to fetch notes for user: {}", userId, e);
         }
         return notes;
     }
@@ -55,7 +59,7 @@ public class NoteDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) return rs.getString("content");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to fetch note by title for user: {}, title: {}", userId, title, e);
         }
         return null;
     }
@@ -68,7 +72,7 @@ public class NoteDAO {
             stmt.setString(2, title);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to delete note for user: {}, title: {}", userId, title, e);
         }
     }
 }
