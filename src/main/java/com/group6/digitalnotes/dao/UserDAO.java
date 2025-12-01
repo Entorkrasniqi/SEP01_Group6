@@ -2,6 +2,8 @@ package com.group6.digitalnotes.dao;
 
 import com.group6.digitalnotes.database.DBConnection;
 import com.group6.digitalnotes.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     public boolean addUser(User user) {
         String sql = "INSERT INTO users (nickname, username, password) VALUES (?, ?, ?)";
@@ -29,7 +33,7 @@ public class UserDAO {
 
             return rows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to add user with username: {}", user.getUsername(), e);
             return false;
         }
     }
@@ -51,7 +55,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Failed to fetch user by username: {}", username, e);
         }
         return null;
     }

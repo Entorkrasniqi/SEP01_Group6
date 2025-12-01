@@ -5,10 +5,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class View extends Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(View.class);
 
     public static Stage primaryStage;
     public static boolean isLoggedIn = false;
@@ -39,7 +43,7 @@ public class View extends Application {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to switch scene to: {}", fxmlPath, e);
         }
     }
 }
