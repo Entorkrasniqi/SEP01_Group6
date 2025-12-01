@@ -2,6 +2,8 @@
 
 import com.group6.digitalnotes.database.DBConnection;
 import com.group6.digitalnotes.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,56 +11,58 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-<span class="fc" id="L12">public class UserDAO {</span>
+<span class="fc" id="L14">public class UserDAO {</span>
+
+<span class="fc" id="L16">    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);</span>
 
     public boolean addUser(User user) {
-<span class="nc" id="L15">        String sql = &quot;INSERT INTO users (nickname, username, password) VALUES (?, ?, ?)&quot;;</span>
-<span class="nc" id="L16">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="nc" id="L17">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
+<span class="nc" id="L19">        String sql = &quot;INSERT INTO users (nickname, username, password) VALUES (?, ?, ?)&quot;;</span>
+<span class="nc" id="L20">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="nc" id="L21">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
 
-<span class="nc" id="L19">            stmt.setString(1, user.getNickname());</span>
-<span class="nc" id="L20">            stmt.setString(2, user.getUsername());</span>
-<span class="nc" id="L21">            stmt.setString(3, user.getPassword());</span>
-<span class="nc" id="L22">            int rows = stmt.executeUpdate();</span>
+<span class="nc" id="L23">            stmt.setString(1, user.getNickname());</span>
+<span class="nc" id="L24">            stmt.setString(2, user.getUsername());</span>
+<span class="nc" id="L25">            stmt.setString(3, user.getPassword());</span>
+<span class="nc" id="L26">            int rows = stmt.executeUpdate();</span>
 
-<span class="nc" id="L24">            try (ResultSet keys = stmt.getGeneratedKeys()) {</span>
-<span class="nc bnc" id="L25" title="All 2 branches missed.">                if (keys.next()) {</span>
-<span class="nc" id="L26">                    user.setUserId(keys.getInt(1));</span>
+<span class="nc" id="L28">            try (ResultSet keys = stmt.getGeneratedKeys()) {</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                if (keys.next()) {</span>
+<span class="nc" id="L30">                    user.setUserId(keys.getInt(1));</span>
                 }
             }
 
-<span class="nc bnc" id="L30" title="All 2 branches missed.">            return rows &gt; 0;</span>
-<span class="nc" id="L31">        } catch (SQLException e) {</span>
-<span class="nc" id="L32">            e.printStackTrace();</span>
-<span class="nc" id="L33">            return false;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            return rows &gt; 0;</span>
+<span class="nc" id="L35">        } catch (SQLException e) {</span>
+<span class="nc" id="L36">            logger.error(&quot;Failed to add user with username: {}&quot;, user.getUsername(), e);</span>
+<span class="nc" id="L37">            return false;</span>
         }
     }
 
     public User getUserByUsername(String username) {
-<span class="fc" id="L38">        String sql = &quot;SELECT * FROM users WHERE username = ?&quot;;</span>
-<span class="fc" id="L39">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L40">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L42">        String sql = &quot;SELECT * FROM users WHERE username = ?&quot;;</span>
+<span class="fc" id="L43">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L44">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
 
-<span class="fc" id="L42">            stmt.setString(1, username);</span>
-<span class="fc" id="L43">            try (ResultSet rs = stmt.executeQuery()) {</span>
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">                if (rs.next()) {</span>
-<span class="nc" id="L45">                    return new User(</span>
-<span class="nc" id="L46">                            rs.getInt(&quot;user_id&quot;),</span>
-<span class="nc" id="L47">                            rs.getString(&quot;nickname&quot;),</span>
-<span class="nc" id="L48">                            rs.getString(&quot;username&quot;),</span>
-<span class="nc" id="L49">                            rs.getString(&quot;password&quot;)</span>
+<span class="fc" id="L46">            stmt.setString(1, username);</span>
+<span class="fc" id="L47">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">                if (rs.next()) {</span>
+<span class="nc" id="L49">                    return new User(</span>
+<span class="nc" id="L50">                            rs.getInt(&quot;user_id&quot;),</span>
+<span class="nc" id="L51">                            rs.getString(&quot;nickname&quot;),</span>
+<span class="nc" id="L52">                            rs.getString(&quot;username&quot;),</span>
+<span class="nc" id="L53">                            rs.getString(&quot;password&quot;)</span>
                     );
                 }
-<span class="nc bnc" id="L52" title="All 2 branches missed.">            }</span>
-<span class="nc bnc" id="L53" title="All 4 branches missed.">        } catch (SQLException e) {</span>
-<span class="nc" id="L54">            e.printStackTrace();</span>
-<span class="fc" id="L55">        }</span>
-<span class="fc" id="L56">        return null;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            }</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L58">            logger.error(&quot;Failed to fetch user by username: {}&quot;, username, e);</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">        return null;</span>
     }
 
     public boolean validateUser(String username, String password) {
-<span class="nc" id="L60">        User user = getUserByUsername(username);</span>
-<span class="nc bnc" id="L61" title="All 4 branches missed.">        return user != null &amp;&amp; user.getPassword().equals(password);</span>
+<span class="nc" id="L64">        User user = getUserByUsername(username);</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">        return user != null &amp;&amp; user.getPassword().equals(password);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
