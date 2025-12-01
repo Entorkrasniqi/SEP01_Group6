@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.group6.digitalnotes.controller.LoginControllerTest
 -------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.107 s -- in com.group6.digitalnotes.controller.LoginControllerTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.931 s -- in com.group6.digitalnotes.controller.LoginControllerTest
