@@ -75,19 +75,19 @@ public abstract class BaseLocalizedController {
     }
 
     /** Switch global language to English and reload. */
-    public void switchToEnglish() {
+    public void onSwitchToEnglish() {
         View.currentLanguage = "en";
         loadLanguage("en");
     }
 
     /** Switch global language to Arabic and reload. */
-    public void switchToArabic() {
+    public void onSwitchToArabic() {
         View.currentLanguage = "ar";
         loadLanguage("ar");
     }
 
     /** Switch global language to Japanese and reload. */
-    public void switchToJapanese() {
+    public void onSwitchToJapanese() {
         View.currentLanguage = "ja";
         loadLanguage("ja");
     }
