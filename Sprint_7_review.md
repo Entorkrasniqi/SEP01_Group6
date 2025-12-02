@@ -20,27 +20,45 @@ Sprint 7
 -
 
 ---
-Test Issues
+
+##  User Stories
+-
+
+
+
+## 🚀 Test Issues
 - Address any bugs or issues identified during testing (Very Important)
 - Sonarqube test passed but we had some problems with sercurity hotspots (7 issues rating E) We fixed this and got 0 issues and rating A.
+- When we updated our project and made changes to code after that Doni had issues to open app even tho it worked for rest of us.
+  Intell ideaj pic from Doni: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1dissue.png
+  
 
 
 ## 👥 Individual Contributions
 
 | Task | Time Spent | Owner |
 |------|-------------|-------|
-|| 10h | Entor / omar |
-|  | 10h | Doni |
-| | 10h | Entor / Doni |
-| | 7h | Sarujan / Doni |
-| | 7h | Doni |
-|  | 5h | Saru / Doni |
-|  | 5h | Doni |
+| User stories | 3h | Entor |
+| Testing/Code clean/ Test issues | 7h | Doni/ Saru |
+| SonarQube testing | 5h | Entor / Doni |
+| Unit Testing | h | Omar |
+| Testing/ Test issues | h | Doni |
+| Documentation update/ Comprehensive report | 5h | Saru |
+| Testing/ Test issues  | 5h | Omar |
 
 ---
 
+## 🗂️ Sonarqube pictures
+Sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1.png
+sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1%20issues.png
+Coverage 0: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1failed.png
+Sonarqube passed: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1passed.png
 
-## 🗂️ Sprint 5 Resources
+
+## 🗂️ Test results
+
+
+## 🗂️ Sprint 7 Resources
 
 **Trello Board:**  
 🔗 [Sprint 7 Trello Board](https://trello.com/invite/b/692300a738cead38d4224083/ATTI68a4f572c0f3b3dad40553d6a28eee6b6EE1B1B7/sprint-7)
