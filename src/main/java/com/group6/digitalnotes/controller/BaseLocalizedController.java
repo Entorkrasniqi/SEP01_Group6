@@ -21,11 +21,13 @@ public abstract class BaseLocalizedController {
 
     /** Initialize localization using the current global language. */
     protected void initLocalization() {
-        loadLanguage(View.currentLanguage);
+        loadLanguage(); // Uses View.currentLanguage internally
     }
 
-    /** Load language strings and trigger controller-specific updates. */
-    protected void loadLanguage(String langCode) {
+    /** Load language strings based on the current global language and trigger controller-specific updates. */
+    protected void loadLanguage() {
+        String langCode = View.currentLanguage;
+
         localization = localizationDAO.loadLanguage(langCode);
         isArabic = langCode.equalsIgnoreCase("ar");
         onLanguageLoaded();
@@ -74,22 +76,29 @@ public abstract class BaseLocalizedController {
         return localization.getOrDefault(key, fallback);
     }
 
+    // ---------------------------------------------
+    //  LANGUAGE SWITCHING
+    // ---------------------------------------------
+
+    /** Switch to a new global language and reload UI. */
+    public void setLanguage(String langCode) {
+        View.currentLanguage = langCode;
+        loadLanguage();
+    }
+
     /** Switch global language to English and reload. */
     public void onSwitchToEnglish() {
-        View.currentLanguage = "en";
-        loadLanguage("en");
+        setLanguage("en");
     }
 
     /** Switch global language to Arabic and reload. */
     public void onSwitchToArabic() {
-        View.currentLanguage = "ar";
-        loadLanguage("ar");
+        setLanguage("ar");
     }
 
     /** Switch global language to Japanese and reload. */
     public void onSwitchToJapanese() {
-        View.currentLanguage = "ja";
-        loadLanguage("ja");
+        setLanguage("ja");
     }
 
     /**

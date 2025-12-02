@@ -2,5 +2,5 @@ projectKey=digitalnotes
 serverUrl=http://localhost:9000
 serverVersion=25.11.0.114957
 dashboardUrl=http://localhost:9000/dashboard?id=digitalnotes
-ceTaskId=b4bce3ac-28d7-41b9-ac1b-c0f426ea4023
-ceTaskUrl=http://localhost:9000/api/ce/task?id=b4bce3ac-28d7-41b9-ac1b-c0f426ea4023
+ceTaskId=92e58a1d-626f-42d5-a0ba-b77eb6cbb1e8
+ceTaskUrl=http://localhost:9000/api/ce/task?id=92e58a1d-626f-42d5-a0ba-b77eb6cbb1e8

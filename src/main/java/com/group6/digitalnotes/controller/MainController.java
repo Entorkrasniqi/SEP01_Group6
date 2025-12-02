@@ -54,6 +54,7 @@ public class MainController {
     private int timeRemaining = 15 * 60;        // Timer duration in seconds (15 minutes)
     private Timeline timer;                     // JavaFX repeating timer
     private boolean isArabic = false;           // Current language direction flag
+    private String color = "#00cc66";            // Default text color
 
     /** Initialize controller state, language, and listeners. */
     @FXML
@@ -62,7 +63,7 @@ public class MainController {
         if (View.loggedInUser == null) return;
 
         rootPane.setRight(null); // start with sidebar hidden
-        loadLanguage(View.currentLanguage);
+        loadLanguage();          // Uses View.currentLanguage internally
         loadNotesFromDB();
 
         // Live filter as user types
@@ -73,8 +74,10 @@ public class MainController {
         statusLabel.setText("");
     }
 
-    /** Load localization and update UI texts. */
-    private void loadLanguage(String langCode) {
+    /** Load localization based on the current global language and update UI texts. */
+    private void loadLanguage() {
+        String langCode = View.currentLanguage;
+
         localization = localizationDAO.loadLanguage(langCode);
         isArabic = langCode.equalsIgnoreCase("ar");
         updateTexts();
@@ -107,9 +110,34 @@ public class MainController {
         return localization.getOrDefault(key, "[" + key + "]");
     }
 
-    @FXML private void onSwitchToEnglish() { View.currentLanguage = "en"; loadLanguage("en"); }
-    @FXML private void onSwitchToArabic() { View.currentLanguage = "ar"; loadLanguage("ar"); }
-    @FXML private void onSwitchToJapanese() { View.currentLanguage = "ja"; loadLanguage("ja"); }
+    // ---------------------------------------------
+    //  LANGUAGE SWITCHING
+    // ---------------------------------------------
+
+    /** Switch to a new global language and reload UI. */
+    public void setLanguage(String langCode) {
+        View.currentLanguage = langCode;
+        loadLanguage();
+    }
+
+    @FXML
+    private void onSwitchToEnglish() {
+        setLanguage("en");
+    }
+
+    @FXML
+    private void onSwitchToArabic() {
+        setLanguage("ar");
+    }
+
+    @FXML
+    private void onSwitchToJapanese() {
+        setLanguage("ja");
+    }
+
+    // ---------------------------------------------
+    //  TIMER LOGIC
+    // ---------------------------------------------
 
     /** Prepare timer mechanism used for timed writing sessions. */
     private void setupTimer() {
@@ -202,7 +230,7 @@ public class MainController {
                 noteList.setItems(filteredNotes);
             }
 
-            setStatus(text("msg.noteSaved") + ": " + title, "#00cc66");
+            setStatus(text("msg.noteSaved") + ": " + title, color);
         } else {
             setStatus(text("msg.noteNotSaved"), "#ee0000");
         }
@@ -269,7 +297,7 @@ public class MainController {
         contentArea.setEditable(true);
         titleField.clear();
         contentArea.clear();
-        setStatus(text("msg.newNote"), "#00cc66");
+        setStatus(text("msg.newNote"), color);
     }
 
     /** Delete the selected note and update the list. */
@@ -282,7 +310,7 @@ public class MainController {
             allNotes.remove(selectedNote);
             filterNotes(searchField.getText());
             noteList.setItems(filteredNotes);
-            setStatus(text("msg.noteDeleted") + ": " + selectedNote, "#00cc66");
+            setStatus(text("msg.noteDeleted") + ": " + selectedNote, color);
         } else {
             setStatus(text("msg.selectNote"), "#007bff");
         }
