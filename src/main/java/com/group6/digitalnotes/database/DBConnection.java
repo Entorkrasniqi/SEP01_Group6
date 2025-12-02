@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Simple JDBC connection provider using environment variables.
+ * Expected vars: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
+ */
 public class DBConnection {
 
     private static final String DB_HOST = System.getenv().getOrDefault("DB_HOST", "localhost");
@@ -16,6 +20,11 @@ public class DBConnection {
 
     private static Connection connection;
 
+    /**
+     * Returns a cached JDBC connection, opening it if necessary.
+     * @return active connection
+     * @throws SQLException if unable to connect
+     */
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);
@@ -23,4 +32,3 @@ public class DBConnection {
         return connection;
     }
 }
-//Hello world

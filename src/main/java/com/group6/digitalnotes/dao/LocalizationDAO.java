@@ -12,12 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * DAO responsible for loading localized strings from the database.
+ */
 public class LocalizationDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(LocalizationDAO.class);
     private static final Set<String> VALID_LANGUAGES = Set.of("en", "ar", "ja");
 
-    // Get a single key and language
+    /**
+     * Fetch a single translation by key and language.
+     * @param key resource key
+     * @param language language code (e.g., "en")
+     * @return value or null if not found
+     */
     public String getTranslation(String key, String language) {
         validateLanguage(language);
 
@@ -40,7 +48,11 @@ public class LocalizationDAO {
         return null;
     }
 
-    // Get all translations for a language, Map<key, value>
+    /**
+     * Load all translations for a given language.
+     * @param language language code
+     * @return map of key to value
+     */
     public Map<String, String> getTranslationsForLanguage(String language) {
         validateLanguage(language);
 
@@ -64,7 +76,9 @@ public class LocalizationDAO {
         return translations;
     }
 
-    // default language
+    /**
+     * Get a translation with fallback to a default language.
+     */
     public String getTranslationWithFallback(String key, String language, String defaultLanguage) {
         validateLanguage(language);
         validateLanguage(defaultLanguage);
@@ -77,7 +91,9 @@ public class LocalizationDAO {
         return getTranslation(key, defaultLanguage);
     }
 
-    // Convenience method used by controllers: load all key/value pairs for a language
+    /**
+     * Convenience wrapper to load all key/value pairs for a language.
+     */
     public Map<String, String> loadLanguage(String language) {
         // Delegate to getTranslationsForLanguage so there is a single implementation
         return getTranslationsForLanguage(language);
