@@ -1,4 +1,9 @@
-com\group6\digitalnotes\controller\MainControllerTest.class
+com\group6\digitalnotes\controller\LoginControllerTest.class
 com\group6\digitalnotes\dao\LocalizationDAOTest.class
-com\group6\digitalnotes\database\DBConnectionTest.class
+com\group6\digitalnotes\model\NoteTest.class
+com\group6\digitalnotes\dao\UserDAOTest.class
 com\group6\digitalnotes\dao\NoteDAOTest.class
+com\group6\digitalnotes\controller\MainControllerTest.class
+com\group6\digitalnotes\controller\SignupControllerTest.class
+com\group6\digitalnotes\database\DBConnectionTest.class
+com\group6\digitalnotes\model\UserTest.class

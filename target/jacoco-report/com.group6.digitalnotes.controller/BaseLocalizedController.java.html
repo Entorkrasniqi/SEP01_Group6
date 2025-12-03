@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseLocalizedController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">BaseLocalizedController.java</span></div><h1>BaseLocalizedController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseLocalizedController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">BaseLocalizedController.java</span></div><h1>BaseLocalizedController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
 
 import com.group6.digitalnotes.dao.LocalizationDAO;
 import com.group6.digitalnotes.view.View;
@@ -13,23 +13,25 @@ import java.util.Map;
 /**
  * Abstract base controller providing localization support and common UI helpers.
  */
-<span class="nc" id="L16">public abstract class BaseLocalizedController {</span>
+<span class="fc" id="L16">public abstract class BaseLocalizedController {</span>
 
-<span class="nc" id="L18">    protected final LocalizationDAO localizationDAO = new LocalizationDAO();</span>
+<span class="fc" id="L18">    protected final LocalizationDAO localizationDAO = new LocalizationDAO();</span>
     protected Map&lt;String, String&gt; localization;
     protected boolean isArabic;
 
     /** Initialize localization using the current global language. */
     protected void initLocalization() {
-<span class="nc" id="L24">        loadLanguage(View.currentLanguage);</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L24">        loadLanguage(); // Uses View.currentLanguage internally</span>
+<span class="fc" id="L25">    }</span>
 
-    /** Load language strings and trigger controller-specific updates. */
-    protected void loadLanguage(String langCode) {
-<span class="nc" id="L29">        localization = localizationDAO.loadLanguage(langCode);</span>
-<span class="nc" id="L30">        isArabic = langCode.equalsIgnoreCase(&quot;ar&quot;);</span>
-<span class="nc" id="L31">        onLanguageLoaded();</span>
-<span class="nc" id="L32">    }</span>
+    /** Load language strings based on the current global language and trigger controller-specific updates. */
+    protected void loadLanguage() {
+<span class="fc" id="L29">        String langCode = View.currentLanguage;</span>
+
+<span class="fc" id="L31">        localization = localizationDAO.loadLanguage(langCode);</span>
+<span class="fc" id="L32">        isArabic = langCode.equalsIgnoreCase(&quot;ar&quot;);</span>
+<span class="fc" id="L33">        onLanguageLoaded();</span>
+<span class="fc" id="L34">    }</span>
 
     // ---------------------------------------------
     //  SHARED HELPERS (used by Login + Signup)
@@ -37,60 +39,67 @@ import java.util.Map;
 
     /** Set a prompt text from a localization key with fallback. */
     protected void setPrompt(TextField field, String key, String fallback) {
-<span class="nc" id="L40">        field.setPromptText(t(key, fallback));</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L42">        field.setPromptText(t(key, fallback));</span>
+<span class="fc" id="L43">    }</span>
 
     /** Set a label text from a localization key with fallback. */
     protected void setLabel(Label label, String key, String fallback) {
-<span class="nc" id="L45">        label.setText(t(key, fallback));</span>
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L47">        label.setText(t(key, fallback));</span>
+<span class="fc" id="L48">    }</span>
 
     /** Set a button text from a localization key with fallback. */
     protected void setButton(Button btn, String key, String fallback) {
-<span class="nc" id="L50">        btn.setText(t(key, fallback));</span>
-<span class="nc" id="L51">    }</span>
+<span class="fc" id="L52">        btn.setText(t(key, fallback));</span>
+<span class="fc" id="L53">    }</span>
 
     /** Apply node orientation to one or more text fields. */
     protected void orient(NodeOrientation orientation, TextField... fields) {
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        for (TextField f : fields) {</span>
-<span class="nc" id="L56">            f.setNodeOrientation(orientation);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (TextField f : fields) {</span>
+<span class="fc" id="L58">            f.setNodeOrientation(orientation);</span>
         }
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L60">    }</span>
 
     /** Configure an account prompt HBox by language direction. */
     protected void configureAccountBox(HBox box, Button first, Label second, boolean isArabic, int arWidth, int enWidth) {
-<span class="nc" id="L62">        box.getChildren().clear();</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (isArabic) {</span>
-<span class="nc" id="L64">            box.getChildren().addAll(first, second);</span>
-<span class="nc" id="L65">            first.setStyle(&quot;-fx-pref-width: &quot; + arWidth + &quot;px;&quot;);</span>
+<span class="fc" id="L64">        box.getChildren().clear();</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (isArabic) {</span>
+<span class="nc" id="L66">            box.getChildren().addAll(first, second);</span>
+<span class="nc" id="L67">            first.setStyle(&quot;-fx-pref-width: &quot; + arWidth + &quot;px;&quot;);</span>
         } else {
-<span class="nc" id="L67">            box.getChildren().addAll(second, first);</span>
-<span class="nc" id="L68">            first.setStyle(&quot;-fx-pref-width: &quot; + enWidth + &quot;px;&quot;);</span>
+<span class="fc" id="L69">            box.getChildren().addAll(second, first);</span>
+<span class="fc" id="L70">            first.setStyle(&quot;-fx-pref-width: &quot; + enWidth + &quot;px;&quot;);</span>
         }
-<span class="nc" id="L70">    }</span>
+<span class="fc" id="L72">    }</span>
 
     /** Look up a localized string with a provided fallback. */
     protected String t(String key, String fallback) {
-<span class="nc" id="L74">        return localization.getOrDefault(key, fallback);</span>
+<span class="fc" id="L76">        return localization.getOrDefault(key, fallback);</span>
     }
 
-    /** Switch global language to English and reload. */
-    public void switchToEnglish() {
-<span class="nc" id="L79">        View.currentLanguage = &quot;en&quot;;</span>
-<span class="nc" id="L80">        loadLanguage(&quot;en&quot;);</span>
-<span class="nc" id="L81">    }</span>
+    // ---------------------------------------------
+    //  LANGUAGE SWITCHING
+    // ---------------------------------------------
 
-    /** Switch global language to Arabic and reload. */
-    public void switchToArabic() {
-<span class="nc" id="L85">        View.currentLanguage = &quot;ar&quot;;</span>
-<span class="nc" id="L86">        loadLanguage(&quot;ar&quot;);</span>
+    /** Switch to a new global language and reload UI. */
+    public void setLanguage(String langCode) {
+<span class="nc" id="L85">        View.currentLanguage = langCode;</span>
+<span class="nc" id="L86">        loadLanguage();</span>
 <span class="nc" id="L87">    }</span>
 
+    /** Switch global language to English and reload. */
+    public void onSwitchToEnglish() {
+<span class="nc" id="L91">        setLanguage(&quot;en&quot;);</span>
+<span class="nc" id="L92">    }</span>
+
+    /** Switch global language to Arabic and reload. */
+    public void onSwitchToArabic() {
+<span class="nc" id="L96">        setLanguage(&quot;ar&quot;);</span>
+<span class="nc" id="L97">    }</span>
+
     /** Switch global language to Japanese and reload. */
-    public void switchToJapanese() {
-<span class="nc" id="L91">        View.currentLanguage = &quot;ja&quot;;</span>
-<span class="nc" id="L92">        loadLanguage(&quot;ja&quot;);</span>
-<span class="nc" id="L93">    }</span>
+    public void onSwitchToJapanese() {
+<span class="nc" id="L101">        setLanguage(&quot;ja&quot;);</span>
+<span class="nc" id="L102">    }</span>
 
     /**
      * Hook for subclasses to update UI after language is loaded.
