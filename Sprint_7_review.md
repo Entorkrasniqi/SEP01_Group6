@@ -49,11 +49,11 @@ Sprint 7
 ---
 
 ## 🗂️ Sonarqube pictures
-Sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1.png
-sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1%20issues.png
-Coverage 0: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1failed.png
-Sonarqube passed: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1passed.png
-Unit Test: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png
+-Sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1.png
+-sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1%20issues.png
+-Coverage 0: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1failed.png
+-Sonarqube passed: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1passed.png
+-Unit Test: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png
 
 
 
