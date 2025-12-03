@@ -53,7 +53,7 @@ Sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint
 sonarqube Issues: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1%20issues.png
 Coverage 0: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1failed.png
 Sonarqube passed: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1passed.png
-Unit Test: <img width="556" height="241" alt="jacocoReportScreenshot" src="https://github.com/user-attachments/assets/6978d28c-cef6-4b46-9ed7-68ff6c946f91" />
+Unit Test: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png
 
 
 
