@@ -58,6 +58,7 @@ Sprint 7
 
 
 ## 🗂️ Test results
+Unit test (https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png)
 
 
 ## 🗂️ Sprint 7 Resources
