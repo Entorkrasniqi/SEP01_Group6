@@ -11,7 +11,7 @@ Sprint 7
 ---
 
 ## ⚙️ Challenges
-
+-Sonarqube tests ( we had issues to get grade A)
 
 ---
 
@@ -55,7 +55,8 @@ Sprint 7
 -Sonarqube passed: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1passed.png
 -Unit Test: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png
 
-
+## 🗂️ Heuristic evaluation
+Heuristic evaluation (https://metropoliafi-my.sharepoint.com/:w:/g/personal/donik_metropolia_fi/IQBCXglU5RBsQLbmzOO7pDiIAQDrQYmBbsJzVMenHcU0aoc?e=pgwCPc)
 
 ## 🗂️ Test results
 Unit test (https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/jacocoReportScreenshot.png)
