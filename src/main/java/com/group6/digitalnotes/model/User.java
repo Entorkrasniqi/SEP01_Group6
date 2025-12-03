@@ -1,17 +1,33 @@
 package com.group6.digitalnotes.model;
 
+/**
+ * Domain model representing an application user.
+ */
 public class User {
     private int userId;
     private String nickname;
     private String username;
     private String password;
 
+    /**
+     * Constructs a new user before persisting.
+     * @param nickname display name
+     * @param username unique login name
+     * @param password stored as plain string (for demo)
+     */
     public User(String nickname, String username, String password) {
         this.nickname = nickname;
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * Constructs a user loaded from the database.
+     * @param userId generated id
+     * @param nickname display name
+     * @param username unique login name
+     * @param password stored value
+     */
     public User(int userId, String nickname, String username, String password) {
         this.userId = userId;
         this.nickname = nickname;

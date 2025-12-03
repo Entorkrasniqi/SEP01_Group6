@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">MainController.java</span></div><h1>MainController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">MainController.java</span></div><h1>MainController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
 
 import com.group6.digitalnotes.dao.LocalizationDAO;
 import com.group6.digitalnotes.dao.NoteDAO;
@@ -21,258 +21,306 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-<span class="nc" id="L24">public class MainController {</span>
+/**
+ * Main application controller handling note editing, timer sessions,
+ * sidebar navigation, search filtering, and localization updates.
+ */
+<span class="nc" id="L28">public class MainController {</span>
 
-    @FXML private BorderPane rootPane;
-    @FXML private AnchorPane editorPane;
-    @FXML private AnchorPane sidebar;
-    @FXML private ListView&lt;String&gt; noteList;
-    @FXML private TextField searchField;
-    @FXML private TextField titleField;
-    @FXML private TextArea contentArea;
-    @FXML private Label timerLabel;
-    @FXML private Button newNoteBtn;
-    @FXML private Button deleteBtn;
-    @FXML private Button toggleSidebarBtn;
-    @FXML private Button logoutBtn;
-    @FXML private MenuButton languageMenuBtn;
-    @FXML private Label statusLabel;
+    @FXML private BorderPane rootPane;          // Container holding sidebar and editor
+    @FXML private AnchorPane editorPane;        // Main editor area
+    @FXML private AnchorPane sidebar;           // Notes list sidebar
+    @FXML private ListView&lt;String&gt; noteList;    // Displays note titles
+    @FXML private TextField searchField;        // Live search filter input
+    @FXML private TextField titleField;         // Note title input
+    @FXML private TextArea contentArea;         // Note content input
+    @FXML private Label timerLabel;             // Clickable label to start/stop timed session
+    @FXML private Button newNoteBtn;            // Create new note
+    @FXML private Button deleteBtn;             // Delete selected note
+    @FXML private Button toggleSidebarBtn;      // Show/hide sidebar
+    @FXML private Button logoutBtn;             // Log out to login screen
+    @FXML private MenuButton languageMenuBtn;   // Language selector
+    @FXML private Label statusLabel;            // Temporary status messages
 
-<span class="nc" id="L41">    private final NoteDAO noteDAO = new NoteDAO();</span>
-<span class="nc" id="L42">    private final LocalizationDAO localizationDAO = new LocalizationDAO();</span>
+<span class="nc" id="L45">    private final NoteDAO noteDAO = new NoteDAO();</span>
+<span class="nc" id="L46">    private final LocalizationDAO localizationDAO = new LocalizationDAO();</span>
 
-    private Map&lt;String, String&gt; localization;
-<span class="nc" id="L45">    private final ObservableList&lt;String&gt; allNotes = FXCollections.observableArrayList();</span>
-<span class="nc" id="L46">    private final ObservableList&lt;String&gt; filteredNotes = FXCollections.observableArrayList();</span>
+    private Map&lt;String, String&gt; localization;   // Current language key/value pairs
+<span class="nc" id="L49">    private final ObservableList&lt;String&gt; allNotes = FXCollections.observableArrayList();      // All titles for user</span>
+<span class="nc" id="L50">    private final ObservableList&lt;String&gt; filteredNotes = FXCollections.observableArrayList(); // Filtered view of titles</span>
 
-<span class="nc" id="L48">    private boolean isSidebarHidden = true;</span>
-<span class="nc" id="L49">    private boolean isTimerRunning = false;</span>
-<span class="nc" id="L50">    private int timeRemaining = 15 * 60;</span>
-    private Timeline timer;
-<span class="nc" id="L52">    private boolean isArabic = false;</span>
+<span class="nc" id="L52">    private boolean isSidebarHidden = true;     // Tracks sidebar visibility</span>
+<span class="nc" id="L53">    private boolean isTimerRunning = false;     // Tracks timer state</span>
+<span class="nc" id="L54">    private int timeRemaining = 15 * 60;        // Timer duration in seconds (15 minutes)</span>
+    private Timeline timer;                     // JavaFX repeating timer
+<span class="nc" id="L56">    private boolean isArabic = false;           // Current language direction flag</span>
 
+    /** Initialize controller state, language, and listeners. */
     @FXML
     public void initialize() {
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (View.loggedInUser == null) return;</span>
+        // If user is not set (e.g., direct navigation), bail out to avoid NPEs
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (View.loggedInUser == null) return;</span>
 
-<span class="nc" id="L58">        rootPane.setRight(null);</span>
-<span class="nc" id="L59">        loadLanguage(View.currentLanguage);</span>
-<span class="nc" id="L60">        loadNotesFromDB();</span>
+<span class="nc" id="L64">        rootPane.setRight(null); // start with sidebar hidden</span>
+<span class="nc" id="L65">        loadLanguage(View.currentLanguage);</span>
+<span class="nc" id="L66">        loadNotesFromDB();</span>
 
-<span class="nc" id="L62">        searchField.textProperty().addListener((obs, oldVal, newVal) -&gt; filterNotes(newVal));</span>
-<span class="nc" id="L63">        noteList.setOnMouseClicked(e -&gt; loadSelectedNote());</span>
+        // Live filter as user types
+<span class="nc" id="L69">        searchField.textProperty().addListener((obs, oldVal, newVal) -&gt; filterNotes(newVal));</span>
+        // Load note on list click
+<span class="nc" id="L71">        noteList.setOnMouseClicked(e -&gt; loadSelectedNote());</span>
 
-<span class="nc" id="L65">        statusLabel.setText(&quot;&quot;);</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L73">        statusLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L74">    }</span>
 
+    /** Load localization and update UI texts. */
     private void loadLanguage(String langCode) {
-<span class="nc" id="L69">        localization = localizationDAO.loadLanguage(langCode);</span>
-<span class="nc" id="L70">        isArabic = langCode.equalsIgnoreCase(&quot;ar&quot;);</span>
-<span class="nc" id="L71">        updateTexts();</span>
-<span class="nc" id="L72">        statusLabel.setText(&quot;&quot;);</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L78">        localization = localizationDAO.loadLanguage(langCode);</span>
+<span class="nc" id="L79">        isArabic = langCode.equalsIgnoreCase(&quot;ar&quot;);</span>
+<span class="nc" id="L80">        updateTexts();</span>
+<span class="nc" id="L81">        statusLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L82">    }</span>
 
+    /** Apply localized strings and orientation to controls. */
     private void updateTexts() {
-<span class="nc" id="L76">        newNoteBtn.setText(text(&quot;btn.new&quot;));</span>
-<span class="nc" id="L77">        deleteBtn.setText(text(&quot;btn.delete&quot;));</span>
-<span class="nc" id="L78">        toggleSidebarBtn.setText(text(&quot;btn.notes&quot;));</span>
-<span class="nc" id="L79">        logoutBtn.setText(text(&quot;button.logout&quot;));</span>
+<span class="nc" id="L86">        newNoteBtn.setText(text(&quot;btn.new&quot;));</span>
+<span class="nc" id="L87">        deleteBtn.setText(text(&quot;btn.delete&quot;));</span>
+<span class="nc" id="L88">        toggleSidebarBtn.setText(text(&quot;btn.notes&quot;));</span>
+<span class="nc" id="L89">        logoutBtn.setText(text(&quot;button.logout&quot;));</span>
 
-<span class="nc" id="L81">        searchField.setPromptText(text(&quot;placeholder.search&quot;));</span>
-<span class="nc" id="L82">        titleField.setPromptText(text(&quot;placeholder.title&quot;));</span>
-<span class="nc" id="L83">        contentArea.setPromptText(text(&quot;placeholder.content&quot;));</span>
+<span class="nc" id="L91">        searchField.setPromptText(text(&quot;placeholder.search&quot;));</span>
+<span class="nc" id="L92">        titleField.setPromptText(text(&quot;placeholder.title&quot;));</span>
+<span class="nc" id="L93">        contentArea.setPromptText(text(&quot;placeholder.content&quot;));</span>
 
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        var orientation = isArabic</span>
-<span class="nc" id="L86">                ? javafx.geometry.NodeOrientation.RIGHT_TO_LEFT</span>
-<span class="nc" id="L87">                : javafx.geometry.NodeOrientation.LEFT_TO_RIGHT;</span>
+        // Adjust orientation for RTL languages (Arabic) so input aligns naturally
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        var orientation = isArabic</span>
+<span class="nc" id="L97">                ? javafx.geometry.NodeOrientation.RIGHT_TO_LEFT</span>
+<span class="nc" id="L98">                : javafx.geometry.NodeOrientation.LEFT_TO_RIGHT;</span>
 
-<span class="nc" id="L89">        titleField.setNodeOrientation(orientation);</span>
-<span class="nc" id="L90">        contentArea.setNodeOrientation(orientation);</span>
-<span class="nc" id="L91">        searchField.setNodeOrientation(orientation);</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L100">        titleField.setNodeOrientation(orientation);</span>
+<span class="nc" id="L101">        contentArea.setNodeOrientation(orientation);</span>
+<span class="nc" id="L102">        searchField.setNodeOrientation(orientation);</span>
+<span class="nc" id="L103">    }</span>
 
+    /** Get a localized value or a placeholder if missing. */
     private String text(String key) {
-<span class="nc" id="L95">        return localization.getOrDefault(key, &quot;[&quot; + key + &quot;]&quot;);</span>
+<span class="nc" id="L107">        return localization.getOrDefault(key, &quot;[&quot; + key + &quot;]&quot;);</span>
     }
 
-<span class="nc" id="L98">    @FXML private void onSwitchToEnglish() { View.currentLanguage = &quot;en&quot;; loadLanguage(&quot;en&quot;); }</span>
-<span class="nc" id="L99">    @FXML private void onSwitchToArabic() { View.currentLanguage = &quot;ar&quot;; loadLanguage(&quot;ar&quot;); }</span>
-<span class="nc" id="L100">    @FXML private void onSwitchToJapanese() { View.currentLanguage = &quot;ja&quot;; loadLanguage(&quot;ja&quot;); }</span>
+<span class="nc" id="L110">    @FXML private void onSwitchToEnglish() { View.currentLanguage = &quot;en&quot;; loadLanguage(&quot;en&quot;); }</span>
+<span class="nc" id="L111">    @FXML private void onSwitchToArabic() { View.currentLanguage = &quot;ar&quot;; loadLanguage(&quot;ar&quot;); }</span>
+<span class="nc" id="L112">    @FXML private void onSwitchToJapanese() { View.currentLanguage = &quot;ja&quot;; loadLanguage(&quot;ja&quot;); }</span>
 
+    /** Prepare timer mechanism used for timed writing sessions. */
     private void setupTimer() {
-<span class="nc" id="L103">        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -&gt; Platform.runLater(this::updateTimer)));</span>
-<span class="nc" id="L104">        timer.setCycleCount(Timeline.INDEFINITE);</span>
-<span class="nc" id="L105">        updateTimerDisplay();</span>
-<span class="nc" id="L106">    }</span>
+        // Tick every second and update on UI thread
+<span class="nc" id="L117">        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -&gt; Platform.runLater(this::updateTimer)));</span>
+<span class="nc" id="L118">        timer.setCycleCount(Timeline.INDEFINITE);</span>
+<span class="nc" id="L119">        updateTimerDisplay();</span>
+<span class="nc" id="L120">    }</span>
 
+    /** Handle timer label clicks to start/stop a timed session. */
     @FXML
     private void onTimerClicked() {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (timer == null) setupTimer();</span>
-<span class="nc" id="L111">        toggleTimer();</span>
-<span class="nc" id="L112">    }</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (timer == null) setupTimer();</span>
+<span class="nc" id="L126">        toggleTimer();</span>
+<span class="nc" id="L127">    }</span>
 
+    /**
+     * Toggle timer playback and editor state.
+     * When starting: reset to full duration, clear fields, focus editor.
+     * When stopping (or completing): delegate to stopAndSave.
+     */
     private void toggleTimer() {
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (!isTimerRunning) {</span>
-<span class="nc" id="L116">            isTimerRunning = true;</span>
-<span class="nc" id="L117">            timeRemaining = 15 * 60;</span>
-<span class="nc" id="L118">            updateTimerDisplay();</span>
-<span class="nc" id="L119">            timer.play();</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (!isTimerRunning) {</span>
+<span class="nc" id="L136">            isTimerRunning = true;</span>
+<span class="nc" id="L137">            timeRemaining = 15 * 60; // reset to 15 minutes for each session</span>
+<span class="nc" id="L138">            updateTimerDisplay();</span>
+<span class="nc" id="L139">            timer.play();</span>
 
-<span class="nc" id="L121">            titleField.setEditable(true);</span>
-<span class="nc" id="L122">            contentArea.setEditable(true);</span>
-<span class="nc" id="L123">            titleField.clear();</span>
-<span class="nc" id="L124">            contentArea.clear();</span>
-<span class="nc" id="L125">            contentArea.requestFocus();</span>
+            // Enable editing for a fresh session
+<span class="nc" id="L142">            titleField.setEditable(true);</span>
+<span class="nc" id="L143">            contentArea.setEditable(true);</span>
+<span class="nc" id="L144">            titleField.clear();</span>
+<span class="nc" id="L145">            contentArea.clear();</span>
+<span class="nc" id="L146">            contentArea.requestFocus();</span>
         } else {
-<span class="nc" id="L127">            stopAndSave();</span>
+<span class="nc" id="L148">            stopAndSave();</span>
         }
-<span class="nc" id="L129">    }</span>
+<span class="nc" id="L150">    }</span>
 
+    /**
+     * Decrement timer and update UI; auto-save when time reaches zero.
+     * Changes label color to red when under 60 seconds.
+     */
     private void updateTimer() {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (timeRemaining &gt; 0) {</span>
-<span class="nc" id="L133">            timeRemaining--;</span>
-<span class="nc" id="L134">            updateTimerDisplay();</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">            if (timeRemaining &lt;= 60) {</span>
-<span class="nc" id="L136">                timerLabel.setStyle(&quot;-fx-text-fill: darkred;&quot;);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (timeRemaining &gt; 0) {</span>
+<span class="nc" id="L158">            timeRemaining--;</span>
+<span class="nc" id="L159">            updateTimerDisplay();</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            if (timeRemaining &lt;= 60) {</span>
+<span class="nc" id="L161">                timerLabel.setStyle(&quot;-fx-text-fill: darkred;&quot;);</span>
             }
         } else {
-<span class="nc" id="L139">            stopAndSave();</span>
+            // Time's up: stop and persist the note (if valid)
+<span class="nc" id="L165">            stopAndSave();</span>
         }
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L167">    }</span>
 
+    /** Update formatted MM:SS display. */
     private void updateTimerDisplay() {
-<span class="nc" id="L144">        int minutes = timeRemaining / 60;</span>
-<span class="nc" id="L145">        int seconds = timeRemaining % 60;</span>
-<span class="nc" id="L146">        timerLabel.setText(String.format(&quot;%02d:%02d&quot;, minutes, seconds));</span>
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L171">        int minutes = timeRemaining / 60;</span>
+<span class="nc" id="L172">        int seconds = timeRemaining % 60;</span>
+<span class="nc" id="L173">        timerLabel.setText(String.format(&quot;%02d:%02d&quot;, minutes, seconds));</span>
+<span class="nc" id="L174">    }</span>
 
+    /**
+     * Stop timer and save note if title/content are present.
+     * If content exists but title is empty, auto-generate a timestamped title.
+     */
     private void stopAndSave() {
-<span class="nc" id="L150">        isTimerRunning = false;</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (timer != null) timer.stop();</span>
+<span class="nc" id="L181">        isTimerRunning = false;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (timer != null) timer.stop();</span>
 
-<span class="nc" id="L153">        String title = titleField.getText().trim();</span>
-<span class="nc" id="L154">        String content = contentArea.getText().trim();</span>
+<span class="nc" id="L184">        String title = titleField.getText().trim();</span>
+<span class="nc" id="L185">        String content = contentArea.getText().trim();</span>
 
-<span class="nc bnc" id="L156" title="All 4 branches missed.">        if (title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
+        // Auto-title convenience for quick writing sessions
+<span class="nc bnc" id="L188" title="All 4 branches missed.">        if (title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
             title = &quot;Timed Session - &quot; +
-<span class="nc" id="L158">                    LocalDateTime.now().format(DateTimeFormatter.ofPattern(&quot;MM-dd HH:mm&quot;));</span>
+<span class="nc" id="L190">                    LocalDateTime.now().format(DateTimeFormatter.ofPattern(&quot;MM-dd HH:mm&quot;));</span>
         }
 
-<span class="nc bnc" id="L161" title="All 4 branches missed.">        if (!title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
-<span class="nc" id="L162">            int userId = View.loggedInUser.getUserId();</span>
-<span class="nc" id="L163">            Note note = new Note(userId, title, content);</span>
-<span class="nc" id="L164">            noteDAO.addNote(note);</span>
+<span class="nc bnc" id="L193" title="All 4 branches missed.">        if (!title.isEmpty() &amp;&amp; !content.isEmpty()) {</span>
+<span class="nc" id="L194">            int userId = View.loggedInUser.getUserId();</span>
+<span class="nc" id="L195">            Note note = new Note(userId, title, content);</span>
+<span class="nc" id="L196">            noteDAO.addNote(note);</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (!allNotes.contains(title)) {</span>
-<span class="nc" id="L167">                allNotes.add(title);</span>
-<span class="nc" id="L168">                filterNotes(searchField.getText());</span>
-<span class="nc" id="L169">                noteList.setItems(filteredNotes);</span>
+            // Update list only if it's a new title to avoid duplicates
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (!allNotes.contains(title)) {</span>
+<span class="nc" id="L200">                allNotes.add(title);</span>
+<span class="nc" id="L201">                filterNotes(searchField.getText());</span>
+<span class="nc" id="L202">                noteList.setItems(filteredNotes);</span>
             }
 
-<span class="nc" id="L172">            setStatus(text(&quot;msg.noteSaved&quot;) + &quot;: &quot; + title, &quot;#00cc66&quot;);</span>
-<span class="nc" id="L173">        } else {</span>
-<span class="nc" id="L174">            setStatus(text(&quot;msg.noteNotSaved&quot;), &quot;#ee0000&quot;);</span>
+<span class="nc" id="L205">            setStatus(text(&quot;msg.noteSaved&quot;) + &quot;: &quot; + title, &quot;#00cc66&quot;);</span>
+<span class="nc" id="L206">        } else {</span>
+<span class="nc" id="L207">            setStatus(text(&quot;msg.noteNotSaved&quot;), &quot;#ee0000&quot;);</span>
         }
 
-<span class="nc" id="L177">        resetTimer();</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L210">        resetTimer();</span>
+<span class="nc" id="L211">    }</span>
 
+    /** Reset timer and editor to default state. */
     private void resetTimer() {
-<span class="nc" id="L181">        timeRemaining = 15 * 60;</span>
-<span class="nc" id="L182">        updateTimerDisplay();</span>
-<span class="nc" id="L183">        titleField.clear();</span>
-<span class="nc" id="L184">        contentArea.clear();</span>
-<span class="nc" id="L185">        titleField.setEditable(false);</span>
-<span class="nc" id="L186">        contentArea.setEditable(false);</span>
-<span class="nc" id="L187">        timerLabel.setStyle(&quot;-fx-text-fill: black;&quot;);</span>
-<span class="nc" id="L188">    }</span>
+<span class="nc" id="L215">        timeRemaining = 15 * 60;</span>
+<span class="nc" id="L216">        updateTimerDisplay();</span>
+<span class="nc" id="L217">        titleField.clear();</span>
+<span class="nc" id="L218">        contentArea.clear();</span>
+<span class="nc" id="L219">        titleField.setEditable(false);</span>
+<span class="nc" id="L220">        contentArea.setEditable(false);</span>
+<span class="nc" id="L221">        timerLabel.setStyle(&quot;-fx-text-fill: black;&quot;);</span>
+<span class="nc" id="L222">    }</span>
 
+    /** Load titles from the database for the current user. */
     private void loadNotesFromDB() {
-<span class="nc" id="L191">        int userId = View.loggedInUser.getUserId();</span>
-<span class="nc" id="L192">        List&lt;Note&gt; notes = noteDAO.getNotesForUser(userId);</span>
-<span class="nc" id="L193">        allNotes.clear();</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (Note note : notes) {</span>
-<span class="nc" id="L195">            allNotes.add(note.getTitle());</span>
-<span class="nc" id="L196">        }</span>
-<span class="nc" id="L197">        filteredNotes.setAll(allNotes);</span>
-<span class="nc" id="L198">        noteList.setItems(filteredNotes);</span>
-<span class="nc" id="L199">    }</span>
+<span class="nc" id="L226">        int userId = View.loggedInUser.getUserId();</span>
+<span class="nc" id="L227">        List&lt;Note&gt; notes = noteDAO.getNotesForUser(userId);</span>
+<span class="nc" id="L228">        allNotes.clear();</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        for (Note note : notes) {</span>
+<span class="nc" id="L230">            allNotes.add(note.getTitle());</span>
+<span class="nc" id="L231">        }</span>
+<span class="nc" id="L232">        filteredNotes.setAll(allNotes);</span>
+<span class="nc" id="L233">        noteList.setItems(filteredNotes);</span>
+<span class="nc" id="L234">    }</span>
 
+    /**
+     * Filter list by query, preserving case-insensitive matching.
+     * Empty query shows all notes.
+     */
     private void filterNotes(String filter) {
-<span class="nc" id="L202">        filteredNotes.clear();</span>
-<span class="nc bnc" id="L203" title="All 4 branches missed.">        if (filter == null || filter.isBlank()) {</span>
-<span class="nc" id="L204">            filteredNotes.addAll(allNotes);</span>
+<span class="nc" id="L241">        filteredNotes.clear();</span>
+<span class="nc bnc" id="L242" title="All 4 branches missed.">        if (filter == null || filter.isBlank()) {</span>
+<span class="nc" id="L243">            filteredNotes.addAll(allNotes);</span>
         } else {
-<span class="nc" id="L206">            String f = filter.toLowerCase();</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">            for (String n : allNotes) {</span>
-<span class="nc bnc" id="L208" title="All 2 branches missed.">                if (n.toLowerCase().contains(f)) {</span>
-<span class="nc" id="L209">                    filteredNotes.add(n);</span>
+<span class="nc" id="L245">            String f = filter.toLowerCase();</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            for (String n : allNotes) {</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                if (n.toLowerCase().contains(f)) {</span>
+<span class="nc" id="L248">                    filteredNotes.add(n);</span>
                 }
-<span class="nc" id="L211">            }</span>
+<span class="nc" id="L250">            }</span>
         }
-<span class="nc" id="L213">    }</span>
+<span class="nc" id="L252">    }</span>
 
+    /** Load selected note content into the editor. */
     private void loadSelectedNote() {
-<span class="nc" id="L216">        String selected = noteList.getSelectionModel().getSelectedItem();</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">        if (selected != null) {</span>
-<span class="nc" id="L218">            titleField.setText(selected);</span>
-<span class="nc" id="L219">            int userId = View.loggedInUser.getUserId();</span>
-<span class="nc" id="L220">            String content = noteDAO.getNoteByTitle(userId, selected);</span>
-<span class="nc" id="L221">            contentArea.setText(content);</span>
+<span class="nc" id="L256">        String selected = noteList.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (selected != null) {</span>
+<span class="nc" id="L258">            titleField.setText(selected);</span>
+<span class="nc" id="L259">            int userId = View.loggedInUser.getUserId();</span>
+<span class="nc" id="L260">            String content = noteDAO.getNoteByTitle(userId, selected);</span>
+<span class="nc" id="L261">            contentArea.setText(content);</span>
         }
-<span class="nc" id="L223">    }</span>
+<span class="nc" id="L263">    }</span>
 
+    /** Prepare a new note for editing. */
     @FXML
     private void onNewNote(ActionEvent event) {
-<span class="nc" id="L227">        titleField.setEditable(true);</span>
-<span class="nc" id="L228">        contentArea.setEditable(true);</span>
-<span class="nc" id="L229">        titleField.clear();</span>
-<span class="nc" id="L230">        contentArea.clear();</span>
-<span class="nc" id="L231">        setStatus(text(&quot;msg.newNote&quot;), &quot;#00cc66&quot;);</span>
-<span class="nc" id="L232">    }</span>
+<span class="nc" id="L268">        titleField.setEditable(true);</span>
+<span class="nc" id="L269">        contentArea.setEditable(true);</span>
+<span class="nc" id="L270">        titleField.clear();</span>
+<span class="nc" id="L271">        contentArea.clear();</span>
+<span class="nc" id="L272">        setStatus(text(&quot;msg.newNote&quot;), &quot;#00cc66&quot;);</span>
+<span class="nc" id="L273">    }</span>
 
+    /** Delete the selected note and update the list. */
     @FXML
     private void onDelete(ActionEvent event) {
-<span class="nc" id="L236">        String selectedNote = noteList.getSelectionModel().getSelectedItem();</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (selectedNote != null) {</span>
-<span class="nc" id="L238">            int userId = View.loggedInUser.getUserId();</span>
-<span class="nc" id="L239">            noteDAO.deleteNoteByTitle(userId, selectedNote);</span>
-<span class="nc" id="L240">            allNotes.remove(selectedNote);</span>
-<span class="nc" id="L241">            filterNotes(searchField.getText());</span>
-<span class="nc" id="L242">            noteList.setItems(filteredNotes);</span>
-<span class="nc" id="L243">            setStatus(text(&quot;msg.noteDeleted&quot;) + &quot;: &quot; + selectedNote, &quot;#00cc66&quot;);</span>
-<span class="nc" id="L244">        } else {</span>
-<span class="nc" id="L245">            setStatus(text(&quot;msg.selectNote&quot;), &quot;#007bff&quot;);</span>
+<span class="nc" id="L278">        String selectedNote = noteList.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (selectedNote != null) {</span>
+<span class="nc" id="L280">            int userId = View.loggedInUser.getUserId();</span>
+<span class="nc" id="L281">            noteDAO.deleteNoteByTitle(userId, selectedNote);</span>
+<span class="nc" id="L282">            allNotes.remove(selectedNote);</span>
+<span class="nc" id="L283">            filterNotes(searchField.getText());</span>
+<span class="nc" id="L284">            noteList.setItems(filteredNotes);</span>
+<span class="nc" id="L285">            setStatus(text(&quot;msg.noteDeleted&quot;) + &quot;: &quot; + selectedNote, &quot;#00cc66&quot;);</span>
+<span class="nc" id="L286">        } else {</span>
+<span class="nc" id="L287">            setStatus(text(&quot;msg.selectNote&quot;), &quot;#007bff&quot;);</span>
         }
-<span class="nc" id="L247">    }</span>
+<span class="nc" id="L289">    }</span>
 
+    /** Show/hide sidebar containing the notes list. */
     @FXML
     private void onToggleSidebar(ActionEvent event) {
-<span class="nc bnc" id="L251" title="All 2 branches missed.">        if (isSidebarHidden) {</span>
-<span class="nc" id="L252">            rootPane.setRight(sidebar);</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (isSidebarHidden) {</span>
+<span class="nc" id="L295">            rootPane.setRight(sidebar);</span>
         } else {
-<span class="nc" id="L254">            rootPane.setRight(null);</span>
+<span class="nc" id="L297">            rootPane.setRight(null);</span>
         }
-<span class="nc bnc" id="L256" title="All 2 branches missed.">        isSidebarHidden = !isSidebarHidden;</span>
-<span class="nc" id="L257">    }</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">        isSidebarHidden = !isSidebarHidden;</span>
+<span class="nc" id="L300">    }</span>
 
+    /**
+     * Display a temporary status message with color.
+     * Clears itself after 4 seconds.
+     */
     private void setStatus(String msg, String color) {
-<span class="nc" id="L260">        statusLabel.setText(msg);</span>
-<span class="nc" id="L261">        statusLabel.setStyle(&quot;-fx-text-fill: &quot; + color + &quot;;&quot;);</span>
+<span class="nc" id="L307">        statusLabel.setText(msg);</span>
+<span class="nc" id="L308">        statusLabel.setStyle(&quot;-fx-text-fill: &quot; + color + &quot;;&quot;);</span>
 
-<span class="nc" id="L263">        Timeline clearStatus = new Timeline(new KeyFrame(Duration.seconds(4), e -&gt; {</span>
-<span class="nc" id="L264">            statusLabel.setText(&quot;&quot;);</span>
-<span class="nc" id="L265">            statusLabel.setStyle(&quot;-fx-text-fill: transparent;&quot;);</span>
-<span class="nc" id="L266">        }));</span>
-<span class="nc" id="L267">        clearStatus.setCycleCount(1);</span>
-<span class="nc" id="L268">        clearStatus.play();</span>
-<span class="nc" id="L269">    }</span>
+<span class="nc" id="L310">        Timeline clearStatus = new Timeline(new KeyFrame(Duration.seconds(4), e -&gt; {</span>
+<span class="nc" id="L311">            statusLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L312">            statusLabel.setStyle(&quot;-fx-text-fill: transparent;&quot;);</span>
+<span class="nc" id="L313">        }));</span>
+<span class="nc" id="L314">        clearStatus.setCycleCount(1);</span>
+<span class="nc" id="L315">        clearStatus.play();</span>
+<span class="nc" id="L316">    }</span>
 
+    /** Log out and return to login view. */
     @FXML
     private void onLogout() {
-<span class="nc" id="L273">        View.loggedInUser = null;</span>
-<span class="nc" id="L274">        View.isLoggedIn = false;</span>
-<span class="nc" id="L275">        View.switchScene(View.primaryStage, &quot;/fxml/login-view.fxml&quot;);</span>
-<span class="nc" id="L276">    }</span>
+<span class="nc" id="L321">        View.loggedInUser = null;</span>
+<span class="nc" id="L322">        View.isLoggedIn = false;</span>
+<span class="nc" id="L323">        View.switchScene(View.primaryStage, &quot;/fxml/login-view.fxml&quot;);</span>
+<span class="nc" id="L324">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -11,10 +11,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Data Access Object for user-related operations.
+ * Handles CRUD interactions with the users table.
+ */
 public class UserDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
+    /**
+     * Inserts a new user into the database and sets the generated id on the entity.
+     * @param user domain model to persist
+     * @return true if insert succeeded; false otherwise
+     */
     public boolean addUser(User user) {
         String sql = "INSERT INTO users (nickname, username, password) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -38,6 +47,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Finds a user by unique username.
+     * @param username unique username
+     * @return matching user or null if none found
+     */
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -60,6 +74,12 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * Verifies username/password credentials against stored records.
+     * @param username input username
+     * @param password input password (plain, as stored)
+     * @return true if credentials are valid; false otherwise
+     */
     public boolean validateUser(String username, String password) {
         User user = getUserByUsername(username);
         return user != null && user.getPassword().equals(password);

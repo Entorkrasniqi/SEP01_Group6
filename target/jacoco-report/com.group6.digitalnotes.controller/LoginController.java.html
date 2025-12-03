@@ -1,115 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.controller</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.controller;
 
-import com.group6.digitalnotes.dao.LocalizationDAO;
 import com.group6.digitalnotes.dao.UserDAO;
 import com.group6.digitalnotes.view.View;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.geometry.NodeOrientation;
 
-import java.util.Map;
+/**
+ * Controller for the login view. Validates credentials and navigates to the main view.
+ */
+<span class="nc" id="L13">public class LoginController extends BaseLocalizedController {</span>
 
-<span class="fc" id="L14">public class LoginController {</span>
+    @FXML private TextField usernameField;   // Username input
+    @FXML private PasswordField passwordField; // Password input
+    @FXML private Button loginButton;        // Submit credentials
+    @FXML private Button signUpButton;       // Navigate to signup
+    @FXML private Label secureLoginLabel;    // Section title
+    @FXML private Label usernameLabel;       // Label for username
+    @FXML private Label passwordLabel;       // Label for password
+    @FXML private Label noAccountLabel;      // Prompt to create account
+    @FXML private HBox accountBox;           // Container for prompt + button
+    @FXML private Label titleLabel;          // App title
+    @FXML private Label subtitleLabel;       // App subtitle
+    @FXML private Label invalidLabel;        // Inline validation messages
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private Button loginButton;
-    @FXML private Button signUpButton;
-    @FXML private Label secureLoginLabel;
-    @FXML private Label usernameLabel;
-    @FXML private Label passwordLabel;
-    @FXML private Label noAccountLabel;
-    @FXML private HBox accountBox;
-    @FXML private Label titleLabel;
-    @FXML private Label subtitleLabel;
-    @FXML private Label invalidLabel;
-
-<span class="fc" id="L29">    private final UserDAO userDAO = new UserDAO();</span>
-<span class="fc" id="L30">    private final LocalizationDAO localizationDAO = new LocalizationDAO();</span>
-    private Map&lt;String, String&gt; localization;
-<span class="fc" id="L32">    private boolean isArabic = false;</span>
+<span class="nc" id="L28">    private final UserDAO userDAO = new UserDAO();</span>
 
     @FXML
     public void initialize() {
-<span class="nc" id="L36">        loadLanguage(View.currentLanguage);</span>
-<span class="nc" id="L37">        invalidLabel.setText(&quot;&quot;);</span>
-<span class="nc" id="L38">    }</span>
+        // Load current language and clear any old error messages
+<span class="nc" id="L33">        initLocalization();</span>
+<span class="nc" id="L34">        invalidLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L35">    }</span>
 
-    private void loadLanguage(String langCode) {
-<span class="fc" id="L41">        localization = localizationDAO.loadLanguage(langCode);</span>
-<span class="fc" id="L42">        isArabic = langCode.equalsIgnoreCase(&quot;ar&quot;);</span>
-<span class="fc" id="L43">        updateTexts();</span>
-<span class="fc" id="L44">        invalidLabel.setText(&quot;&quot;);</span>
-<span class="fc" id="L45">    }</span>
+    @Override
+    protected void onLanguageLoaded() {
+        // Set prompt placeholders
+<span class="nc" id="L40">        setPrompt(usernameField, &quot;label.username&quot;, &quot;Username&quot;);</span>
+<span class="nc" id="L41">        setPrompt(passwordField, &quot;label.password&quot;, &quot;Password&quot;);</span>
 
-    private void updateTexts() {
-<span class="fc" id="L48">        usernameField.setPromptText(localization.getOrDefault(&quot;label.username&quot;, &quot;Username&quot;));</span>
-<span class="fc" id="L49">        passwordField.setPromptText(localization.getOrDefault(&quot;label.password&quot;, &quot;Password&quot;));</span>
-<span class="fc" id="L50">        loginButton.setText(localization.getOrDefault(&quot;button.login&quot;, &quot;Login&quot;));</span>
-<span class="fc" id="L51">        signUpButton.setText(localization.getOrDefault(&quot;button.signup&quot;, &quot;Sign Up&quot;));</span>
+        // Set visible labels and button texts
+<span class="nc" id="L44">        setLabel(secureLoginLabel, &quot;label.secureLogin&quot;, &quot;Secure Login&quot;);</span>
+<span class="nc" id="L45">        setLabel(usernameLabel, &quot;label.username&quot;, &quot;Username&quot;);</span>
+<span class="nc" id="L46">        setLabel(passwordLabel, &quot;label.password&quot;, &quot;Password&quot;);</span>
+<span class="nc" id="L47">        setLabel(noAccountLabel, &quot;label.noAccount&quot;, &quot;You don't have an account.&quot;);</span>
+<span class="nc" id="L48">        setLabel(titleLabel, &quot;label.appTitle&quot;, &quot;Digital Notes&quot;);</span>
+<span class="nc" id="L49">        setLabel(subtitleLabel, &quot;label.subtitle&quot;, &quot;Write smarter, faster&quot;);</span>
 
-<span class="fc" id="L53">        secureLoginLabel.setText(localization.getOrDefault(&quot;label.secureLogin&quot;, &quot;Secure Login&quot;));</span>
-<span class="fc" id="L54">        usernameLabel.setText(localization.getOrDefault(&quot;label.username&quot;, &quot;Username&quot;));</span>
-<span class="fc" id="L55">        passwordLabel.setText(localization.getOrDefault(&quot;label.password&quot;, &quot;Password&quot;));</span>
-<span class="fc" id="L56">        noAccountLabel.setText(localization.getOrDefault(&quot;label.noAccount&quot;, &quot;You don't have an account.&quot;));</span>
-<span class="fc" id="L57">        titleLabel.setText(localization.getOrDefault(&quot;label.appTitle&quot;, &quot;Digital Notes&quot;));</span>
-<span class="fc" id="L58">        subtitleLabel.setText(localization.getOrDefault(&quot;label.subtitle&quot;, &quot;Write smarter, faster&quot;));</span>
+<span class="nc" id="L51">        setButton(loginButton, &quot;button.login&quot;, &quot;Login&quot;);</span>
+<span class="nc" id="L52">        setButton(signUpButton, &quot;button.signup&quot;, &quot;Sign Up&quot;);</span>
 
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        var orientation = isArabic ? NodeOrientation.RIGHT_TO_LEFT : NodeOrientation.LEFT_TO_RIGHT;</span>
-<span class="fc" id="L61">        usernameField.setNodeOrientation(orientation);</span>
-<span class="fc" id="L62">        passwordField.setNodeOrientation(orientation);</span>
+        // Right-to-left orientation for Arabic languages
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        orient(isArabic ? NodeOrientation.RIGHT_TO_LEFT : NodeOrientation.LEFT_TO_RIGHT,</span>
+                usernameField, passwordField);
 
-<span class="fc" id="L64">        accountBox.getChildren().clear();</span>
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (isArabic) {</span>
-<span class="fc" id="L66">            accountBox.getChildren().addAll(signUpButton, noAccountLabel);</span>
-<span class="fc" id="L67">            signUpButton.setStyle(&quot;-fx-pref-width: 120px;&quot;);</span>
-        } else {
-<span class="fc" id="L69">            accountBox.getChildren().addAll(noAccountLabel, signUpButton);</span>
-<span class="fc" id="L70">            signUpButton.setStyle(&quot;-fx-pref-width: 80px;&quot;);</span>
-        }
-<span class="fc" id="L72">    }</span>
+        // Place prompt label and action button in language-appropriate order
+<span class="nc" id="L59">        configureAccountBox(accountBox, signUpButton, noAccountLabel, isArabic, 120, 80);</span>
 
+<span class="nc" id="L61">        invalidLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L62">    }</span>
+
+    /** Attempt to log in with the provided credentials and navigate to main view on success. */
     @FXML
     private void onLogin() {
-<span class="nc" id="L76">        String username = usernameField.getText().trim();</span>
-<span class="nc" id="L77">        String password = passwordField.getText().trim();</span>
+<span class="nc" id="L67">        String username = usernameField.getText().trim();</span>
+<span class="nc" id="L68">        String password = passwordField.getText().trim();</span>
 
-<span class="nc bnc" id="L79" title="All 4 branches missed.">        if (username.isEmpty() || password.isEmpty()) {</span>
-<span class="nc" id="L80">            invalidLabel.setText(localization.getOrDefault(&quot;label.emptyFields&quot;, &quot;Please fill in all fields.&quot;));</span>
-<span class="nc" id="L81">            return;</span>
+        // Basic input validation
+<span class="nc bnc" id="L71" title="All 4 branches missed.">        if (username.isEmpty() || password.isEmpty()) {</span>
+<span class="nc" id="L72">            invalidLabel.setText(t(&quot;label.emptyFields&quot;, &quot;Please fill in all fields.&quot;));</span>
+<span class="nc" id="L73">            return;</span>
         }
 
-<span class="nc" id="L84">        boolean valid = userDAO.validateUser(username, password);</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (valid) {</span>
-<span class="nc" id="L86">            invalidLabel.setText(&quot;&quot;);</span>
-<span class="nc" id="L87">            View.loggedInUser = userDAO.getUserByUsername(username);</span>
-<span class="nc" id="L88">            View.isLoggedIn = true;</span>
-<span class="nc" id="L89">            View.switchScene(View.primaryStage, &quot;/fxml/main-view.fxml&quot;);</span>
+        // Verify credentials against stored values
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (userDAO.validateUser(username, password)) {</span>
+<span class="nc" id="L78">            invalidLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L79">            View.loggedInUser = userDAO.getUserByUsername(username);</span>
+<span class="nc" id="L80">            View.isLoggedIn = true;</span>
+            // Proceed to the main application view
+<span class="nc" id="L82">            View.switchScene(View.primaryStage, &quot;/fxml/main-view.fxml&quot;);</span>
         } else {
-<span class="nc" id="L91">            invalidLabel.setText(localization.getOrDefault(&quot;label.invalidCredential&quot;, &quot;Invalid username or password!&quot;));</span>
+<span class="nc" id="L84">            invalidLabel.setText(t(&quot;label.invalidCredential&quot;, &quot;Invalid username or password!&quot;));</span>
         }
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L86">    }</span>
 
+    /** Navigate to signup view. */
     @FXML
     private void goToSignUp() {
-<span class="nc" id="L97">        View.switchScene(View.primaryStage, &quot;/fxml/signup-view.fxml&quot;);</span>
-<span class="nc" id="L98">    }</span>
-
-    public void onSwitchToEnglish() {
-<span class="fc" id="L101">        View.currentLanguage = &quot;en&quot;;</span>
-<span class="fc" id="L102">        loadLanguage(&quot;en&quot;);</span>
-<span class="fc" id="L103">    }</span>
-
-    public void onSwitchToArabic() {
-<span class="fc" id="L106">        View.currentLanguage = &quot;ar&quot;;</span>
-<span class="fc" id="L107">        loadLanguage(&quot;ar&quot;);</span>
-<span class="fc" id="L108">    }</span>
-
-    public void onSwitchToJapanese() {
-<span class="fc" id="L111">        View.currentLanguage = &quot;ja&quot;;</span>
-<span class="fc" id="L112">        loadLanguage(&quot;ja&quot;);</span>
-<span class="fc" id="L113">    }</span>
+<span class="nc" id="L91">        View.switchScene(View.primaryStage, &quot;/fxml/signup-view.fxml&quot;);</span>
+<span class="nc" id="L92">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

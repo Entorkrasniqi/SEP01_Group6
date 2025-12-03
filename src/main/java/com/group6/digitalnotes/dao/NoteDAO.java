@@ -9,10 +9,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for notes.
+ * Provides create, read, and delete operations linked to a user.
+ */
 public class NoteDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(NoteDAO.class);
 
+    /**
+     * Persists a note and sets its generated id.
+     * @param note note to save
+     */
     public void addNote(Note note) {
         String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -29,6 +37,11 @@ public class NoteDAO {
         }
     }
 
+    /**
+     * Retrieves all notes for a given user.
+     * @param userId owner id
+     * @return list of note models
+     */
     public List<Note> getNotesForUser(int userId) {
         List<Note> notes = new ArrayList<>();
         String sql = "SELECT * FROM notes WHERE user_id = ?";
@@ -50,6 +63,12 @@ public class NoteDAO {
         return notes;
     }
 
+    /**
+     * Finds the content of a note by its title for a user.
+     * @param userId owner id
+     * @param title unique note title per user
+     * @return note content or null
+     */
     public String getNoteByTitle(int userId, String title) {
         String sql = "SELECT content FROM notes WHERE user_id = ? AND title = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -64,6 +83,11 @@ public class NoteDAO {
         return null;
     }
 
+    /**
+     * Deletes a note by title for the specified user.
+     * @param userId owner id
+     * @param title note title to delete
+     */
     public void deleteNoteByTitle(int userId, String title) {
         String sql = "DELETE FROM notes WHERE user_id = ? AND title = ?";
         try (Connection conn = DBConnection.getConnection();

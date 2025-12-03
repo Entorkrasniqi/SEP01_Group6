@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.dao</a> &gt; <span class="el_source">LocalizationDAO.java</span></div><h1>LocalizationDAO.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.dao;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">digitalnotes</a> &gt; <a href="index.source.html" class="el_package">com.group6.digitalnotes.dao</a> &gt; <span class="el_source">LocalizationDAO.java</span></div><h1>LocalizationDAO.java</h1><pre class="source lang-java linenums">package com.group6.digitalnotes.dao;
 
 import com.group6.digitalnotes.database.DBConnection;
 import org.slf4j.Logger;
@@ -12,84 +12,100 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-<span class="fc" id="L15">public class LocalizationDAO {</span>
+/**
+ * DAO responsible for loading localized strings from the database.
+ */
+<span class="fc" id="L18">public class LocalizationDAO {</span>
 
-<span class="fc" id="L17">    private static final Logger logger = LoggerFactory.getLogger(LocalizationDAO.class);</span>
-<span class="fc" id="L18">    private static final Set&lt;String&gt; VALID_LANGUAGES = Set.of(&quot;en&quot;, &quot;ar&quot;, &quot;ja&quot;);</span>
+<span class="fc" id="L20">    private static final Logger logger = LoggerFactory.getLogger(LocalizationDAO.class);</span>
+<span class="fc" id="L21">    private static final Set&lt;String&gt; VALID_LANGUAGES = Set.of(&quot;en&quot;, &quot;ar&quot;, &quot;ja&quot;);</span>
 
-    // Get a single key and language
+    /**
+     * Fetch a single translation by key and language.
+     * @param key resource key
+     * @param language language code (e.g., &quot;en&quot;)
+     * @return value or null if not found
+     */
     public String getTranslation(String key, String language) {
-<span class="fc" id="L22">        validateLanguage(language);</span>
+<span class="fc" id="L30">        validateLanguage(language);</span>
 
-<span class="fc" id="L24">        String sql = &quot;SELECT value FROM localization_strings WHERE `key` = ? AND language = ? LIMIT 1&quot;;</span>
+<span class="fc" id="L32">        String sql = &quot;SELECT value FROM localization_strings WHERE `key` = ? AND language = ? LIMIT 1&quot;;</span>
 
-<span class="fc" id="L26">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L27">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L34">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L35">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
 
-<span class="fc" id="L29">            stmt.setString(1, key);</span>
-<span class="fc" id="L30">            stmt.setString(2, language);</span>
+<span class="fc" id="L37">            stmt.setString(1, key);</span>
+<span class="fc" id="L38">            stmt.setString(2, language);</span>
 
-<span class="fc" id="L32">            try (ResultSet rs = stmt.executeQuery()) {</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">                if (rs.next()) {</span>
-<span class="fc" id="L34">                    return rs.getString(&quot;value&quot;);</span>
+<span class="fc" id="L40">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                if (rs.next()) {</span>
+<span class="fc" id="L42">                    return rs.getString(&quot;value&quot;);</span>
                 }
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">            }</span>
-<span class="pc bpc" id="L37" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
-<span class="nc" id="L38">            logger.error(&quot;Failed to fetch translation for key: {}, language: {}&quot;, key, language, e);</span>
-<span class="fc" id="L39">        }</span>
-<span class="fc" id="L40">        return null;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            }</span>
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L46">            logger.error(&quot;Failed to fetch translation for key: {}, language: {}&quot;, key, language, e);</span>
+<span class="fc" id="L47">        }</span>
+<span class="fc" id="L48">        return null;</span>
     }
 
-    // Get all translations for a language, Map&lt;key, value&gt;
+    /**
+     * Load all translations for a given language.
+     * @param language language code
+     * @return map of key to value
+     */
     public Map&lt;String, String&gt; getTranslationsForLanguage(String language) {
-<span class="fc" id="L45">        validateLanguage(language);</span>
+<span class="fc" id="L57">        validateLanguage(language);</span>
 
-<span class="fc" id="L47">        String sql = &quot;SELECT `key`, value FROM localization_strings WHERE language = ?&quot;;</span>
-<span class="fc" id="L48">        Map&lt;String, String&gt; translations = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L59">        String sql = &quot;SELECT `key`, value FROM localization_strings WHERE language = ?&quot;;</span>
+<span class="fc" id="L60">        Map&lt;String, String&gt; translations = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L50">        try (Connection conn = DBConnection.getConnection();</span>
-<span class="fc" id="L51">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="fc" id="L62">        try (Connection conn = DBConnection.getConnection();</span>
+<span class="fc" id="L63">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
 
-<span class="fc" id="L53">            stmt.setString(1, language);</span>
+<span class="fc" id="L65">            stmt.setString(1, language);</span>
 
-<span class="fc" id="L55">            try (ResultSet rs = stmt.executeQuery()) {</span>
-<span class="fc bfc" id="L56" title="All 2 branches covered.">                while (rs.next()) {</span>
-<span class="fc" id="L57">                    translations.put(rs.getString(&quot;key&quot;), rs.getString(&quot;value&quot;));</span>
+<span class="fc" id="L67">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L69">                    translations.put(rs.getString(&quot;key&quot;), rs.getString(&quot;value&quot;));</span>
                 }
             }
-<span class="nc" id="L60">        } catch (SQLException e) {</span>
-<span class="nc" id="L61">            logger.error(&quot;Failed to fetch translations for language: {}&quot;, language, e);</span>
-<span class="fc" id="L62">        }</span>
+<span class="nc" id="L72">        } catch (SQLException e) {</span>
+<span class="nc" id="L73">            logger.error(&quot;Failed to fetch translations for language: {}&quot;, language, e);</span>
+<span class="fc" id="L74">        }</span>
 
-<span class="fc" id="L64">        return translations;</span>
+<span class="fc" id="L76">        return translations;</span>
     }
 
-    // default language
+    /**
+     * Get a translation with fallback to a default language.
+     */
     public String getTranslationWithFallback(String key, String language, String defaultLanguage) {
-<span class="fc" id="L69">        validateLanguage(language);</span>
-<span class="fc" id="L70">        validateLanguage(defaultLanguage);</span>
+<span class="fc" id="L83">        validateLanguage(language);</span>
+<span class="fc" id="L84">        validateLanguage(defaultLanguage);</span>
 
-<span class="fc" id="L72">        String value = getTranslation(key, language);</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L74">            return value;</span>
+<span class="fc" id="L86">        String value = getTranslation(key, language);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L88">            return value;</span>
         }
-<span class="fc" id="L76">        logger.warn(&quot;Translation not found for key: {}, language: {}. Falling back to: {}&quot;, key, language, defaultLanguage);</span>
-<span class="fc" id="L77">        return getTranslation(key, defaultLanguage);</span>
+<span class="fc" id="L90">        logger.warn(&quot;Translation not found for key: {}, language: {}. Falling back to: {}&quot;, key, language, defaultLanguage);</span>
+<span class="fc" id="L91">        return getTranslation(key, defaultLanguage);</span>
     }
 
-    // Convenience method used by controllers: load all key/value pairs for a language
+    /**
+     * Convenience wrapper to load all key/value pairs for a language.
+     */
     public Map&lt;String, String&gt; loadLanguage(String language) {
         // Delegate to getTranslationsForLanguage so there is a single implementation
-<span class="fc" id="L83">        return getTranslationsForLanguage(language);</span>
+<span class="fc" id="L99">        return getTranslationsForLanguage(language);</span>
     }
 
     private void validateLanguage(String language) {
-<span class="pc bpc" id="L87" title="1 of 4 branches missed.">        if (language == null || language.trim().isEmpty()) {</span>
-<span class="fc" id="L88">            throw new IllegalArgumentException(&quot;Language code cannot be null or empty&quot;);</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">        if (language == null || language.trim().isEmpty()) {</span>
+<span class="fc" id="L104">            throw new IllegalArgumentException(&quot;Language code cannot be null or empty&quot;);</span>
         }
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (!VALID_LANGUAGES.contains(language)) {</span>
-<span class="fc" id="L91">            throw new IllegalArgumentException(&quot;Invalid language code: &quot; + language + &quot;. Supported: &quot; + VALID_LANGUAGES);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (!VALID_LANGUAGES.contains(language)) {</span>
+<span class="fc" id="L107">            throw new IllegalArgumentException(&quot;Invalid language code: &quot; + language + &quot;. Supported: &quot; + VALID_LANGUAGES);</span>
         }
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L109">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
