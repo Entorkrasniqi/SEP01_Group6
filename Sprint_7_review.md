@@ -21,7 +21,8 @@ Sprint 7
 ---
 
 ##  User Stories
--
+- Käyttäjä 1: Ohjelma oli helppo käyttöinen ja selvä. Voisin käyttää päiväkirjana.
+- Käyttäjä 2: Ohjelma oli erikoisen helppo käyttöinen ja tykkäsin miltä se näytti. En ymmärrä tota ajastinta, mutta kulemma auttaa muistaa aihetta paremmin
 
 
 
