@@ -11,13 +11,12 @@ Sprint 7
 ---
 
 ## ⚙️ Challenges
--
 
 
 ---
 
 ## 🚀 Improvements
--
+- Passed sonarqube tests
 
 ---
 
