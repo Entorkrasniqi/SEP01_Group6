@@ -43,7 +43,7 @@ Sprint 7
 | SonarQube testing | 2h | Saru |
 | Unit Testing | 5h | Omar |
 | Testing/ Test issues | 5h | Doni |
-| Documentation update/ Comprehensive report | 3h | Saru |
+| Documentation update/ Comprehensive report | 4h | Saru |
 | Testing/ Test issues  | 4h | Omar |
 
 ---
