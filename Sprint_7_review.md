@@ -38,13 +38,13 @@ Sprint 7
 
 | Task | Time Spent | Owner |
 |------|-------------|-------|
-| User stories | 3h | Entor |
-| Testing/Code clean/ Test issues | 7h | Doni/ Saru |
+| User stories | h | Entor |
+| Testing/Code clean/ Test issues | 3h | Doni/ Saru |
 | SonarQube testing | 5h | Entor / Doni |
 | Unit Testing | h | Omar |
 | Testing/ Test issues | h | Doni |
-| Documentation update/ Comprehensive report | 5h | Saru |
-| Testing/ Test issues  | 5h | Omar |
+| Documentation update/ Comprehensive report | 3h | Saru |
+| Testing/ Test issues  | 4h | Omar |
 
 ---
 
