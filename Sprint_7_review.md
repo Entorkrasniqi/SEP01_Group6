@@ -27,7 +27,6 @@ Sprint 7
 
 
 ## 🚀 Test Issues
-- Address any bugs or issues identified during testing (Very Important)
 - Sonarqube test passed but we had some problems with sercurity hotspots (7 issues rating E) We fixed this and got 0 issues and rating A.
 - When we updated our project and made changes to code after that Doni had issues to open app even tho it worked for rest of us.
   Intell ideaj pic from Doni: https://github.com/Entorkrasniqi/SEP01_Group6/blob/main/sprint7.1dissue.png
@@ -38,10 +37,11 @@ Sprint 7
 
 | Task | Time Spent | Owner |
 |------|-------------|-------|
-| User stories | h | Entor |
-| Testing/Code clean/ Test issues | 3h | Doni/ Saru |
+| User stories | 2h | Entor |
+| Testing/Code clean/ Test issues | 4h | Doni/ Saru |
 | SonarQube testing | 8h | Entor / Doni |
-| Unit Testing | h | Omar |
+| SonarQube testing | 2h | Saru |
+| Unit Testing | 5h | Omar |
 | Testing/ Test issues | 5h | Doni |
 | Documentation update/ Comprehensive report | 3h | Saru |
 | Testing/ Test issues  | 4h | Omar |
