@@ -40,9 +40,9 @@ Sprint 7
 |------|-------------|-------|
 | User stories | h | Entor |
 | Testing/Code clean/ Test issues | 3h | Doni/ Saru |
-| SonarQube testing | 5h | Entor / Doni |
+| SonarQube testing | 8h | Entor / Doni |
 | Unit Testing | h | Omar |
-| Testing/ Test issues | h | Doni |
+| Testing/ Test issues | 5h | Doni |
 | Documentation update/ Comprehensive report | 3h | Saru |
 | Testing/ Test issues  | 4h | Omar |
 
